@@ -92,7 +92,7 @@ CREATE TABLE status (
     INSERT INTO status (status_item) VALUES
     ('Pendente'),
     ('Em andamento'),
-    ('Cncluído'),
+    ('Concluído'),
     ('Cancelado');
 
 CREATE TABLE historico (

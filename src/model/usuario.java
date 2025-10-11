@@ -1,19 +1,20 @@
 package model;
 import javax.xml.crypto.Data;
+import java.time.LocalDate;
 
 public class usuario {
     protected int id;
     protected String nome;
-    protected Data data_nasc;
+    protected LocalDate dataNasc;
     protected String e_mail;
     protected String senha;
     protected String endereco;
     protected String telefone;
 
-    public usuario(int id, String nome, Data data_nasc, String e_mail, String senha, String endereco, String telefone) {
+    public usuario(int id, String nome, LocalDate dataNasc, String e_mail, String senha, String endereco, String telefone) {
         this.id = id;
         this.nome = nome;
-        this.data_nasc = data_nasc;
+        this.dataNasc = dataNasc;
         this.e_mail = e_mail;
         this.senha = senha;
         this.endereco = endereco;
@@ -36,12 +37,12 @@ public class usuario {
         this.nome = nome;
     }
 
-    public Data getData_nasc() {
-        return data_nasc;
+    public LocalDate getDataNasc() {
+        return dataNasc;
     }
 
-    public void setData_nasc(Data data_nasc) {
-        this.data_nasc = data_nasc;
+    public void setDataNasc(LocalDate dataNasc) {
+        this.dataNasc = dataNasc;
     }
 
     public String getE_mail() {

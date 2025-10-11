@@ -1,6 +1,6 @@
 package model;
 
-import javax.xml.crypto.Data;
+import java.time.LocalDate;
 
 public class administrador extends usuario{
     private int id_administrador;
@@ -22,8 +22,8 @@ public class administrador extends usuario{
         this.id_usuario = id_usuario;
     }
 
-    public administrador(int id, String nome, Data data_nasc, String e_mail, String senha, String endereco, String telefone, int id_administrador, usuario id_usuario) {
-        super(id, nome, data_nasc, e_mail, senha, endereco, telefone);
+    public administrador(int id, String nome, LocalDate dataNasc, String e_mail, String senha, String endereco, String telefone, int id_administrador, usuario id_usuario) {
+        super(id, nome, dataNasc, e_mail, senha, endereco, telefone);
         this.id_administrador = id_administrador;
         this.id_usuario = id_usuario;
     }

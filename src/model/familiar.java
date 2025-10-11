@@ -1,6 +1,6 @@
 package model;
 
-import javax.xml.crypto.Data;
+import java.time.LocalDate;
 
 public class familiar extends usuario{
     private int id_familiar;
@@ -22,8 +22,8 @@ public class familiar extends usuario{
         this.id_usuario = id_usuario;
     }
 
-    public familiar(int id, String nome, Data data_nasc, String e_mail, String senha, String endereco, String telefone, int id_familiar, usuario id_usuario) {
-        super(id, nome, data_nasc, e_mail, senha, endereco, telefone);
+    public familiar(int id, String nome, LocalDate dataNasc, String e_mail, String senha, String endereco, String telefone, int id_familiar, usuario id_usuario) {
+        super(id, nome, dataNasc, e_mail, senha, endereco, telefone);
         this.id_familiar = id_familiar;
         this.id_usuario = id_usuario;
     }

@@ -21,6 +21,15 @@ public class usuario {
         this.telefone = telefone;
     }
 
+    public usuario(String nome, LocalDate dataNasc, String e_mail, String senha, String endereco, String telefone) {
+        this.nome = nome;
+        this.dataNasc = dataNasc;
+        this.e_mail = e_mail;
+        this.senha = senha;
+        this.endereco = endereco;
+        this.telefone = telefone;
+    }
+
     public int getId() {
         return id;
     }

@@ -2,14 +2,28 @@ package dao;
 
 import model.usuario;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.*;
 
 import static view.Menus.menuUpdate;
 
 public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
 
+
     public UsuarioDAO(Connection conn){
         super(conn);
+    }
+
+    public static usuario criarUsuario(){
+        //Cria o usuario
+        usuario Usuario = new usuario("",
+                LocalDate.of(1111,11,11),
+                "",
+                "",
+                "",
+                "");
+
+    return Usuario;
     }
 
     /*
@@ -35,7 +49,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
     */
     @Override
     public void update(usuario u){
-        String sql = "UPDATE (table) SET (value) Where (condition)";
+        String sql;
         menuUpdate();
         int opcao = scn.nextInt();
         scn.nextLine();

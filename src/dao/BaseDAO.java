@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
+//
 public abstract class BaseDAO<T> implements Base<T>{
     protected Connection conn;
     protected PreparedStatement psmt;

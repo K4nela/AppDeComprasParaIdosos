@@ -22,7 +22,7 @@ public class Main {
         try{
             //Conecta no banco de dados
             Connection conn = Conexao.createConnectionToMySQL();
-
+//
             //Instancia o DAO
             UsuarioDAO usuarioDao = new UsuarioDAO(conn);
 

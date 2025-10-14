@@ -220,4 +220,4 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
             System.out.println("ERRO! Não foi possível deletar o usuário!");
         }
     }
-}
+}//

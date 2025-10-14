@@ -9,6 +9,8 @@ import java.util.Scanner;
 public abstract class BaseDAO<T> implements Base<T>{
     protected Connection conn;
     protected PreparedStatement psmt;
+    protected ResultSet rlts;
+
     Scanner scn = new Scanner(System.in);
 
 
@@ -29,6 +31,7 @@ public abstract class BaseDAO<T> implements Base<T>{
                 psmt.setObject(i + 1, params[i]);
             }
             psmt.executeUpdate();
+            Conexao.closeConnection(conn);
         }
     }
 
@@ -39,6 +42,7 @@ public abstract class BaseDAO<T> implements Base<T>{
                 psmt.setObject(i + 1, params[i]);
             }
             psmt.executeUpdate();
+            Conexao.closeConnection(conn);
         }
     }
 
@@ -58,6 +62,7 @@ public abstract class BaseDAO<T> implements Base<T>{
         }
         return lista;
     }
+
 
     //metodo para deletar
     public void delete (String sql, Object... params) throws SQLException{

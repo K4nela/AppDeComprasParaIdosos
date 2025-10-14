@@ -5,11 +5,12 @@ import dao.UsuarioDAO;
 import model.usuario;
 
 import java.sql.Connection;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.sql.SQLException;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static view.Menus.menuMain;
+import static view.Cadastro.telaCadastro;
 
 public class Main {
     static Scanner scn = new Scanner(System.in);
@@ -17,6 +18,7 @@ public class Main {
     static usuario Usuario = UsuarioDAO.criarUsuario();
 
     public static void main(String[] args){
+        int id;
         try{
             //Conecta no banco de dados
             Connection conn = Conexao.createConnectionToMySQL();
@@ -31,45 +33,47 @@ public class Main {
 
                 switch (opcao){
                     case 1:
-                        Scanner scn = new Scanner(System.in);
-
-                        System.out.println("----------Cadastro----------");
-                        System.out.println("Nome: ");
-                        String nome = scn.nextLine();
-
-                        System.out.println("Data de nascimento (yyyy-MM-dd): ");
-                        String data = scn.nextLine();
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                        LocalDate localData = LocalDate.parse(data, formatter);
-
-                        System.out.println("email: ");
-                        String email = scn.nextLine();
-
-                        System.out.println("senha: ");
-                        String senha = scn.nextLine();
-
-                        System.out.println("endereço: ");
-                        String endereco = scn.nextLine();
-
-                        System.out.println("telefone: ");
-                        String telefone = scn.nextLine();
-                        System.out.println("---------------------------");
-
-                        Usuario = new usuario(nome,localData,email,senha,endereco,telefone);
-
-                        usuarioDao.save(Usuario);
+                        telaCadastro();
                         break;
 
                     case 2:
-                        System.out.println(usuarioDao.get());
+                        System.out.println("Deseja ver a lista completa?");
+                        System.out.println("[Y/N]");
+                        String opcao = scn.nextLine();
+
+                        if(Objects.equals(opcao, "Y")){
+                                System.out.println(usuarioDao.get());
+
+                            }else if(Usuario != null) {
+                                System.out.println("Digite seu id para ver suas informações");
+                                id = scn.nextInt();
+                                scn.nextLine();
+
+                                if (usuarioDao.getById(id) != null) {
+                                    System.out.println(usuarioDao.getById(id));
+                                }
+                            }
                         break;
 
                     case 3:
-                        usuarioDao.update(Usuario);
+                        System.out.println("Digite seu id para atualizar suas informações");
+                        id = scn.nextInt();
+                        scn.nextLine();
+
+                        if (usuarioDao.getById(id) != null) {
+                            System.out.println(usuarioDao.getById(id));
+                        }
+
+                        usuarioDao.update(id);
                         break;
 
                     case 4:
-                        usuarioDao.delete(Usuario);
+                            System.out.println("Digite seu id para deletar o usuário");
+                            id = scn.nextInt();
+                            scn.nextLine();
+
+                            usuarioDao.delete(id);
+
                         break;
                 }
             }while (opcao!=0);

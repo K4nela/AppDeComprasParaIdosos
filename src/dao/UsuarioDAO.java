@@ -29,7 +29,6 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
     /*
     Desenvolvendo o metodo salvar (usuario)
      */
-    @Override
     public void save(usuario u){
         //inserindo dados utilizando o metodo base da classe abstrata e interface
         String sql = "INSERT INTO usuario(nome, data_nasc, email, senha, endereco, telefone) VALUES (?, ?, ?, ?, ?, ?);";
@@ -48,7 +47,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
    Desenvolvendo o metodo update (usuario)
     */
     @Override
-    public void update(usuario u){
+    public void update(int id){
         String sql;
         menuUpdate();
         int opcao = scn.nextInt();
@@ -62,7 +61,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
                     System.out.println("Digite o novo nome: ");
                     String novoNome = scn.nextLine();
 
-                    super.update(sql, novoNome, u.getId());
+                    super.update(sql, novoNome, id);
 
                     System.out.println("Nome alterado com sucesso!");
                 }catch (SQLException e){
@@ -76,7 +75,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
                 try{
                     System.out.println("Digite sua data de nascimento: ");
                     String novaData = scn.nextLine();
-                    super.update(sql, "data_nasc", novaData, u.getId());
+                    super.update(sql, "data_nasc", novaData, id);
 
                     System.out.println("Data de nascimento atualizada com sucesso!");
                 }catch (SQLException e){
@@ -90,7 +89,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
                 try{
                     System.out.println("Digite seu novo email: ");
                     String novoEmail = scn.nextLine();
-                    super.update(sql, "email", novoEmail, u.getId());
+                    super.update(sql, "email", novoEmail, id);
 
                     System.out.println("Email alterado com sucesso!");
                 }catch (SQLException e){
@@ -104,7 +103,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
                 try{
                     System.out.println("Digite sua nova senha: ");
                     String novaSenha = scn.nextLine();
-                    super.update(sql, "senha", novaSenha, u.getId());
+                    super.update(sql, "senha", novaSenha, id);
 
                     System.out.println("Senha atualizada com sucesso!");
                 }catch (SQLException e){
@@ -118,7 +117,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
                 try{
                     System.out.println("Digite seu novo endereço: ");
                     String novoEndereco = scn.nextLine();
-                    super.update(sql, "endereco", novoEndereco, u.getId());
+                    super.update(sql, "endereco", novoEndereco, id);
 
                     System.out.println("Endereço alterado com sucesso!");
                 }catch (SQLException e){
@@ -132,7 +131,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
                 try{
                     System.out.println("Digite seu novo telefone: ");
                     String novoTelefone = scn.nextLine();
-                    super.update(sql, "telefone", novoTelefone, u.getId());
+                    super.update(sql, "telefone", novoTelefone);
 
                     System.out.println("Telefone alterado com sucesso!");
                 }catch (SQLException e){
@@ -148,9 +147,10 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
     @Override
     public List<usuario> get(){
         List<usuario> uList = new ArrayList<>();
-        String sql = "SELECT * FROM usuario";
+        String sql = "SELECT * FROM usuario ";
 
-        try(PreparedStatement psmt = super.conn.prepareStatement(sql);ResultSet rlts = psmt.executeQuery()){
+        try(PreparedStatement psmt = super.conn.prepareStatement(sql);
+            ResultSet rlts = psmt.executeQuery()){
 
             while (rlts.next()){
                 usuario u = new usuario(rlts.getInt("id"),
@@ -168,19 +168,51 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
         return uList;
     }
 
+
+    /*
+    Desenvolveno o metoddo para listar por id (usuario)
+     */
+    public usuario getById(int id) {
+        usuario usuario = null;
+        String sql = "SELECT * FROM usuario WHERE id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                usuario = new usuario(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getDate("data_nasc").toLocalDate(),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("endereco"),
+                        rs.getString("telefone"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("ERRO! Não foi possível buscar o usuário!");
+            e.printStackTrace();
+        }
+
+        return usuario;
+    }
+
     /*
     Desenvolvendo o metodo deletar (usuario)
     */
     @Override
-    public void delete(usuario u){
+    public void delete(int id){
         String sql = "DELETE FROM usuario WHERE id = ?";
 
         try{
             System.out.println("Tem certeza que deseja excluir este usuário?");
+            System.out.println("[Y/N]");
             String opcao = scn.nextLine();
 
-            if(Objects.equals(opcao, "sim")){
-                super.delete(sql, u.getId());
+            if(Objects.equals(opcao, "Y")){
+                super.delete(sql, id);
             }
 
             System.out.println("Usuário excluído com sucesso!");

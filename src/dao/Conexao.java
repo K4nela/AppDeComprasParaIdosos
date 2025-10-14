@@ -31,4 +31,14 @@ public class Conexao {
             throw new RuntimeException("ERRO! Não foi possível conectar ao banco de dados!", e);
         }
     }
+
+    public static void closeConnection(Connection conn) throws SQLException {
+        if (conn!= null)
+        try{
+            conn.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }
+//

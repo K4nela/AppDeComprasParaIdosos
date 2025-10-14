@@ -1,8 +1,5 @@
 package view;
 
-import java.time.LocalDate;
-import java.util.Scanner;
-
 public abstract class Menus {
     public static void menuUpdate() {
         System.out.println("-------Configurações-------");
@@ -26,3 +23,4 @@ public abstract class Menus {
     }
 
 }
+//

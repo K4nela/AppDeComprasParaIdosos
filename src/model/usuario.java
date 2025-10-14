@@ -30,6 +30,20 @@ public class usuario {
         this.telefone = telefone;
     }
 
+    @Override
+    public String toString() {
+        return "\n-------Usuário-------\n" +
+                "id = " + id +
+                "\nnome = " + nome +
+                "\ndata de nascimento = " + dataNasc +
+                "\nemail = " + e_mail +
+                "\nsenha = " + senha +
+                "\nendereço = " + endereco +
+                "\ntelefone = " + telefone +
+                "\n--------------------";
+    }
+
+
     public int getId() {
         return id;
     }
@@ -86,3 +100,4 @@ public class usuario {
         this.telefone = telefone;
     }
 }
+//

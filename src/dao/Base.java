@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface Base<T> {
     void save(T u) throws SQLException;
-    void update(T u) throws SQLException;
+    void update(int id) throws SQLException;
     List<T> get() throws SQLException;
-    void delete(T u) throws SQLException;
+    void delete(int id) throws SQLException;
 }

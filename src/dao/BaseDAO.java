@@ -1,9 +1,15 @@
 package dao;
 
+import model.administrador;
+import model.familiar;
+import model.idoso;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import static view.Menus.menuTipoUsuario;
 
 //
 public abstract class BaseDAO<T> implements Base<T>{
@@ -12,7 +18,6 @@ public abstract class BaseDAO<T> implements Base<T>{
     protected ResultSet rlts;
 
     Scanner scn = new Scanner(System.in);
-
 
     //Construtor para definir a conexão
     public BaseDAO(Connection conn) {

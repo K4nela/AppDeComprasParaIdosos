@@ -1,10 +1,17 @@
 package model;
 
-import java.time.LocalDate;
+import java.util.List;
 
-public class listaDeCompras extends Idoso{
+public class listaDeCompras{
     private int id_lista;
-    private Idoso id_idoso;
+    private int id_idoso;
+    private List<itens> itens;
+
+    public listaDeCompras(int id_lista, int id_idoso, List<itens> itens) {
+        this.id_lista = id_lista;
+        this.id_idoso = id_idoso;
+        this.itens = itens;
+    }
 
     public int getId_lista() {
         return id_lista;
@@ -12,21 +19,5 @@ public class listaDeCompras extends Idoso{
 
     public void setId_lista(int id_lista) {
         this.id_lista = id_lista;
-    }
-
-    public Idoso getId_idoso() {
-        return id_idoso;
-    }
-
-    public void setId_idoso(Idoso id_idoso) {
-        this.id_idoso = id_idoso;
-    }
-
-    public listaDeCompras(int id, String nome, LocalDate dataNasc, String e_mail, String senha, String endereco, String telefone, int id_idoso, usuario id_usuario, int id_lista, Idoso id_idoso1) {
-        super(id, nome, dataNasc, e_mail, senha, endereco, telefone, id_idoso, id_usuario);
-        this.id_lista = id_lista;
-        this.id_idoso = id_idoso1;
-
-
     }
 }

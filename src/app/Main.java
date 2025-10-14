@@ -3,28 +3,25 @@ package app;
 import dao.Conexao;
 import dao.UsuarioDAO;
 import model.usuario;
-
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Scanner;
-
 import static view.Menus.menuMain;
 import static view.Cadastro.telaCadastro;
 
 public class Main {
     static Scanner scn = new Scanner(System.in);
     static int opcao = 0;
-    static usuario Usuario = UsuarioDAO.criarUsuario();
 
     public static void main(String[] args){
         int id;
+
         try{
             //Conecta no banco de dados
             Connection conn = Conexao.createConnectionToMySQL();
 //
             //Instancia o DAO
-            UsuarioDAO usuarioDao = new UsuarioDAO(conn);
+            UsuarioDAO UsuarioDao = new UsuarioDAO(conn);
 
             do{
                 menuMain();
@@ -42,15 +39,20 @@ public class Main {
                         String opcao = scn.nextLine();
 
                         if(Objects.equals(opcao, "Y")){
-                                System.out.println(usuarioDao.get());
+                            for(usuario u : UsuarioDao.get()) {
+                                System.out.println(u);
+                            }
 
-                            }else if(Usuario != null) {
+                            }else{
                                 System.out.println("Digite seu id para ver suas informações");
                                 id = scn.nextInt();
                                 scn.nextLine();
 
-                                if (usuarioDao.getById(id) != null) {
-                                    System.out.println(usuarioDao.getById(id));
+                                usuario u = UsuarioDao.getById(id);
+                                if (UsuarioDao.getById(id) != null) {
+                                            System.out.println(UsuarioDao.getById(id));
+                                }else{
+                                    System.out.println("Usuário não encontrado!");
                                 }
                             }
                         break;
@@ -60,11 +62,11 @@ public class Main {
                         id = scn.nextInt();
                         scn.nextLine();
 
-                        if (usuarioDao.getById(id) != null) {
-                            System.out.println(usuarioDao.getById(id));
+                        if (UsuarioDao.getById(id) != null) {
+                            System.out.println(UsuarioDao.getById(id));
                         }
 
-                        usuarioDao.update(id);
+                        UsuarioDao.update(id);
                         break;
 
                     case 4:
@@ -72,7 +74,7 @@ public class Main {
                             id = scn.nextInt();
                             scn.nextLine();
 
-                            usuarioDao.delete(id);
+                            UsuarioDao.delete(id);
 
                         break;
                 }

@@ -111,29 +111,29 @@ CREATE TABLE historico (
     (4,1,CURDATE());
 
 
---Modificando com SELECT e UPDATE--
+-- Modificando com SELECT e UPDATE--
 
---troca de email ou senha
+-- troca de email ou senha
 SELECT * FROM usuario;
 
---alterando o email do Joao
+-- alterando o email do Joao
 UPDATE usuario
 SET email = 'Joao.Silva123@gmail.com' 
 WHERE id = 4;
 
---Alterando a senha do Joao (usuario 4)
+-- Alterando a senha do Joao (usuario 4)
 UPDATE usuario 
 SET senha = 'ABC123'
 WHERE id = 4;
 
---Conferindo o as alterações feitas no ususario Joao
+-- Conferindo o as alterações feitas no ususario Joao
 SELECT * FROM usuario
 WHERE id = 4;
 
---conferindo as listas de desejo
+-- conferindo as listas de desejo
 SELECT * FROM listadedesejos;
 
---exibindo lista de desejos através do acesso dos familiares 
+-- exibindo lista de desejos através do acesso dos familiares
 SELECT 
        u_f.nome AS familiar,
        u_i.nome AS idoso,
@@ -151,25 +151,27 @@ LEFT JOIN historico h ON it.id_item = h.id_item
 LEFT JOIN status s ON h.id_status = s.id_status
 WHERE it.nome_item = "Blusa do Brasil";
 
---atualizando o status do pedido 1 do historico atraves do id_historico
---atualizando para "Em andamento"
+-- atualizando o status do pedido 1 do historico atraves do id_historico
+-- atualizando para "Em andamento"
 UPDATE historico
 SET id_status = 2
 WHERE id_historico = 1;
 SELECT * FROM historico;
 
---atualizando para "Concluído"
+-- atualizando para "Concluído"
 UPDATE historico
 SET id_status = 3
 WHERE id_historico = 1;
 SELECT * FROM historico;
 
---atualizando para "Cancelado"
+-- atualizando para "Cancelado"
 UPDATE historico
 SET id_status = 4
 WHERE id_historico = 1;
 SELECT * FROM historico; 
 
---deletando o item cancelado
+-- deletando o item cancelado
 DELETE FROM itens
 WHERE id_item = 1;
+
+

@@ -2,7 +2,7 @@ package view;
 
 public abstract class Menus {
     public static void menuUpdate() {
-        System.out.println("-------Configurações-------");
+        System.out.println("-------DadosPessoais-------");
         System.out.println("1 - alterar nome");
         System.out.println("2 - alterar data de nascimento");
         System.out.println("3 - alterar email");
@@ -22,5 +22,13 @@ public abstract class Menus {
         System.out.println("0 - sair");
     }
 
+    public static void menuTipoUsuario(){
+        System.out.println("-------Tipo de Usuário-------");
+        System.out.println("1 - Idoso");
+        System.out.println("2 - Familiar");
+        System.out.println("3 - Administrador");
+        System.out.println("0 - sair");
+        System.out.println("---------------------------");
+    }
 }
 //

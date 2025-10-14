@@ -1,6 +1,9 @@
 package view;
 
 import dao.Conexao;
+import model.administrador;
+import model.familiar;
+import model.idoso;
 import model.usuario;
 import dao.UsuarioDAO;
 
@@ -10,7 +13,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public abstract class Cadastro {
+import static view.Menus.menuTipoUsuario;
+
+public abstract class Cadastro{
+
     public static void telaCadastro() throws Exception {
         Scanner scn = new Scanner(System.in);
         Connection conn = Conexao.createConnectionToMySQL();
@@ -18,6 +24,12 @@ public abstract class Cadastro {
 
 
         System.out.println("----------Cadastro----------");
+        menuTipoUsuario();
+
+        System.out.println("Tipo: ");
+        int tipo = scn.nextInt();
+        scn.nextLine();
+
         System.out.println("Nome: ");
         String nome = scn.nextLine();
 
@@ -37,10 +49,18 @@ public abstract class Cadastro {
 
         System.out.println("telefone: ");
         String telefone = scn.nextLine();
+
+
         System.out.println("---------------------------");
 
-        usuario usuario = new usuario(nome, localData, email, senha, endereco, telefone);
+        usuario u = switch (tipo) {
+            case 1 -> new idoso(nome, localData, email, senha, endereco, telefone);
+            case 2 -> new familiar(nome, localData, email, senha, endereco, telefone);
+            case 3 -> new administrador(nome, localData, email, senha, endereco, telefone);
+            default -> throw new IllegalArgumentException("Tipo de usuário inválido!");
+        };
 
-        UsuarioDao.save(usuario);
+        UsuarioDao.save(u);
+        System.out.println("Usuário cadastrado com sucesso!");
     }
 }

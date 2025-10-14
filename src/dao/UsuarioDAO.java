@@ -1,8 +1,10 @@
 package dao;
 
+import model.administrador;
+import model.familiar;
+import model.idoso;
 import model.usuario;
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.*;
 
 import static view.Menus.menuUpdate;
@@ -14,28 +16,16 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
         super(conn);
     }
 
-    public static usuario criarUsuario(){
-        //Cria o usuario
-        usuario Usuario = new usuario("",
-                LocalDate.of(1111,11,11),
-                "",
-                "",
-                "",
-                "");
-
-    return Usuario;
-    }
-
     /*
     Desenvolvendo o metodo salvar (usuario)
      */
     public void save(usuario u){
         //inserindo dados utilizando o metodo base da classe abstrata e interface
-        String sql = "INSERT INTO usuario(nome, data_nasc, email, senha, endereco, telefone) VALUES (?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO usuario(nome, data_nasc, email, senha, endereco, telefone, tipo) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
         try{
             super.conn.prepareStatement(sql);
-            super.save(sql, u.getNome(), java.sql.Date.valueOf(u.getDataNasc()), u.getE_mail(), u.getSenha(), u.getEndereco(), u.getTelefone());
+            super.save(sql, u.getNome(), java.sql.Date.valueOf(u.getDataNasc()), u.getE_mail(), u.getSenha(), u.getEndereco(), u.getTelefone(), u.getTipo());
 
             System.out.println("Usuário salvo com sucesso!");
         }catch (SQLException e){
@@ -145,29 +135,33 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
     Desenvolvendo o metodo listar (usuario)
      */
     @Override
-    public List<usuario> get(){
+    public List<usuario> get() {
         List<usuario> uList = new ArrayList<>();
         String sql = "SELECT * FROM usuario ";
 
-        try(PreparedStatement psmt = super.conn.prepareStatement(sql);
-            ResultSet rlts = psmt.executeQuery()){
+        try (PreparedStatement psmt = super.conn.prepareStatement(sql);
+             ResultSet rs = psmt.executeQuery()) {
 
-            while (rlts.next()){
-                usuario u = new usuario(rlts.getInt("id"),
-                                        rlts.getString( "nome"),
-                                        rlts.getDate("data_nasc").toLocalDate(),
-                                        rlts.getString("email"),
-                                        rlts.getString("senha"),
-                                        rlts.getString("endereco"),
-                                        rlts.getString("telefone"));
-                uList.add(u);
+            while (rs.next()) {
+
+                System.out.println(
+                                "\n-------Usuário-------\n" +
+                                "id = " + rs.getInt("id") +
+                                "\nnome = " + rs.getString("nome") +
+                                "\ndata de nascimento = " + rs.getDate("data_nasc").toLocalDate() +
+                                "\nemail = " + rs.getString("email") +
+                                "\nsenha = " + rs.getString("senha") +
+                                "\nendereço = " + rs.getString("endereco") +
+                                "\ntelefone = " + rs.getString("telefone") +
+                                "\ntipo = " + rs.getString("tipo") +
+                                "\n--------------------"
+                );
             }
         } catch (SQLException e) {
             System.out.println("ERRO! Não foi possível listar a tabela usuário!");
         }
         return uList;
     }
-
 
     /*
     Desenvolveno o metoddo para listar por id (usuario)
@@ -181,21 +175,48 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                usuario = new usuario(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getDate("data_nasc").toLocalDate(),
-                        rs.getString("email"),
-                        rs.getString("senha"),
-                        rs.getString("endereco"),
-                        rs.getString("telefone"));
+                usuario = new idoso(
+                                rs.getInt("id"),
+                                rs.getString("nome"),
+                                rs.getDate("data_nasc").toLocalDate(),
+                                rs.getString("email"),
+                                rs.getString("senha"),
+                                rs.getString("endereco"),
+                                rs.getString("telefone"),
+                                rs.getString("tipo")
+                );
+            }
+
+            if (rs.next()) {
+                usuario = new familiar(
+                                rs.getInt("id"),
+                                rs.getString("nome"),
+                                rs.getDate("data_nasc").toLocalDate(),
+                                rs.getString("email"),
+                                rs.getString("senha"),
+                                rs.getString("endereco"),
+                                rs.getString("telefone"),
+                                rs.getString("tipo")
+                );
+            }
+
+            if (rs.next()) {
+                usuario = new administrador(
+                                rs.getInt("id"),
+                                rs.getString("nome"),
+                                rs.getDate("data_nasc").toLocalDate(),
+                                rs.getString("email"),
+                                rs.getString("senha"),
+                                rs.getString("endereco"),
+                                rs.getString("telefone"),
+                                rs.getString("tipo")
+                );
             }
 
         } catch (SQLException e) {
             System.out.println("ERRO! Não foi possível buscar o usuário!");
             e.printStackTrace();
         }
-
         return usuario;
     }
 

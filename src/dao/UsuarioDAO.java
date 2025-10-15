@@ -19,6 +19,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
     /*
     Desenvolvendo o metodo salvar (usuario)
      */
+    @Override
     public void save(usuario u){
         //inserindo dados utilizando o metodo base da classe abstrata e interface
         String sql = "INSERT INTO usuario(nome, data_nasc, email, senha, endereco, telefone, tipo) VALUES (?, ?, ?, ?, ?, ?, ?);";
@@ -164,63 +165,6 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
     }
 
     /*
-    Desenvolveno o metoddo para listar por id (usuario)
-     */
-    public usuario getById(int id) {
-        usuario usuario = null;
-        String sql = "SELECT * FROM usuario WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                usuario = new idoso(
-                                rs.getInt("id"),
-                                rs.getString("nome"),
-                                rs.getDate("data_nasc").toLocalDate(),
-                                rs.getString("email"),
-                                rs.getString("senha"),
-                                rs.getString("endereco"),
-                                rs.getString("telefone"),
-                                rs.getString("tipo")
-                );
-            }
-
-            if (rs.next()) {
-                usuario = new familiar(
-                                rs.getInt("id"),
-                                rs.getString("nome"),
-                                rs.getDate("data_nasc").toLocalDate(),
-                                rs.getString("email"),
-                                rs.getString("senha"),
-                                rs.getString("endereco"),
-                                rs.getString("telefone"),
-                                rs.getString("tipo")
-                );
-            }
-
-            if (rs.next()) {
-                usuario = new administrador(
-                                rs.getInt("id"),
-                                rs.getString("nome"),
-                                rs.getDate("data_nasc").toLocalDate(),
-                                rs.getString("email"),
-                                rs.getString("senha"),
-                                rs.getString("endereco"),
-                                rs.getString("telefone"),
-                                rs.getString("tipo")
-                );
-            }
-
-        } catch (SQLException e) {
-            System.out.println("ERRO! Não foi possível buscar o usuário!");
-            e.printStackTrace();
-        }
-        return usuario;
-    }
-
-    /*
     Desenvolvendo o metodo deletar (usuario)
     */
     @Override
@@ -241,4 +185,120 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
             System.out.println("ERRO! Não foi possível deletar o usuário!");
         }
     }
-}//
+
+    /*
+    Desenvolveno o metoddo para listar por id (usuario)
+     */
+    public usuario getById(int id) {
+        usuario usuario = null;
+        String sql = "SELECT * FROM usuario WHERE id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                usuario = new idoso(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getDate("data_nasc").toLocalDate(),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("endereco"),
+                        rs.getString("telefone"),
+                        rs.getString("tipo")
+                );
+            }
+
+            if (rs.next()) {
+                usuario = new familiar(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getDate("data_nasc").toLocalDate(),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("endereco"),
+                        rs.getString("telefone"),
+                        rs.getString("tipo")
+                );
+            }
+
+            if (rs.next()) {
+                usuario = new administrador(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getDate("data_nasc").toLocalDate(),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("endereco"),
+                        rs.getString("telefone"),
+                        rs.getString("tipo")
+                );
+            }
+
+        } catch (SQLException e) {
+            System.out.println("ERRO! Não foi possível buscar o usuário!");
+            e.printStackTrace();
+        }
+        return usuario;
+    }
+
+    /*
+    Desenvolvendo o metodo para login (usuario)
+     */
+    public usuario login(String email, String senha) {
+        usuario usuario = null;
+        String sql = "SELECT * FROM usuario WHERE email = ? AND senha = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setString(2, senha);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                usuario = new idoso(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getDate("data_nasc").toLocalDate(),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("endereco"),
+                        rs.getString("telefone"),
+                        rs.getString("tipo")
+                );
+            }
+
+            if (rs.next()) {
+                usuario = new familiar(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getDate("data_nasc").toLocalDate(),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("endereco"),
+                        rs.getString("telefone"),
+                        rs.getString("tipo")
+                );
+            }
+
+            if (rs.next()) {
+                usuario = new administrador(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getDate("data_nasc").toLocalDate(),
+                        rs.getString("email"),
+                        rs.getString("senha"),
+                        rs.getString("endereco"),
+                        rs.getString("telefone"),
+                        rs.getString("tipo")
+                );
+            }
+
+        } catch (SQLException e) {
+            System.out.println("ERRO! Não foi possível realizar o login!");
+            e.printStackTrace();
+        }
+        return usuario;
+    }
+
+}

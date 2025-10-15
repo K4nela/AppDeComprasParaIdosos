@@ -26,11 +26,11 @@ public abstract class Cadastro{
         System.out.println("----------Cadastro----------");
         menuTipoUsuario();
 
-        System.out.println("Tipo: ");
+        System.out.printf("Tipo: ");
         int tipo = scn.nextInt();
         scn.nextLine();
 
-        System.out.println("Nome: ");
+        System.out.printf("Nome: ");
         String nome = scn.nextLine();
 
         System.out.println("Data de nascimento (dd/MM/yyyy): ");
@@ -38,16 +38,16 @@ public abstract class Cadastro{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate localData = LocalDate.parse(data, formatter);
 
-        System.out.println("email: ");
+        System.out.printf("email: ");
         String email = scn.nextLine();
 
-        System.out.println("senha: ");
+        System.out.printf("senha: ");
         String senha = scn.nextLine();
 
-        System.out.println("endereço: ");
+        System.out.printf("endereço: ");
         String endereco = scn.nextLine();
 
-        System.out.println("telefone: ");
+        System.out.printf("telefone: ");
         String telefone = scn.nextLine();
 
 

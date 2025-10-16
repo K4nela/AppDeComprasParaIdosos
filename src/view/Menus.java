@@ -44,11 +44,43 @@ public abstract class Menus {
     }
 
     public static void menuLogin() {
-        System.out.println("--------Tela-De-Login--------");
+        System.out.println("--------Tela De Login--------");
         System.out.println("1 - Entrar");
         System.out.println("2 - Cadastre-se");
         System.out.println("0 - Sair");
         System.out.println("-----------------------------");
+        System.out.printf("Escolha uma opção: ");
+    }
+
+    public static void menuHomeFamiliar(){
+        System.out.println("-------Home-------");
+        System.out.println("1 - Ver perfil");
+        System.out.println("2 - Ver lista de desejos");
+        System.out.println("3 - Ver idosos");
+        System.out.println("4 - Opções");
+        System.out.println("0 - Sair");
+        System.out.println("------------------");
+        System.out.printf("Escolha uma opção: ");
+    }
+
+    public static void menuHomeIdoso(){
+        System.out.println("-------Menu-------");
+        System.out.println("1 - Ver perfil");
+        System.out.println("2 - Ver lista de desejos");
+        System.out.println("3 - Criar lista de desejos");
+        System.out.println("4 - Ver familiares");
+        System.out.println("5 - Opções");
+        System.out.println("0 - Sair");
+        System.out.println("------------------");
+        System.out.printf("Escolha uma opção: ");
+    }
+
+    public static void menuPerfil(){
+        System.out.println("-------Perfil-------");
+        System.out.println("1 - Ver dados pessoais");
+        System.out.println("2 - Atualizar dados pessoais");
+        System.out.println("0 - Sair");
+        System.out.println("--------------------");
         System.out.printf("Escolha uma opção: ");
     }
 }

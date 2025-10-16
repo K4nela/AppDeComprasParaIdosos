@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class TelaLogin {
 
-    public static void telaLogin() throws Exception {
+    public static int telaLogin(int opcao) throws Exception {
         Scanner scn = new Scanner(System.in);
         Connection conn = Conexao.createConnectionToMySQL();
         UsuarioDAO UsuarioDao = new UsuarioDAO(conn);
@@ -28,11 +28,13 @@ public class TelaLogin {
                 System.out.println("Login realizado com sucesso!");
                 System.out.println("Bem vindo, " + Usuario.getNome() + "!");
                 System.out.println("-----------------------------");
+                return opcao = 0;
             } else {
                 System.out.println("ERRO! Usuário ou senha incorretos!");
             }
         } catch (Exception e) {
             System.out.println("ERRO! Não foi possível realizar o login!");
         }
+        return opcao;
     }
 }

@@ -15,36 +15,25 @@ public class Main {
     static int opcao = 0;
 
     public static void main(String[] args){
-        int id;
+//        int id;
+          int opcao;
 
         try{
             Connection conn = Conexao.createConnectionToMySQL();//Conecta no banco de dados
             UsuarioDAO UsuarioDao = new UsuarioDAO(conn);//Instancia o DAO
 
+            menuLogin();
             do{
-                menuLogin();
-                int opcao = scn.nextInt();
+                opcao = scn.nextInt();
                 scn.nextLine();
 
                 switch (opcao) {
-
-                    case 1:
-                        telaLogin();
-                        break;
-
-                    case 2:
-                        telaCadastro();
-                        break;
-
-                    case 0:
-                        System.out.println("Saindo...");
-                        break;
-
-                    default:
-                        System.out.println("Opção inválida!");
-                        break;
-
+                    case 1 -> telaLogin(opcao);
+                    case 2 -> telaCadastro();
+                    case 0 -> System.out.println("Saindo...");
+                    default -> System.out.println("Opção inválida!");
                 }
+
             }while (opcao!=0);
 
         }catch (Exception e){

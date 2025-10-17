@@ -7,10 +7,10 @@ import model.usuario;
 import java.sql.Connection;
 import java.util.Scanner;
 
-import static view.Cadastro.telaCadastro;
+import static controller.CadastroController.telaCadastro;
 import static view.Menus.*;
-import static view.TelaHome.telaHome;
-import static view.TelaLogin.telaLogin;
+import static controller.HomeController.telaHome;
+import static controller.LoginController.telaLogin;
 
 public class Main {
     static Scanner scn = new Scanner(System.in);

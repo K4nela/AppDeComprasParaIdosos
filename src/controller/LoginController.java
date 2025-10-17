@@ -1,4 +1,4 @@
-package view;
+package controller;
 
 import dao.Conexao;
 import dao.UsuarioDAO;
@@ -7,7 +7,7 @@ import model.usuario;
 import java.sql.Connection;
 import java.util.Scanner;
 
-public class TelaLogin {
+public final class LoginController {
 
     public static usuario telaLogin() throws Exception {
         Scanner scn = new Scanner(System.in);
@@ -16,8 +16,8 @@ public class TelaLogin {
         usuario Usuario = null;
 
         while (Usuario == null) {
+            System.out.println("Digite [0] para voltar.");
             System.out.println("--------Tela De Login--------");
-            System.out.println("0 - Voltar");
             System.out.print("email: ");
             String email = scn.nextLine();
             if (email.equals("0")) {

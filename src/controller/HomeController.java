@@ -1,6 +1,5 @@
-package view;
+package controller;
 
-import dao.Conexao;
 import dao.UsuarioDAO;
 import model.usuario;
 
@@ -8,7 +7,7 @@ import java.sql.*;
 import java.util.Scanner;
 import static view.Menus.*;
 
-public class TelaHome {
+public final class  HomeController {
 
     public static void telaHome(usuario u,UsuarioDAO opcaoDao, Connection conn) throws Exception {
         String sql = "SELECT tipo FROM usuario WHERE id = ?";

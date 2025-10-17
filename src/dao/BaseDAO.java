@@ -1,15 +1,7 @@
 package dao;
 
-import model.administrador;
-import model.familiar;
-import model.idoso;
-
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-import static view.Menus.menuTipoUsuario;
+import java.util.*;
 
 //
 public abstract class BaseDAO<T> implements Base<T>{

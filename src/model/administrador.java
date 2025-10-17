@@ -16,11 +16,7 @@ public class administrador extends usuario{
 
     @Override
     public String toString() {
-        super.toString();
-        return "administrador{" +
-                "id_administrador=" + id_administrador +
-                ", id_usuario=" + id_usuario +
-                '}';
+        return super.toString();
     }
 
     public int getId_administrador() {

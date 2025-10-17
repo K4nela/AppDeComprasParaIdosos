@@ -43,14 +43,6 @@ public abstract class usuario {
         this.tipo = "";
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
     @Override
     public String toString() {
         return "\n-------Usuário-------\n" +
@@ -65,6 +57,13 @@ public abstract class usuario {
                 "\n--------------------";
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
 
     public int getId() {
         return id;

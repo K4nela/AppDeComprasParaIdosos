@@ -16,11 +16,7 @@ public class familiar extends usuario{
 
     @Override
     public String toString() {
-        super.toString();
-        return "familiar{" +
-                "id_familiar=" + id_familiar +
-                ", id_usuario=" + id_usuario +
-                '}';
+        return super.toString();
     }
 
     public int getId_familiar() {

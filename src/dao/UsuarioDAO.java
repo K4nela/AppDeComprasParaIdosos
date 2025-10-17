@@ -25,12 +25,19 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
         String sql = "INSERT INTO usuario(nome, data_nasc, email, senha, endereco, telefone, tipo) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
         try{
-            super.conn.prepareStatement(sql);
-            super.save(sql, u.getNome(), java.sql.Date.valueOf(u.getDataNasc()), u.getE_mail(), u.getSenha(), u.getEndereco(), u.getTelefone(), u.getTipo());
+            super.save(sql,
+                    u.getNome(),
+                    java.sql.Date.valueOf(u.getDataNasc()),
+                    u.getE_mail(),
+                    u.getSenha(),
+                    u.getEndereco(),
+                    u.getTelefone(),
+                    u.getTipo());
 
             System.out.println("Usuário salvo com sucesso!");
         }catch (SQLException e){
             System.out.println("ERRO! Não foi possível salvar o usuário!");
+            e.printStackTrace();
         }
     }
 
@@ -57,6 +64,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
                     System.out.println("Nome alterado com sucesso!");
                 }catch (SQLException e){
                     System.out.println("ERRO! Não foi possível alterar o nome!");
+                    e.printStackTrace();
                 }
                 break;
 
@@ -71,6 +79,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
                     System.out.println("Data de nascimento atualizada com sucesso!");
                 }catch (SQLException e){
                     System.out.println("ERRO! Não foi possível alterar a data de nascimento!");
+                    e.printStackTrace();
                 }
                 break;
 
@@ -85,6 +94,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
                     System.out.println("Email alterado com sucesso!");
                 }catch (SQLException e){
                     System.out.println("ERRO! Não foi possível alterar o email!");
+                    e.printStackTrace();
                 }
                 break;
 
@@ -99,6 +109,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
                     System.out.println("Senha atualizada com sucesso!");
                 }catch (SQLException e){
                     System.out.println("ERRO! Não foi possível alterar a senha!");
+                    e.printStackTrace();
                 }
                 break;
 
@@ -113,6 +124,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
                     System.out.println("Endereço alterado com sucesso!");
                 }catch (SQLException e){
                     System.out.println("ERRO! Não foi possível alterar o endereço!");
+                    e.printStackTrace();
                 }
                 break;
 
@@ -127,6 +139,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
                     System.out.println("Telefone alterado com sucesso!");
                 }catch (SQLException e){
                     System.out.println("ERRO! Não foi possível alterar o telefone!");
+                    e.printStackTrace();
                 }
                 break;
         }
@@ -160,6 +173,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
             }
         } catch (SQLException e) {
             System.out.println("ERRO! Não foi possível listar a tabela usuário!");
+            e.printStackTrace();
         }
         return uList;
     }
@@ -183,6 +197,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
             System.out.println("Usuário excluído com sucesso!");
         }catch (SQLException e){
             System.out.println("ERRO! Não foi possível deletar o usuário!");
+            e.printStackTrace();
         }
     }
 
@@ -198,42 +213,43 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                usuario = new idoso(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getDate("data_nasc").toLocalDate(),
-                        rs.getString("email"),
-                        rs.getString("senha"),
-                        rs.getString("endereco"),
-                        rs.getString("telefone"),
-                        rs.getString("tipo")
-                );
-            }
+                String tipo = rs.getString("tipo");
 
-            if (rs.next()) {
-                usuario = new familiar(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getDate("data_nasc").toLocalDate(),
-                        rs.getString("email"),
-                        rs.getString("senha"),
-                        rs.getString("endereco"),
-                        rs.getString("telefone"),
-                        rs.getString("tipo")
-                );
-            }
+                switch (tipo) {
 
-            if (rs.next()) {
-                usuario = new administrador(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getDate("data_nasc").toLocalDate(),
-                        rs.getString("email"),
-                        rs.getString("senha"),
-                        rs.getString("endereco"),
-                        rs.getString("telefone"),
-                        rs.getString("tipo")
-                );
+                    case "idoso" -> usuario = new idoso(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getDate("data_nasc").toLocalDate(),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("endereco"),
+                            rs.getString("telefone"),
+                            rs.getString("tipo")
+                    );
+
+                    case "familiar" -> usuario = new familiar(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getDate("data_nasc").toLocalDate(),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("endereco"),
+                            rs.getString("telefone"),
+                            rs.getString("tipo")
+                    );
+
+                    case "administrador" -> usuario = new administrador(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getDate("data_nasc").toLocalDate(),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("endereco"),
+                            rs.getString("telefone"),
+                            rs.getString("tipo")
+                    );
+                }
             }
 
         } catch (SQLException e) {
@@ -256,42 +272,43 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                usuario = new idoso(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getDate("data_nasc").toLocalDate(),
-                        rs.getString("email"),
-                        rs.getString("senha"),
-                        rs.getString("endereco"),
-                        rs.getString("telefone"),
-                        rs.getString("tipo")
-                );
-            }
+                String tipo = rs.getString("tipo");
 
-            if (rs.next()) {
-                usuario = new familiar(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getDate("data_nasc").toLocalDate(),
-                        rs.getString("email"),
-                        rs.getString("senha"),
-                        rs.getString("endereco"),
-                        rs.getString("telefone"),
-                        rs.getString("tipo")
-                );
-            }
+                switch (tipo) {
 
-            if (rs.next()) {
-                usuario = new administrador(
-                        rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getDate("data_nasc").toLocalDate(),
-                        rs.getString("email"),
-                        rs.getString("senha"),
-                        rs.getString("endereco"),
-                        rs.getString("telefone"),
-                        rs.getString("tipo")
-                );
+                    case "idoso" -> usuario = new idoso(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getDate("data_nasc").toLocalDate(),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("endereco"),
+                            rs.getString("telefone"),
+                            rs.getString("tipo")
+                    );
+
+                    case "familiar" -> usuario = new familiar(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getDate("data_nasc").toLocalDate(),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("endereco"),
+                            rs.getString("telefone"),
+                            rs.getString("tipo")
+                    );
+
+                    case "administrador" -> usuario = new administrador(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getDate("data_nasc").toLocalDate(),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("endereco"),
+                            rs.getString("telefone"),
+                            rs.getString("tipo")
+                    );
+                }
             }
 
         } catch (SQLException e) {

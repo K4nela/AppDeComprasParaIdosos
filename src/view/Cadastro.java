@@ -50,7 +50,6 @@ public abstract class Cadastro{
         System.out.printf("telefone: ");
         String telefone = scn.nextLine();
 
-
         System.out.println("---------------------------");
 
         usuario u = switch (tipo) {

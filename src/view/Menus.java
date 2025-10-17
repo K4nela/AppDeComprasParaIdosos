@@ -35,11 +35,11 @@ public abstract class Menus {
     }
 
     public static void menuLista(){
-        System.out.println("-------Listar Usuário-------");
+        System.out.println("-------Lista de Usuários-------");
         System.out.println("1 - Listar todos os usuários");
         System.out.println("2 - Listar usuário por ID");
         System.out.println("0 - Sair");
-        System.out.println("---------------------------");
+        System.out.println("-------------------------------");
         System.out.printf("Escolha uma opção: ");
     }
 
@@ -57,7 +57,6 @@ public abstract class Menus {
         System.out.println("1 - Ver perfil");
         System.out.println("2 - Ver lista de desejos");
         System.out.println("3 - Ver idosos");
-        System.out.println("4 - Opções");
         System.out.println("0 - Sair");
         System.out.println("------------------");
         System.out.printf("Escolha uma opção: ");
@@ -69,7 +68,16 @@ public abstract class Menus {
         System.out.println("2 - Ver lista de desejos");
         System.out.println("3 - Criar lista de desejos");
         System.out.println("4 - Ver familiares");
-        System.out.println("5 - Opções");
+        System.out.println("0 - Sair");
+        System.out.println("------------------");
+        System.out.printf("Escolha uma opção: ");
+    }
+
+    public static void menuHomeAdmin(){
+        System.out.println("-------Menu-------");
+        System.out.println("1 - Ver perfil");
+        System.out.println("2 - Gerenciar usuários");
+        System.out.println("3 - Ver usuários");
         System.out.println("0 - Sair");
         System.out.println("------------------");
         System.out.printf("Escolha uma opção: ");

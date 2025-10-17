@@ -9,32 +9,44 @@ import java.util.Scanner;
 
 public class TelaLogin {
 
-    public static int telaLogin(int opcao) throws Exception {
+    public static usuario telaLogin() throws Exception {
         Scanner scn = new Scanner(System.in);
         Connection conn = Conexao.createConnectionToMySQL();
         UsuarioDAO UsuarioDao = new UsuarioDAO(conn);
+        usuario Usuario = null;
 
-        try {
-            System.out.println("--------Tela-De-Login--------");
+        while (Usuario == null) {
+            System.out.println("--------Tela De Login--------");
+            System.out.println("0 - Voltar");
             System.out.print("email: ");
             String email = scn.nextLine();
+            if (email.equals("0")) {
+                System.out.println("Voltando...");
+                System.out.println("-----------------------------");
+                return null;
+            }
 
             System.out.print("Senha: ");
             String senha = scn.nextLine();
+            if(senha.equals("0")){
+                System.out.println("Voltando...");
+                System.out.println("-----------------------------");
+                return null;
+            }
 
-            usuario Usuario = UsuarioDao.login(email, senha);
+            Usuario = UsuarioDao.login(email, senha);
 
             if (Usuario != null) {
                 System.out.println("Login realizado com sucesso!");
-                System.out.println("Bem vindo, " + Usuario.getNome() + "!");
+                System.out.println("Bem vindo, " + Usuario.getNome() + ", " + Usuario.getTipo() + "!");
                 System.out.println("-----------------------------");
-                return opcao = 0;
-            } else {
-                System.out.println("ERRO! Usuário ou senha incorretos!");
+                return Usuario;
+
+            }else{
+                System.out.println("ERRO! Email ou senha incorretos.");
+                System.out.println("-----------------------------");
             }
-        } catch (Exception e) {
-            System.out.println("ERRO! Não foi possível realizar o login!");
         }
-        return opcao;
+        return Usuario;
     }
 }

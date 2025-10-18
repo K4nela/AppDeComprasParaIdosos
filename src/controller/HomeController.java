@@ -4,6 +4,7 @@ import dao.UsuarioDAO;
 import model.usuario;
 
 import java.sql.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import static view.Menus.*;
 
@@ -24,57 +25,80 @@ public final class  HomeController {
 
                 switch (tipo) {
                     case "idoso":
-                        do{
-                            menuHomeIdoso();
-                            opcao = scn.nextInt();
 
-                            switch (opcao) {
-                                case 1 -> System.out.println(opcaoDao.getById(id));
-                                case 2 -> System.out.println("função ver lista de desejos sendo desenvolvida..."); // implementar
-                                case 3 -> System.out.println("função criar lista de desejos sendo desenvolvida..."); // implementar
-                                case 4 -> System.out.println("função ver familiares sendo desenvolvida..."); // implementar
-                                case 5 -> System.out.println("função para opções sendo desenvolvida..."); // implementar
-                                case 0 -> System.out.println("Saindo...");
-                                default -> System.out.println("Opção inválida!");
+                        while (true){
+                            try {
+                                menuHomeIdoso();
+                                opcao = scn.nextInt();
+
+                                switch (opcao) {
+                                    case 1 -> UsuarioController.verPerfil(u, conn);
+                                    case 2 -> System.out.println("função ver lista de desejos sendo desenvolvida..."); // implementar
+                                    case 3 -> System.out.println("função criar lista de desejos sendo desenvolvida..."); // implementar
+                                    case 4 -> System.out.println("função ver familiares sendo desenvolvida..."); // implementar
+                                    case 5 -> System.out.println("função para opções sendo desenvolvida..."); // implementar
+                                    case 0 -> {
+                                        System.out.println("Saindo...");
+                                        return;
+                                    }
+                                    default -> System.out.println("Opção inválida!");
+                                }
+                            }catch (InputMismatchException e){
+                                System.out.println("ERRO! Digite apenas números");
+                                scn.nextLine();
                             }
-                        }while (opcao != 0);
-
-                        break;
+                        }
 
                     case "familiar":
 
-                        do {
-                            menuHomeFamiliar();
-                            opcao = scn.nextInt();
+                        while(true) {
 
-                            switch (opcao) {
-                                case 1 -> System.out.println(opcaoDao.getById(id));
-                                case 2 -> System.out.println("função ver lista de desejos sendo desenvolvida..."); // implementar
-                                case 3 -> System.out.println("função ver idosos sendo desenvolvida..."); // implementar
-                                case 4 -> System.out.println("função para opções sendo desenvolvida..."); // implementar
-                                case 0 -> System.out.println("Saindo...");
-                                default -> System.out.println("Opção inválida!");
+                            try{
+                                menuHomeFamiliar();
+                                opcao = scn.nextInt();
+
+                                switch (opcao) {
+                                    case 1 -> UsuarioController.verPerfil(u, conn);
+                                    case 2 -> System.out.println("função ver lista de desejos sendo desenvolvida..."); // implementar
+                                    case 3 -> System.out.println("função ver idosos sendo desenvolvida..."); // implementar
+                                    case 4 -> System.out.println("função para opções sendo desenvolvida..."); // implementar
+                                    case 0 -> {
+                                        System.out.println("Saindo...");
+                                        return;
+                                    }
+
+                                    default -> System.out.println("Opção inválida!");
+                                }
+                            }catch (InputMismatchException e) {
+                                System.out.println("ERRO! Digite apenas números");
+                                scn.nextLine();
                             }
-                        }while (opcao != 0);
-                        break;
+                        }
 
                     case "administrador":
 
-                        do {
-                            menuHomeAdmin();
-                            opcao = scn.nextInt();
-                            scn.nextLine();
+                        while(true) {
+                            try{
+                                menuHomeAdmin();
+                                opcao = scn.nextInt();
+                                scn.nextLine();
 
-                            switch (opcao) {
-                                case 1 -> System.out.println(opcaoDao.getById(id));
-                                case 2 -> System.out.println("função gerenciar usuários sendo desenvolvida..."); // implementar
-                                case 3 -> System.out.println(opcaoDao.get());
-                                case 4 -> System.out.println("função para opções sendo desenvolvida..."); // implementar
-                                case 0 -> System.out.println("Saindo...");
-                                default -> System.out.println("Opção inválida!");
+                                switch (opcao) {
+                                    case 1 -> UsuarioController.verPerfil(u, conn);
+                                    case 2 -> System.out.println("função gerenciar usuários sendo desenvolvida..."); // implementar
+                                    case 3 -> UsuarioController.admVerUsuarios(conn);
+                                    case 4 -> System.out.println("função para opções sendo desenvolvida..."); // implementar
+                                    case 0 -> {
+                                        System.out.println("Saindo...");
+                                        return;
+                                    }
+                                    default -> System.out.println("Opção inválida!");
+                                }
+                            }catch (InputMismatchException e) {
+                                System.out.println("ERRO! Digite apenas números");
+                                scn.nextLine();
                             }
-                        }while (opcao != 0);
-                        break;
+                        }
 
                     default:
                         System.out.println("Tipo de usuário inválido!");

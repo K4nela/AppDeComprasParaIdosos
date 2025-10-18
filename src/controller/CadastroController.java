@@ -89,6 +89,7 @@ public final class CadastroController {
                 case 1 -> new idoso(nome, localData, email, senha, endereco, telefone);
                 case 2 -> new familiar(nome, localData, email, senha, endereco, telefone);
                 case 3 -> new administrador(nome, localData, email, senha, endereco, telefone);
+
                 default -> throw new IllegalArgumentException("Tipo de usuário inválido!");
             };
 

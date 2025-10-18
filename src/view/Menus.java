@@ -34,7 +34,7 @@ public abstract class Menus {
         System.out.printf("Escolha uma opção: ");
     }
 
-    public static void menuLista(){
+    public static void menuListarUsuarios(){
         System.out.println("-------Lista de Usuários-------");
         System.out.println("1 - Listar todos os usuários");
         System.out.println("2 - Listar usuário por ID");

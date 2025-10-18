@@ -47,102 +47,152 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
     @Override
     public void update(int id){
         String sql;
-        menuUpdate();
-        int opcao = scn.nextInt();
-        scn.nextLine();
 
-        switch (opcao){
-            case 1://alterando nome de usuario
-                sql = "UPDATE usuario SET nome = ? WHERE id = ?;";
+        while (true){
+            try {
+                menuUpdate();
+                int opcao = scn.nextInt();
+                scn.nextLine();
 
-                try {
-                    System.out.println("Digite o novo nome: ");
-                    String novoNome = scn.nextLine();
+                switch (opcao) {
 
-                    super.update(sql, novoNome, id);
+                    case 1://alterando nome de usuario
+                        sql = "UPDATE usuario SET nome = ? WHERE id = ?;";
 
-                    System.out.println("Nome alterado com sucesso!");
-                }catch (SQLException e){
-                    System.out.println("ERRO! Não foi possível alterar o nome!");
-                    e.printStackTrace();
+                        try {
+                            System.out.println("Digite [0] para sair");
+                            System.out.println("Digite o novo nome: ");
+                            String novoNome = scn.nextLine();
+
+                            validarEntrada(novoNome);
+
+                            super.update(sql, novoNome, id);
+                            System.out.println("Nome alterado com sucesso!");
+
+                        } catch (SQLException e) {
+                            System.out.println("ERRO! Não foi possível alterar o nome!");
+                            e.printStackTrace();
+                        }
+                        break;
+
+                    case 2://alterando data de nascimento
+                        sql = "UPDATE usuario SET data_nasc = ? WHERE id = ?;";
+
+                        try {
+                            System.out.println("Digite sua data de nascimento: ");
+                            String novaData = scn.nextLine();
+
+                            validarEntrada(novaData);
+
+                            super.update(sql, "data_nasc", novaData, id);
+                            System.out.println("Data de nascimento atualizada com sucesso!");
+
+                        } catch (SQLException e) {
+                            System.out.println("ERRO! Não foi possível alterar a data de nascimento!");
+                            e.printStackTrace();
+                        }
+                        break;
+
+                    case 3://alterando email
+                        sql = "UPDATE usuario SET email = ? WHERE id = ?;";
+
+                        try {
+                            System.out.println("Digite [0] para sair");
+                            System.out.println("Digite seu novo email: ");
+                            String novoEmail = scn.nextLine();
+
+                            validarEntrada(novoEmail);
+
+                            super.update(sql, "email", novoEmail, id);
+                            System.out.println("Email alterado com sucesso!");
+
+                        } catch (SQLException e) {
+                            System.out.println("ERRO! Não foi possível alterar o email!");
+                            e.printStackTrace();
+                        }
+                        break;
+
+                    case 4://alterando senha
+                        sql = "UPDATE usuario SET senha = ? WHERE id = ?;";
+
+                        try {
+                            System.out.println("Digite [0] para sair");
+                            System.out.println("Digite sua nova senha: ");
+                            String novaSenha = scn.nextLine();
+
+                            validarEntrada(novaSenha);
+
+                            super.update(sql, "senha", novaSenha, id);
+                            System.out.println("Senha atualizada com sucesso!");
+
+                        } catch (SQLException e) {
+                            System.out.println("ERRO! Não foi possível alterar a senha!");
+                            e.printStackTrace();
+                        }
+                        break;
+
+                    case 5://alterando endereco
+                        sql = "UPDATE usuario SET endereco = ? WHERE id = ?;";
+
+                        try {
+                            System.out.println("Digite seu novo endereço: ");
+                            String novoEndereco = scn.nextLine();
+
+                            validarEntrada(novoEndereco);
+
+                            super.update(sql, "endereco", novoEndereco, id);
+                            System.out.println("Endereço alterado com sucesso!");
+
+                        } catch (SQLException e) {
+                            System.out.println("ERRO! Não foi possível alterar o endereço!");
+                            e.printStackTrace();
+                        }
+                        break;
+
+                    case 6://alterando telefone
+                        sql = "UPDATE usuario SET telefone = ? WHERE id = ?;";
+
+                        try {
+                            System.out.println("Digite seu novo telefone: ");
+                            String novoTelefone = scn.nextLine();
+
+                            validarEntrada(novoTelefone);
+
+                            super.update(sql, "telefone", novoTelefone);
+                            System.out.println("Telefone alterado com sucesso!");
+
+                        } catch (SQLException e) {
+                            System.out.println("ERRO! Não foi possível alterar o telefone!");
+                            e.printStackTrace();
+                        }
+                        break;
+
+                    case 0: System.out.println("Saindo...");
+                            return;
                 }
-                break;
-
-            case 2://alterando data de nascimento
-                sql = "UPDATE usuario SET data_nasc = ? WHERE id = ?;";
-
-                try{
-                    System.out.println("Digite sua data de nascimento: ");
-                    String novaData = scn.nextLine();
-                    super.update(sql, "data_nasc", novaData, id);
-
-                    System.out.println("Data de nascimento atualizada com sucesso!");
-                }catch (SQLException e){
-                    System.out.println("ERRO! Não foi possível alterar a data de nascimento!");
-                    e.printStackTrace();
-                }
-                break;
-
-            case 3://alterando email
-                sql = "UPDATE usuario SET email = ? WHERE id = ?;";
-
-                try{
-                    System.out.println("Digite seu novo email: ");
-                    String novoEmail = scn.nextLine();
-                    super.update(sql, "email", novoEmail, id);
-
-                    System.out.println("Email alterado com sucesso!");
-                }catch (SQLException e){
-                    System.out.println("ERRO! Não foi possível alterar o email!");
-                    e.printStackTrace();
-                }
-                break;
-
-            case 4://alterando senha
-                sql = "UPDATE usuario SET senha = ? WHERE id = ?;";
-
-                try{
-                    System.out.println("Digite sua nova senha: ");
-                    String novaSenha = scn.nextLine();
-                    super.update(sql, "senha", novaSenha, id);
-
-                    System.out.println("Senha atualizada com sucesso!");
-                }catch (SQLException e){
-                    System.out.println("ERRO! Não foi possível alterar a senha!");
-                    e.printStackTrace();
-                }
-                break;
-
-            case 5://alterando endereco
-                sql = "UPDATE usuario SET endereco = ? WHERE id = ?;";
-
-                try{
-                    System.out.println("Digite seu novo endereço: ");
-                    String novoEndereco = scn.nextLine();
-                    super.update(sql, "endereco", novoEndereco, id);
-
-                    System.out.println("Endereço alterado com sucesso!");
-                }catch (SQLException e){
-                    System.out.println("ERRO! Não foi possível alterar o endereço!");
-                    e.printStackTrace();
-                }
-                break;
-
-            case 6://alterando telefone
-                sql = "UPDATE usuario SET telefone = ? WHERE id = ?;";
-
-                try{
-                    System.out.println("Digite seu novo telefone: ");
-                    String novoTelefone = scn.nextLine();
-                    super.update(sql, "telefone", novoTelefone);
-
-                    System.out.println("Telefone alterado com sucesso!");
-                }catch (SQLException e){
-                    System.out.println("ERRO! Não foi possível alterar o telefone!");
-                    e.printStackTrace();
-                }
-                break;
+            }catch (Exception e){
+                System.out.println("ERRO! Digite apenas números.");
+                scn.nextLine();
+            }
         }
+    }
+
+    /*
+    Desenvolvendo metodo de validação de valores do update (usuario)
+     */
+    public static String validarEntrada(String entrada) {
+
+        if(entrada == "0"){
+            return null;
+        }
+
+        Scanner scn = new Scanner(System.in);
+        while (entrada == null || entrada.trim().isEmpty()) {
+            System.out.print("ERRO! O campo não pode ficar vazio! Digite novamente: ");
+            entrada = scn.nextLine();
+        }
+        return entrada;
+
     }
 
     /*

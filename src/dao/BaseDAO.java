@@ -28,7 +28,6 @@ public abstract class BaseDAO<T> implements Base<T>{
                 psmt.setObject(i + 1, params[i]);
             }
             psmt.executeUpdate();
-            Conexao.closeConnection(conn);
         }
     }
 
@@ -39,7 +38,6 @@ public abstract class BaseDAO<T> implements Base<T>{
                 psmt.setObject(i + 1, params[i]);
             }
             psmt.executeUpdate();
-            Conexao.closeConnection(conn);
         }
     }
 

@@ -67,7 +67,13 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
                             validarEntrada(novoNome);
 
                             super.update(sql, novoNome, id);
-                            System.out.println("Nome alterado com sucesso!");
+
+                            if(novoNome.equals("0")){
+                                System.out.println("Saindo...");
+                                return;
+                            }else{
+                                System.out.println("Nome alterado com sucesso!");
+                            }
 
                         } catch (SQLException e) {
                             System.out.println("ERRO! Não foi possível alterar o nome!");

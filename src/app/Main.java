@@ -18,10 +18,10 @@ public class Main {
     static int opcao;
 
     public static void main(String[] args) {
-
+        Connection conn = null;
 
         try {
-            Connection conn = Conexao.createConnectionToMySQL();//Conecta no banco de dados
+            conn = Conexao.createConnectionToMySQL();//Conecta no banco de dados
             UsuarioDAO UsuarioDao = new UsuarioDAO(conn);//Instancia o DAO
 
             do {
@@ -64,6 +64,15 @@ public class Main {
 
         } catch (Exception e) {
             System.out.println("ERRO! Não foi possível rodar o aplicativo!");
+        }finally {
+            try {
+                if (conn != null && !conn.isClosed()) {
+                    conn.close();
+                    System.out.println("Conexão com o banco de dados fechada com sucesso!");
+                }
+            } catch (Exception e) {
+                System.out.println("ERRO! Não foi possível fechar a conexão com o banco de dados!");
+            }
         }
     }
 }

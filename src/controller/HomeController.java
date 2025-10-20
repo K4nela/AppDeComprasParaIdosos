@@ -90,10 +90,8 @@ public final class  HomeController {
 
                                 switch (opcao) {
                                     case 1 -> {
-                                        verPerfil(u, conn);
-                                        if(u == null){
-                                            return;
-                                        }
+                                        u = verPerfil(u, conn);
+                                        if(u == null) return;
                                     }
                                     case 2 -> gerenciarUsuarios(conn); // implementar
                                     case 0 -> {

@@ -90,8 +90,7 @@ public final class LoginController {
                         case 2 -> UsuarioDAO.update(id);
                         case 3 -> {
                             UsuarioDAO.delete(id);
-                            u = null;
-                            return u;
+                            return null;
                         }
                         case 0 -> {
                             System.out.println("Voltando...");

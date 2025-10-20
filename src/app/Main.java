@@ -43,7 +43,6 @@ public class Main {
 
                         if (logado != null){
                             telaHome(logado, UsuarioDao, conn);
-                            return;
                         }
                     }
                     case 2 -> telaCadastro();

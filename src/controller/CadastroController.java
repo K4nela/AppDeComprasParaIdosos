@@ -24,8 +24,8 @@ public final class CadastroController {
         Scanner scn = new Scanner(System.in);
         Connection conn = Conexao.createConnectionToMySQL();
         UsuarioDAO UsuarioDao = new UsuarioDAO(conn);
-        int tipo = -1;
-        LocalDate localData = null;
+        int tipo;
+        LocalDate localData;
 
         while (true) {
 

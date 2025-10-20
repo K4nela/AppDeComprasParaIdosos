@@ -17,13 +17,15 @@ import static view.Menus.menuTipoUsuario;
 
 public final class CadastroController {
 
+    /*
+    Desenvolvendo tela de cadastro de usuários com seus métodos correspondentes
+     */
     public static void telaCadastro() throws Exception {
         Scanner scn = new Scanner(System.in);
         Connection conn = Conexao.createConnectionToMySQL();
         UsuarioDAO UsuarioDao = new UsuarioDAO(conn);
         int tipo = -1;
         LocalDate localData = null;
-
 
         while (true) {
 
@@ -38,7 +40,7 @@ public final class CadastroController {
                     tipo = Integer.parseInt(tipoStr);
 
                     if (tipo == 0) {
-                        System.out.println("Saindo do cadastro...");
+                        System.out.println("Voltando...");
                         return;
                     }
 
@@ -67,7 +69,6 @@ public final class CadastroController {
                     break;
                 } catch (Exception e) {
                     System.out.println("ERRO! Data inválida, insira no formato dd/MM/yyyy.");
-                    continue;
                 }
             }
 
@@ -96,6 +97,8 @@ public final class CadastroController {
             try {
                 UsuarioDao.save(u);
                 System.out.println("Usuário cadastrado com sucesso!");
+                return;
+
             } catch (Exception e) {
                 System.out.println("ERRO! Não foi possível cadastrar o usuário. Tente novamente.");
                 e.printStackTrace();

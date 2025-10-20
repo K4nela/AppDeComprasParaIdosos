@@ -4,15 +4,15 @@ import model.administrador;
 import model.familiar;
 import model.idoso;
 import model.usuario;
+
 import java.sql.*;
 import java.util.*;
 
 import static view.Menus.menuUpdate;
 
-public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
+public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuario> {
 
-
-    public UsuarioDAO(Connection conn){
+    public UsuarioDAO(Connection conn) {
         super(conn);
     }
 
@@ -20,12 +20,13 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
     Desenvolvendo o metodo salvar (usuario)
      */
     @Override
-    public void save(usuario u){
-        //inserindo dados utilizando o metodo base da classe abstrata e interface
-        String sql = "INSERT INTO usuario(nome, data_nasc, email, senha, endereco, telefone, tipo) VALUES (?, ?, ?, ?, ?, ?, ?);";
+    public void save(usuario u) {
+        // SQL para inserir no usuário
+        String sqlUsuario = "INSERT INTO usuario(nome, data_nasc, email, senha, endereco, telefone, tipo) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
-        try{
-            super.save(sql,
+        try {
+            // chama o save da BaseDAO e pega o ID gerado
+            int idUsuario = super.save(sqlUsuario,
                     u.getNome(),
                     java.sql.Date.valueOf(u.getDataNasc()),
                     u.getE_mail(),
@@ -34,21 +35,33 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
                     u.getTelefone(),
                     u.getTipo());
 
-            System.out.println("Usuário salvo com sucesso!");
-        }catch (SQLException e){
+            // SQL para inserir na tabela específica
+            String sqlTipoUsuario = switch (u.getTipo()) {
+                case "idoso" -> "INSERT INTO idoso(id_usuario) VALUES (?);";
+                case "familiar" -> "INSERT INTO familiar(id_usuario) VALUES (?);";
+                case "administrador" -> "INSERT INTO administrador(id_usuario) VALUES (?);";
+                default -> throw new IllegalArgumentException("Tipo de usuário inválido!");
+            };
+
+            try (PreparedStatement psTipo = conn.prepareStatement(sqlTipoUsuario)) {
+                psTipo.setInt(1, idUsuario);
+                psTipo.executeUpdate();
+            }
+
+        } catch (SQLException e) {
             System.out.println("ERRO! Não foi possível salvar o usuário!");
             e.printStackTrace();
         }
     }
 
     /*
-   Desenvolvendo o metodo update (usuario)
+    Desenvolvendo o metodo update (usuario)
     */
     @Override
-    public void update(int id){
+    public void update(int id) {
         String sql;
 
-        while (true){
+        while (true) {
             try {
                 menuUpdate();
                 int opcao = scn.nextInt();
@@ -68,10 +81,10 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
 
                             super.update(sql, novoNome, id);
 
-                            if(novoNome.equals("0")){
+                            if (novoNome.equals("0")) {
                                 System.out.println("Saindo...");
                                 return;
-                            }else{
+                            } else {
                                 System.out.println("Nome alterado com sucesso!");
                             }
 
@@ -173,10 +186,11 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
                         }
                         break;
 
-                    case 0: System.out.println("Saindo...");
-                            return;
+                    case 0:
+                        System.out.println("Saindo...");
+                        return;
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("ERRO! Digite apenas números.");
                 scn.nextLine();
             }
@@ -188,7 +202,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
      */
     public static String validarEntrada(String entrada) {
 
-        if(entrada == "0"){
+        if (entrada == "0") {
             return null;
         }
 
@@ -215,7 +229,7 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
             while (rs.next()) {
 
                 System.out.println(
-                                "\n-------Usuário-------\n" +
+                        "\n-------Usuário-------\n" +
                                 "id = " + rs.getInt("id") +
                                 "\nnome = " + rs.getString("nome") +
                                 "\ndata de nascimento = " + rs.getDate("data_nasc").toLocalDate() +
@@ -238,20 +252,22 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
     Desenvolvendo o metodo deletar (usuario)
     */
     @Override
-    public void delete(int id){
+    public void delete(int id) {
         String sql = "DELETE FROM usuario WHERE id = ?";
 
-        try{
+        try {
             System.out.println("Tem certeza que deseja excluir este usuário?");
             System.out.println("[Y/N]");
             String opcao = scn.nextLine();
 
-            if(Objects.equals(opcao, "Y")){
+            if (Objects.equals(opcao, "Y")) {
                 super.delete(sql, id);
+                System.out.println("Usuário excluído com sucesso!");
+            } else {
+                System.out.println("Voltando...");
             }
 
-            System.out.println("Usuário excluído com sucesso!");
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("ERRO! Não foi possível deletar o usuário!");
             e.printStackTrace();
         }
@@ -369,6 +385,122 @@ public class UsuarioDAO extends BaseDAO<usuario> implements Base<usuario> {
 
         } catch (SQLException e) {
             System.out.println("ERRO! Não foi possível realizar o login!");
+            e.printStackTrace();
+        }
+        return usuario;
+    }
+
+    /*
+    Desenvolvendo o metodo para validar liogin (senha)
+     */
+    public usuario getBySenha(String senha) {
+        usuario usuario = null;
+        String sql = "SELECT * FROM usuario WHERE senha = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, senha);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String tipo = rs.getString("tipo");
+
+                switch (tipo) {
+
+                    case "idoso" -> usuario = new idoso(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getDate("data_nasc").toLocalDate(),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("endereco"),
+                            rs.getString("telefone"),
+                            rs.getString("tipo")
+                    );
+
+                    case "familiar" -> usuario = new familiar(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getDate("data_nasc").toLocalDate(),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("endereco"),
+                            rs.getString("telefone"),
+                            rs.getString("tipo")
+                    );
+
+                    case "administrador" -> usuario = new administrador(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getDate("data_nasc").toLocalDate(),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("endereco"),
+                            rs.getString("telefone"),
+                            rs.getString("tipo")
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("ERRO! Não foi possível realizar o login!");
+            e.printStackTrace();
+        }
+        return usuario;
+    }
+
+    /*
+    Desenvolvendo o metodo para validar login (email)
+    */
+    public usuario getByEmail(String email) {
+        usuario usuario = null;
+        String sql = "SELECT * FROM usuario WHERE email = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String tipo = rs.getString("tipo");
+
+                switch (tipo) {
+
+                    case "idoso" -> usuario = new idoso(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getDate("data_nasc").toLocalDate(),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("endereco"),
+                            rs.getString("telefone"),
+                            rs.getString("tipo")
+                    );
+
+                    case "familiar" -> usuario = new familiar(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getDate("data_nasc").toLocalDate(),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("endereco"),
+                            rs.getString("telefone"),
+                            rs.getString("tipo")
+                    );
+
+                    case "administrador" -> usuario = new administrador(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getDate("data_nasc").toLocalDate(),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("endereco"),
+                            rs.getString("telefone"),
+                            rs.getString("tipo")
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("ERRO! E-mail não cadastrado!");
             e.printStackTrace();
         }
         return usuario;

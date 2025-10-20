@@ -20,7 +20,7 @@ CREATE TABLE usuario (
 CREATE TABLE administrador (
     id_administrador INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT UNIQUE,
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE
 );
     INSERT INTO administrador(id_usuario)VALUES
     (5);
@@ -28,7 +28,7 @@ CREATE TABLE administrador (
 CREATE TABLE familiar (
     id_familiar INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT UNIQUE,
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE
 );
     INSERT INTO familiar (id_usuario) VALUES
     (1),
@@ -37,7 +37,7 @@ CREATE TABLE familiar (
 CREATE TABLE idoso (
     id_idoso INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT UNIQUE,
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE
 );
     INSERT INTO idoso (id_usuario) VALUES
     (3),

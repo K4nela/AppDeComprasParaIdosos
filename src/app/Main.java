@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.util.Scanner;
 
 import static controller.CadastroController.telaCadastro;
+import static dao.Conexao.closeConnection;
 import static view.Menus.*;
 import static controller.HomeController.telaHome;
 import static controller.LoginController.telaLogin;
@@ -37,39 +38,26 @@ public class Main {
                 }
 
                 switch (opcao) {
-                    case 1:
+                    case 1 -> {
                         logado = telaLogin();
 
-                        if(logado != null){
+                        if (logado != null){
                             telaHome(logado, UsuarioDao, conn);
-                        }else{
-                            System.out.println("ERRO! Email ou senha incorretos.");
+                            return;
                         }
-
-                        break;
-
-                    case 2:
-                        telaCadastro();
-                        break;
-
-                    case 0:
-                        System.out.println("Saindo...");
-                        break;
-
-                    default:
-                        System.out.println("Opção inválida!");
+                    }
+                    case 2 -> telaCadastro();
+                    case 0 -> System.out.println("Saindo...");
+                    default -> System.out.println("Opção inválida!");
                 }
 
             } while (opcao != 0);
 
         } catch (Exception e) {
             System.out.println("ERRO! Não foi possível rodar o aplicativo!");
-        }finally {
+        } finally {
             try {
-                if (conn != null && !conn.isClosed()) {
-                    conn.close();
-                    System.out.println("Conexão com o banco de dados fechada com sucesso!");
-                }
+                closeConnection(conn);
             } catch (Exception e) {
                 System.out.println("ERRO! Não foi possível fechar a conexão com o banco de dados!");
             }

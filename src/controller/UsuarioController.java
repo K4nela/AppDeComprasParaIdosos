@@ -1,33 +1,59 @@
 package controller;
 
 import dao.UsuarioDAO;
-import model.usuario;
 
 import java.sql.Connection;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import static view.Menus.menuListarUsuarios;
-import static view.Menus.menuPerfil;
+import static view.Menus.*;
 
 public class UsuarioController {
 
-    public static void verPerfil(usuario u, Connection conn){
+    /*
+    Desenvolvendo função para gerenciar usuários do sistema (função para Administradores)
+     */
+    public static final void gerenciarUsuarios(Connection conn){
         Scanner scn = new Scanner(System.in);
         UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
-        int id = u.getId();
         int opcao = -1;
 
         while (true){
             try{
-                menuPerfil();
+                menuGerenciarUsuarios();
                 opcao = scn.nextInt();
 
                 switch (opcao){
-                    case 1 -> System.out.println(usuarioDAO.getById(id));
-                    case 2 -> usuarioDAO.update(id);
+                    case 1 -> VerUsuarios(conn);
+                    case 2 -> {
+                        System.out.println("Digite [0] para voltar");
+                        System.out.println(usuarioDAO.get());
+
+                        System.out.println("Digite o ID do usuário a ser atualizado: ");
+                        int id = scn.nextInt();
+                        usuarioDAO.update(id);
+
+
+                        if(id == 0){
+                            System.out.println("Voltando...");
+                            return;
+                        }
+                    }
+                    case 3 -> {
+                        System.out.println("Digite [0] para voltar");
+                        System.out.println(usuarioDAO.get());
+
+                        System.out.print("Digite o ID do usuário a ser deletado: ");
+                        int id = scn.nextInt();
+                        usuarioDAO.delete(id);
+
+                        if(id == 0){
+                            System.out.println("Voltando...");
+                            return;
+                        }
+                    }
                     case 0 -> {
-                        System.out.println("Saindo...");
+                        System.out.println("Voltando...");
                         return;
                     }
                     default -> System.out.println("Opção inválida!");
@@ -39,16 +65,20 @@ public class UsuarioController {
             }
 
         }
+
     }
 
-    public static final void admVerUsuarios(Connection conn){
+    /*
+    Desenvolvendo função para ver usuários do sistema (função para Administradores)
+     */
+    public static final void VerUsuarios(Connection conn){
         Scanner scn = new Scanner(System.in);
         UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
         int opcao = -1;
 
         while (true){
             try{
-                menuListarUsuarios();
+                menuVerUsuarios();
                 opcao = scn.nextInt();
 
                 switch (opcao){
@@ -59,7 +89,7 @@ public class UsuarioController {
                         System.out.println(usuarioDAO.getById(id));
                     }
                     case 0 -> {
-                        System.out.println("Saindo...");
+                        System.out.println("Voltando...");
                         return;
                     }
                     default -> System.out.println("Opção inválida!");

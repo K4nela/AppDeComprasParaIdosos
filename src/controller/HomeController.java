@@ -2,14 +2,21 @@ package controller;
 
 import dao.UsuarioDAO;
 import model.usuario;
+import static controller.UsuarioController.*;
+import static controller.LoginController.*;
+import static view.Menus.*;
 
 import java.sql.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import static view.Menus.*;
+
 
 public final class  HomeController {
 
+    /*
+    Desenvolvendo a tela Home (tela inicial) do sistema.
+    Onde o usuário poderá acessar as funcionalidades de acordo com seu tipo (idoso, familiar ou administrador)
+     */
     public static void telaHome(usuario u,UsuarioDAO opcaoDao, Connection conn) throws Exception {
         String sql = "SELECT tipo FROM usuario WHERE id = ?";
         Scanner scn = new Scanner(System.in);
@@ -24,7 +31,7 @@ public final class  HomeController {
                 String tipo = rs.getString("tipo");
 
                 switch (tipo) {
-                    case "idoso":
+                    case "idoso": //Menu Home adaptado para usuários do tipo Idoso.
 
                         while (true){
                             try {
@@ -32,13 +39,12 @@ public final class  HomeController {
                                 opcao = scn.nextInt();
 
                                 switch (opcao) {
-                                    case 1 -> UsuarioController.verPerfil(u, conn);
+                                    case 1 -> verPerfil(u, conn);
                                     case 2 -> System.out.println("função ver lista de desejos sendo desenvolvida..."); // implementar
                                     case 3 -> System.out.println("função criar lista de desejos sendo desenvolvida..."); // implementar
                                     case 4 -> System.out.println("função ver familiares sendo desenvolvida..."); // implementar
-                                    case 5 -> System.out.println("função para opções sendo desenvolvida..."); // implementar
                                     case 0 -> {
-                                        System.out.println("Saindo...");
+                                        System.out.println("Voltando...");
                                         return;
                                     }
                                     default -> System.out.println("Opção inválida!");
@@ -49,7 +55,7 @@ public final class  HomeController {
                             }
                         }
 
-                    case "familiar":
+                    case "familiar": //Menu Home adaptado para usuários do tipo Familiar.
 
                         while(true) {
 
@@ -58,12 +64,11 @@ public final class  HomeController {
                                 opcao = scn.nextInt();
 
                                 switch (opcao) {
-                                    case 1 -> UsuarioController.verPerfil(u, conn);
+                                    case 1 -> verPerfil(u, conn);
                                     case 2 -> System.out.println("função ver lista de desejos sendo desenvolvida..."); // implementar
                                     case 3 -> System.out.println("função ver idosos sendo desenvolvida..."); // implementar
-                                    case 4 -> System.out.println("função para opções sendo desenvolvida..."); // implementar
                                     case 0 -> {
-                                        System.out.println("Saindo...");
+                                        System.out.println("Voltando...");
                                         return;
                                     }
 
@@ -75,7 +80,7 @@ public final class  HomeController {
                             }
                         }
 
-                    case "administrador":
+                    case "administrador": //Menu Home adaptado para usuários do tipo Administrador.
 
                         while(true) {
                             try{
@@ -84,12 +89,15 @@ public final class  HomeController {
                                 scn.nextLine();
 
                                 switch (opcao) {
-                                    case 1 -> UsuarioController.verPerfil(u, conn);
-                                    case 2 -> System.out.println("função gerenciar usuários sendo desenvolvida..."); // implementar
-                                    case 3 -> UsuarioController.admVerUsuarios(conn);
-                                    case 4 -> System.out.println("função para opções sendo desenvolvida..."); // implementar
+                                    case 1 -> {
+                                        verPerfil(u, conn);
+                                        if(u == null){
+                                            return;
+                                        }
+                                    }
+                                    case 2 -> gerenciarUsuarios(conn); // implementar
                                     case 0 -> {
-                                        System.out.println("Saindo...");
+                                        System.out.println("Voltando...");
                                         return;
                                     }
                                     default -> System.out.println("Opção inválida!");

@@ -9,36 +9,39 @@ public abstract class Menus {
         System.out.println("4 - alterar senha");
         System.out.println("5 - alterar endereço");
         System.out.println("6 - alterar telefone");
-        System.out.println("0 - Sair");
+        System.out.println("0 - Voltar");
         System.out.println("---------------------------");
         System.out.printf("Escolha uma opção: ");
     }
 
-    public static void menuMain(){
-        System.out.println("-------Opções-------");
-        System.out.println("1 - criar usuário");
-        System.out.println("2 - listar informações");
-        System.out.println("3 - atualizar dados pessoais");
-        System.out.println("4 - DELETAR usuário");
-        System.out.println("0 - Sair");
-        System.out.printf("Escolha uma opção: ");
-    }
+        /*
+        Menu beta para teste de métodos CRUD
+         */
+//    public static void menuMain(){
+//        System.out.println("-------Opções-------");
+//        System.out.println("1 - criar usuário");
+//        System.out.println("2 - listar informações");
+//        System.out.println("3 - atualizar dados pessoais");
+//        System.out.println("4 - DELETAR usuário");
+//        System.out.println("0 - Sair");
+//        System.out.printf("Escolha uma opção: ");
+//    }
 
     public static void menuTipoUsuario(){
         System.out.println("-------Tipo de Usuário-------");
         System.out.println("1 - Idoso");
         System.out.println("2 - Familiar");
         System.out.println("3 - Administrador");
-        System.out.println("0 - Sair");
+        System.out.println("0 - Voltar");
         System.out.println("---------------------------");
         System.out.printf("Escolha uma opção: ");
     }
 
-    public static void menuListarUsuarios(){
+    public static void menuVerUsuarios(){
         System.out.println("-------Lista de Usuários-------");
         System.out.println("1 - Listar todos os usuários");
         System.out.println("2 - Listar usuário por ID");
-        System.out.println("0 - Sair");
+        System.out.println("0 - Voltar");
         System.out.println("-------------------------------");
         System.out.printf("Escolha uma opção: ");
     }
@@ -77,9 +80,18 @@ public abstract class Menus {
         System.out.println("-------Menu-------");
         System.out.println("1 - Ver perfil");
         System.out.println("2 - Gerenciar usuários");
-        System.out.println("3 - Ver usuários");
         System.out.println("0 - Sair");
         System.out.println("------------------");
+        System.out.printf("Escolha uma opção: ");
+    }
+
+    public static void menuGerenciarUsuarios(){
+        System.out.println("-------Gerenciar Usuários-------");
+        System.out.println("1 - Listar usuários");
+        System.out.println("2 - Atualizar usuário");
+        System.out.println("3 - Deletar usuário");
+        System.out.println("0 - Sair");
+        System.out.println("-------------------------------");
         System.out.printf("Escolha uma opção: ");
     }
 
@@ -87,7 +99,8 @@ public abstract class Menus {
         System.out.println("-------Perfil-------");
         System.out.println("1 - Ver dados pessoais");
         System.out.println("2 - Atualizar dados pessoais");
-        System.out.println("0 - Sair");
+        System.out.println("3 - Deletar perfil");
+        System.out.println("0 - Voltar");
         System.out.println("--------------------");
         System.out.printf("Escolha uma opção: ");
     }

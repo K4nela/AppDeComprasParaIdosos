@@ -77,7 +77,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("Digite o novo nome: ");
                             String novoNome = scn.nextLine();
 
-                            validarEntrada(novoNome);
+                            novoNome = validarEntrada(novoNome);
 
                             super.update(sql, novoNome, id);
 
@@ -101,7 +101,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("Digite sua data de nascimento: ");
                             String novaData = scn.nextLine();
 
-                            validarEntrada(novaData);
+                            novaData = validarEntrada(novaData);
 
                             super.update(sql, "data_nasc", novaData, id);
                             System.out.println("Data de nascimento atualizada com sucesso!");
@@ -120,7 +120,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("Digite seu novo email: ");
                             String novoEmail = scn.nextLine();
 
-                            validarEntrada(novoEmail);
+                            novoEmail = validarEntrada(novoEmail);
 
                             super.update(sql, "email", novoEmail, id);
                             System.out.println("Email alterado com sucesso!");
@@ -157,7 +157,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("Digite seu novo endereço: ");
                             String novoEndereco = scn.nextLine();
 
-                            validarEntrada(novoEndereco);
+                            novoEndereco = validarEntrada(novoEndereco);
 
                             super.update(sql, "endereco", novoEndereco, id);
                             System.out.println("Endereço alterado com sucesso!");
@@ -175,7 +175,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("Digite seu novo telefone: ");
                             String novoTelefone = scn.nextLine();
 
-                            validarEntrada(novoTelefone);
+                            novoTelefone = validarEntrada(novoTelefone);
 
                             super.update(sql, "telefone", novoTelefone);
                             System.out.println("Telefone alterado com sucesso!");

@@ -32,8 +32,7 @@ a parte intuitíva do programa, como lógica de navegação, manipulação de da
     __/controller
       |__CadastroController.java
 
-    Em CadastroController.java temos a classe "telaCadastro()", usada para realização do cadastro
-    usuários.
+    Em CadastroController.java temos a classe "telaCadastro()", usada para realização do cadastro usuários.
     A classe é do tipo void e não precisa de parâmetros, ao chamá-la ela imprime a tela de cadastro e pede algumas entradas de dados essenciais como: tipo de conta, nome, data de nascimento, email, senha, endereço e telefone.
     Onde, conforme o tipo de conta escolhido, ela instancia automaticamente para uma classe de entidades definidas no trabalho, como: idoso, familiar e administrador.
     Retornando assim uma função que usa de JDBC para salvar esse novo usuario no banco de dados.
@@ -50,3 +49,4 @@ a parte intuitíva do programa, como lógica de navegação, manipulação de da
       |__...
       |__HomeController.java
 
+    Em HomeController.java temos a classe "telaHome", usada para 

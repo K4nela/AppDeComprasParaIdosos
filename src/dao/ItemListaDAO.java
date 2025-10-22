@@ -14,7 +14,6 @@ public class ItemListaDAO {
         this.conn = conn;
     }
 
-    // 🔹 CREATE
     public void insert(itens item) throws SQLException {
         String sql = "INSERT INTO itens (id_lista, nome_iten, descricao, quantidade, nome_loja, link) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement stmt = conn.prepareStatement(sql);
@@ -28,7 +27,6 @@ public class ItemListaDAO {
         stmt.close();
     }
 
-    // 🔹 READ ALL
     public List<itens> getAll() throws SQLException {
         List<itens> listaItens = new ArrayList<>();
         String sql = "SELECT * FROM itens";
@@ -52,7 +50,6 @@ public class ItemListaDAO {
         return listaItens;
     }
 
-    // 🔹 READ BY ID
     public itens getById(int id) throws SQLException {
         String sql = "SELECT * FROM itens WHERE id_iten = ?";
         PreparedStatement stmt = conn.prepareStatement(sql);
@@ -76,7 +73,6 @@ public class ItemListaDAO {
         return item;
     }
 
-    // 🔹 UPDATE
     public void update(itens item) throws SQLException {
         String sql = "UPDATE itens SET id_lista=?, nome_iten=?, descricao=?, quantidade=?, nome_loja=?, link=? WHERE id_iten=?";
         PreparedStatement stmt = conn.prepareStatement(sql);
@@ -91,7 +87,7 @@ public class ItemListaDAO {
         stmt.close();
     }
 
-    // 🔹 DELETE
+
     public void delete(int id) throws SQLException {
         String sql = "DELETE FROM itens WHERE id_iten=?";
         PreparedStatement stmt = conn.prepareStatement(sql);

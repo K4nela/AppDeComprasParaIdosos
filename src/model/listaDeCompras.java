@@ -15,6 +15,10 @@ public class listaDeCompras extends Idoso{
     public listaDeCompras() {
     }
 
+    public listaDeCompras(int id_lista) {
+        this.id_lista = id_lista;
+    }
+
     public listaDeCompras(int id, String nome, LocalDate dataNasc, String e_mail, String senha, String endereco, String telefone, int id_idoso, usuario id_usuario, int id_lista, Idoso id_idoso1) {
         super(id, nome, dataNasc, e_mail, senha, endereco, telefone, id_idoso, id_usuario);
         this.id_lista = id_lista;

@@ -8,6 +8,9 @@ public class historico {
     private int id_item;
     private int id_status;
 
+    public historico() {
+    }
+
     public historico(int id_histrico, Date data_historico, int id_item, int id_status) {
         this.id_histrico = id_histrico;
         this.data_historico = data_historico;

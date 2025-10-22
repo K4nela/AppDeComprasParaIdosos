@@ -9,6 +9,9 @@ public class itens {
     private String nome_loja;
     private String link;
 
+    public itens() {
+    }
+
     public itens(int id_iten, listaDeCompras id_lista, String nome_iten, String descricao, int quantidade, String nome_loja, String link) {
         this.id_iten = id_iten;
         this.id_lista = id_lista;

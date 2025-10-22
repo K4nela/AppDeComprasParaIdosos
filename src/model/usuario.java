@@ -21,6 +21,9 @@ public class usuario {
         this.telefone = telefone;
     }
 
+    public usuario() {
+    }
+
     public usuario(String nome, LocalDate dataNasc, String e_mail, String senha, String endereco, String telefone) {
         this.nome = nome;
         this.dataNasc = dataNasc;

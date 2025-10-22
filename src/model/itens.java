@@ -22,7 +22,6 @@ public class itens {
     public int getId_iten() {
         return id_iten;
     }
-
     public void setId_iten(int id_iten) {
         this.id_iten = id_iten;
     }
@@ -30,7 +29,6 @@ public class itens {
     public listaDeCompras getId_lista() {
         return id_lista;
     }
-
     public void setId_lista(listaDeCompras id_lista) {
         this.id_lista = id_lista;
     }
@@ -38,7 +36,6 @@ public class itens {
     public String getNome_iten() {
         return nome_iten;
     }
-
     public void setNome_iten(String nome_iten) {
         this.nome_iten = nome_iten;
     }
@@ -46,7 +43,6 @@ public class itens {
     public String getDescricao() {
         return descricao;
     }
-
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
@@ -54,7 +50,6 @@ public class itens {
     public int getQuantidade() {
         return quantidade;
     }
-
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
@@ -62,7 +57,6 @@ public class itens {
     public String getNome_loja() {
         return nome_loja;
     }
-
     public void setNome_loja(String nome_loja) {
         this.nome_loja = nome_loja;
     }
@@ -70,8 +64,20 @@ public class itens {
     public String getLink() {
         return link;
     }
-
     public void setLink(String link) {
         this.link = link;
+    }
+
+    @Override
+    public String toString() {
+        return "\n------- Item -------" +
+                "\nID do item: " + id_iten +
+                "\nLista vinculada: " + (id_lista != null ? id_lista.getId_lista() : "Nenhuma") +
+                "\nNome do item: " + nome_iten +
+                "\nDescrição: " + descricao +
+                "\nQuantidade: " + quantidade +
+                "\nNome da loja: " + nome_loja +
+                "\nLink: " + link +
+                "\n--------------------";
     }
 }

@@ -2,6 +2,9 @@ package controller;
 
 import dao.UsuarioDAO;
 import model.usuario;
+
+import static controller.MonitoraController.listarFamiliares;
+import static controller.MonitoraController.listarIdosos;
 import static controller.UsuarioController.*;
 import static controller.LoginController.*;
 import static view.Menus.*;
@@ -11,13 +14,13 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
-public final class  HomeController {
+public final class HomeController {
 
     /*
-    Desenvolvendo a tela Home (tela inicial) do sistema.
-    Onde o usuário poderá acessar as funcionalidades de acordo com seu tipo (idoso, familiar ou administrador)
-     */
-    public static void telaHome(usuario u,UsuarioDAO opcaoDao, Connection conn) throws Exception {
+	Desenvolvendo a tela Home (tela inicial) do sistema.
+	Onde o usuário poderá acessar as funcionalidades de acordo com seu tipo (idoso, familiar ou administrador)
+	 */
+    public static void telaHome(usuario u, UsuarioDAO opcaoDao, Connection conn) throws Exception {
         String sql = "SELECT tipo FROM usuario WHERE id = ?";
         Scanner scn = new Scanner(System.in);
         int opcao = 0;
@@ -33,7 +36,7 @@ public final class  HomeController {
                 switch (tipo) {
                     case "idoso": //Menu Home adaptado para usuários do tipo Idoso.
 
-                        while (true){
+                        while (true) {
                             try {
                                 menuHomeIdoso();
                                 opcao = scn.nextInt();
@@ -42,14 +45,14 @@ public final class  HomeController {
                                     case 1 -> verPerfil(u, conn);
                                     case 2 -> System.out.println("função ver lista de desejos sendo desenvolvida..."); // implementar
                                     case 3 -> System.out.println("função criar lista de desejos sendo desenvolvida..."); // implementar
-                                    case 4 -> System.out.println("função ver familiares sendo desenvolvida..."); // implementar
+                                    case 4 -> listarFamiliares(u, conn);
                                     case 0 -> {
                                         System.out.println("Voltando...");
                                         return;
                                     }
                                     default -> System.out.println("Opção inválida!");
                                 }
-                            }catch (InputMismatchException e){
+                            } catch (InputMismatchException e) {
                                 System.out.println("ERRO! Digite apenas números");
                                 scn.nextLine();
                             }
@@ -57,16 +60,16 @@ public final class  HomeController {
 
                     case "familiar": //Menu Home adaptado para usuários do tipo Familiar.
 
-                        while(true) {
+                        while (true) {
 
-                            try{
+                            try {
                                 menuHomeFamiliar();
                                 opcao = scn.nextInt();
 
                                 switch (opcao) {
                                     case 1 -> verPerfil(u, conn);
                                     case 2 -> System.out.println("função ver lista de desejos sendo desenvolvida..."); // implementar
-                                    case 3 -> System.out.println("função ver idosos sendo desenvolvida..."); // implementar
+                                    case 3 -> listarIdosos(u, conn);
                                     case 0 -> {
                                         System.out.println("Voltando...");
                                         return;
@@ -74,7 +77,7 @@ public final class  HomeController {
 
                                     default -> System.out.println("Opção inválida!");
                                 }
-                            }catch (InputMismatchException e) {
+                            } catch (InputMismatchException e) {
                                 System.out.println("ERRO! Digite apenas números");
                                 scn.nextLine();
                             }
@@ -82,8 +85,8 @@ public final class  HomeController {
 
                     case "administrador": //Menu Home adaptado para usuários do tipo Administrador.
 
-                        while(true) {
-                            try{
+                        while (true) {
+                            try {
                                 menuHomeAdmin();
                                 opcao = scn.nextInt();
                                 scn.nextLine();
@@ -91,16 +94,16 @@ public final class  HomeController {
                                 switch (opcao) {
                                     case 1 -> {
                                         u = verPerfil(u, conn);
-                                        if(u == null) return;
+                                        if (u == null) return;
                                     }
-                                    case 2 -> gerenciarUsuarios(conn); // implementar
+                                    case 2 -> gerenciarUsuarios(conn);
                                     case 0 -> {
                                         System.out.println("Voltando...");
                                         return;
                                     }
                                     default -> System.out.println("Opção inválida!");
                                 }
-                            }catch (InputMismatchException e) {
+                            } catch (InputMismatchException e) {
                                 System.out.println("ERRO! Digite apenas números");
                                 scn.nextLine();
                             }
@@ -117,3 +120,5 @@ public final class  HomeController {
         }
     }
 }
+
+

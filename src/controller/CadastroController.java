@@ -8,6 +8,7 @@ import model.usuario;
 import dao.UsuarioDAO;
 
 
+import javax.management.monitor.Monitor;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -86,22 +87,62 @@ public final class CadastroController {
 
             System.out.println("---------------------------");
 
-            usuario u = switch (tipo) {
-                case 1 -> new idoso(nome, localData, email, senha, endereco, telefone);
-                case 2 -> new familiar(nome, localData, email, senha, endereco, telefone);
-                case 3 -> new administrador(nome, localData, email, senha, endereco, telefone);
+            usuario u;
+            switch (tipo) {
+                case 1 -> { // idoso
+                    String emailFamiliar;
+                    usuario familiarEncontrado = null;
 
-                default -> throw new IllegalArgumentException("Tipo de usuário inválido!");
-            };
+                    do {
+                        System.out.print("Email do familiar responsável: ");
+                        emailFamiliar = scn.nextLine();
+                        familiarEncontrado = UsuarioDao.getByEmailAndTipo(emailFamiliar, "familiar");
 
-            try {
-                UsuarioDao.save(u);
-                System.out.println("Usuário cadastrado com sucesso!");
-                return;
+                        if (familiarEncontrado == null) {
+                            System.out.println("ERRO! Familiar não encontrado. Cadastre o familiar antes ou informe um email válido.");
+                        }
+                    } while (familiarEncontrado == null);
 
-            } catch (Exception e) {
-                System.out.println("ERRO! Não foi possível cadastrar o usuário. Tente novamente.");
-                e.printStackTrace();
+                    u = new idoso(nome, localData, email, senha, endereco, telefone);
+
+                    try {
+                        // chama o metodo que faz a associação
+                        MonitoraController.associarFamiliarEIdoso(conn, familiarEncontrado, u);
+
+                        System.out.println("Idoso cadastrado e associado ao familiar com sucesso!");
+                        return;
+                    } catch (Exception e) {
+                        System.out.println("ERRO! Não foi possível cadastrar o idoso ou associar ao familiar. Tente novamente.");
+                        e.printStackTrace();
+                    }
+
+                }
+
+                case 2 -> { // familiar
+                    u = new familiar(nome, localData, email, senha, endereco, telefone);
+                    try {
+                        UsuarioDao.save(u);
+                        System.out.println("Familiar cadastrado com sucesso!");
+                        return;
+                    } catch (Exception e) {
+                        System.out.println("ERRO! Não foi possível cadastrar o familiar. Tente novamente.");
+                        e.printStackTrace();
+                    }
+                }
+
+                case 3 -> { // administrador
+                    u = new administrador(nome, localData, email, senha, endereco, telefone);
+                    try {
+                        UsuarioDao.save(u);
+                        System.out.println("Administrador cadastrado com sucesso!");
+                        return;
+                    } catch (Exception e) {
+                        System.out.println("ERRO! Não foi possível cadastrar o administrador. Tente novamente.");
+                        e.printStackTrace();
+                    }
+                }
+
+                default -> System.out.println("Tipo de usuário inválido!");
             }
         }
     }

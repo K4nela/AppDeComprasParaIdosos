@@ -2,7 +2,6 @@ package model;
 import java.time.LocalDate;
 
 public abstract class usuario {
-    public Object getTipo;
     protected int id;
     protected String nome;
     protected LocalDate dataNasc;

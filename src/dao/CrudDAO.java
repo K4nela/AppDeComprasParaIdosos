@@ -39,7 +39,6 @@ public abstract class CrudDAO<T> implements CrudInterface<T> {
         return generatedId;
     }
 
-
     //metodo para salvar tipo de usuario
     public void saveTipo(String tabela, int idUsuario) throws SQLException {
         String sql = "INSERT INTO " + tabela + " (id_usuario) VALUES (?);";

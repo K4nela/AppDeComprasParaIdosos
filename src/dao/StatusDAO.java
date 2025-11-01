@@ -69,5 +69,8 @@ public class StatusDAO {
         stmt.executeUpdate();
         stmt.close();
     }
+
+    public void update(status s) {
+    }
 }
 

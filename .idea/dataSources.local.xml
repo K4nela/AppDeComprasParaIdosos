@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal" created-in="IU-252.27397.103">
-    <data-source name="easypeasy@localhost" uuid="9f6b090f-8238-4bcb-83af-5006425a7638">
+    <data-source name="easypeasy@localhost" uuid="ee2750aa-e620-4265-b327-3aefb140c112">
       <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MYSQL_AURORA" />
       <schema-mapping />
     </data-source>

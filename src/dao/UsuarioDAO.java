@@ -196,7 +196,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
     //Desenvolvendo metodo de validação de valores do update (usuario)
     public static String validarEntrada(String entrada) {
 
-        if (entrada == "0") {
+        if (entrada.equals("0")) {
             return null;
         }
 
@@ -215,8 +215,8 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         List<usuario> uList = new ArrayList<>();
         String sql = "SELECT * FROM usuario ";
 
-        try (PreparedStatement psmt = super.conn.prepareStatement(sql);
-             ResultSet rs = psmt.executeQuery()) {
+        try (PreparedStatement ps = super.conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
 
@@ -486,6 +486,22 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
             e.printStackTrace();
         }
         return usuario;
+    }
+
+    public familiar getFamiliarByEmail(String email) throws SQLException {
+        usuario u = getByEmailAndTipo(email, "familiar");
+        if (u instanceof familiar) {
+            return (familiar) u;
+        }
+        return null;
+    }
+
+    public idoso getIdosoByEmail(String email) throws SQLException {
+        usuario u = getByEmailAndTipo(email, "idoso");
+        if (u instanceof idoso) {
+            return (idoso) u;
+        }
+        return null;
     }
 
     // Busca usuário por email e tipo (ex: para encontrar um familiar específico)

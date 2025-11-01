@@ -44,11 +44,12 @@ CREATE TABLE idoso (
     (4);
 
 CREATE TABLE monitora (
-    id_familiar INT,
-    id_idoso INT,
-    PRIMARY KEY (id_familiar, id_idoso),
-    FOREIGN KEY (id_familiar) REFERENCES familiar(id_familiar),
-    FOREIGN KEY (id_idoso) REFERENCES idoso(id_idoso)
+    id_monitora INT NOT NULL AUTO_INCREMENT,
+    id_familiar INT NOT NULL,
+    id_idoso    INT NOT NULL,
+    PRIMARY KEY (id_monitora),
+    FOREIGN KEY (id_familiar) REFERENCES familiar (id_familiar),
+    FOREIGN KEY (id_idoso) REFERENCES idoso (id_idoso)
 );
     INSERT INTO monitora (id_familiar, id_idoso) VALUES 
         (1, 1),

@@ -26,4 +26,6 @@ public class familiar extends usuario{
     public void setId_familiar(int id_familiar) {
         this.id_familiar = id_familiar;
     }
+
+
 }

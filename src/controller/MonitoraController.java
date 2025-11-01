@@ -1,9 +1,13 @@
 package controller;
 
 import dao.MonitoraDAO;
+import dao.UsuarioDAO;
+import model.familiar;
+import model.idoso;
 import model.usuario;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -40,7 +44,7 @@ public final class MonitoraController extends MonitoraDAO {
         }
     }
 
-    // Lista os idosos associados ao familiar atual e oferece vincular novo idoso
+    // Lista os idosos associados ao familiar atual e oferece opcao de vincular novo idoso
     static void listarIdosos(usuario u, Connection conn) {
         Scanner scn = new Scanner(System.in);
 
@@ -54,28 +58,16 @@ public final class MonitoraController extends MonitoraDAO {
             } else {
                 System.out.println("----- Idosos -----");
                 for (usuario idoso : idosos) {
-                    System.out.println("nome: " + idoso.getNome() +
-                            "\ndata de nascimento: " + idoso.getDataNasc() +
-                            "\nemail: " + idoso.getE_mail() +
-                            "\nendereço: " + idoso.getEndereco() +
-                            "\ntelefone: " + idoso.getTelefone());
+                    System.out.println( "nome: " + idoso.getNome() +
+                                        "\ndata de nascimento: " + idoso.getDataNasc() +
+                                        "\nemail: " + idoso.getE_mail() +
+                                        "\nendereço: " + idoso.getEndereco() +
+                                        "\ntelefone: " + idoso.getTelefone());
                     System.out.println("----------------------");
                 }
             }
 
-
-            System.out.println("1 - Vincular mais idosos");
-            String opcao = scn.nextLine();
-
-            if (opcao.equalsIgnoreCase("1")) {
-                MonitoraDAO monitoradao = new MonitoraDAO(conn);
-
-                System.out.print("Digite o email do idoso a vincular a sua conta: ");
-                String email = scn.nextLine();
-                int id_idoso = getIdByEmail(conn, email);
-
-                monitoradao.vincular(u.getId(), id_idoso);
-            }
+            associar(u, conn);
 
         } catch (NumberFormatException e) {
             System.out.println("Entrada inválida. Operação cancelada.");
@@ -86,14 +78,71 @@ public final class MonitoraController extends MonitoraDAO {
         }
     }
 
+    //associa idoso ao familiar usando metodo associarFamiliarEIdoso
+    public static void associar(usuario u, Connection conn) throws SQLException {
+        Scanner scn = new Scanner(System.in);
+
+        UsuarioDAO usuarioDao = new UsuarioDAO(conn);
+        String u_email = u.getE_mail();
+        familiar f = usuarioDao.getFamiliarByEmail(u_email);
+        usuario idosoEncontrado = null;
+        String email;
+
+        System.out.println("Digite [0] para sair;");
+        System.out.println("1 - Vincular mais idosos");
+        System.out.printf("Escolha uma opção: ");
+
+        int opcao = scn.nextInt();
+        scn.nextLine();
+
+        if (opcao == 0) {
+            return;
+        }
+
+        switch (opcao) {
+            case 1 -> {
+                while (true) {
+                    System.out.println("Digite [0] para sair;");
+                    System.out.print("Digite o email do idoso a vincular a sua conta: ");
+                    email = scn.nextLine();
+                    idosoEncontrado = usuarioDao.getIdosoByEmail(email);
+
+                    if (email.equals("0")) {
+                        return;
+                    }
+
+                    if (idosoEncontrado == null) {
+                        System.out.println("ERRO! Familiar não encontrado. Cadastre o familiar antes ou informe um email válido.");
+                    }
+                    try {
+                        // chama o metodo que faz a associação
+                        associarFamiliarEIdoso(conn, f, idosoEncontrado);
+
+                    } catch (Exception e) {
+                        System.out.println("ERRO! Não foi associar idoso ao familiar.");
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+
+    }
+
     //associa idoso ao familiar acessando o id atraves de usuarios instanciados
     public static void associarFamiliarEIdoso(Connection conn, usuario familiar, usuario idoso) throws Exception {
         dao.MonitoraDAO monitoraDAO = new dao.MonitoraDAO(conn);
 
+        // pega os ids específicos, não o id genérico
         int idFamiliarPk = (familiar instanceof model.familiar) ? ((model.familiar) familiar).getId_familiar() : familiar.getId();
         int idIdosoPk = (idoso instanceof model.idoso) ? ((model.idoso) idoso).getId_idoso() : idoso.getId();
-        monitoraDAO.vincular(idFamiliarPk, idIdosoPk);
 
-        System.out.println("Associação entre familiar e idoso criada com sucesso!");
+        // verifica se os ids são válidos
+        if (idFamiliarPk == 0 || idIdosoPk == 0) {
+            throw new Exception("Erro: id do familiar ou id do idoso inválido!");
+        }
+        // faz a associação
+        monitoraDAO.vincular(idFamiliarPk, idIdosoPk);
     }
+
 }

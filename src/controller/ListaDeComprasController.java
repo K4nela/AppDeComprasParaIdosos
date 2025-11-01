@@ -11,14 +11,24 @@ public class ListaDeComprasController {
 
     public ListaDeComprasController(Connection conn) {this.listaDao = new ListaDeComprasDAO(conn);}
 
-    public void criarLista(listaDeCompras lista) throws SQLException {listaDao.insert(lista);}
+    public void criarLista(listaDeCompras lista) throws SQLException {
+        listaDao.save(lista);
+    }
 
-    public List<listaDeCompras> listarTodas() throws SQLException {return listaDao.getAll();}
+    public List<listaDeCompras> listarTodas() throws SQLException {
+        return listaDao.get();
+    }
 
-    public listaDeCompras buscarPorId(int id) throws SQLException {return listaDao.getById(id);}
+    public listaDeCompras buscarPorId(int id) throws SQLException {
+        return listaDao.getById(id);
+    }
 
-    public void atualizarLista(listaDeCompras lista) throws SQLException {listaDao.update(lista);}
+    public void atualizarLista(listaDeCompras lista) throws SQLException {
+        listaDao.update(lista.getId_lista());
+    }
 
-    public void deletarLista(int id) throws SQLException {listaDao.delete(id);}
+    public void deletarLista(int id) throws SQLException {
+        listaDao.delete(id);
+    }
 
 }

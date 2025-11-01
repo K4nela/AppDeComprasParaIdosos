@@ -12,13 +12,13 @@ public class ItemListaController {
 
     public ItemListaController(Connection conn) {this.itemListaDao = new ItemListaDAO(conn);}
 
-    public void criarItem(itens item) throws SQLException {ItemListaDAO.insert(item);} //corrigir
+    public void criarItem(itens item) throws SQLException {ItemListaDAO.insert(item);} //desenvolvendo
 
-    public List<itens> listarTodos() throws SQLException {return ItemListaDAO.getAll();} //corrigir
+    public List<itens> listarTodos() throws SQLException {return ItemListaDAO.getAll();} //desenvolvendo
 
-    public itens buscarPorId(int id) throws SQLException {return ItemListaDAO.getById(id);} //corrigir
+    public itens buscarPorId(int id) throws SQLException {return ItemListaDAO.getById(id);} //desenvolvendo
 
-    public void atualizarItem(itens item) throws SQLException {ItemListaDAO.update(item);} //corrigir
+    public void atualizarItem(itens item) throws SQLException {ItemListaDAO.update(item);} //desenvolvendo
 
-    public void deletarItem(int id) throws SQLException {ItemListaDAO.delete(id);} //corrigir
+    public void deletarItem(int id) throws SQLException {ItemListaDAO.delete(id);} //desenvolvendo
 }

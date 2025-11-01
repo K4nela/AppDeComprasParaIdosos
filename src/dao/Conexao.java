@@ -10,7 +10,7 @@ public class Conexao {
     //nome do usuario
     private static final String USERNAME = "root";
     //senha do banco de dados
-    private static final String PASSWORD = "1234";
+    private static final String PASSWORD = "<Kanelinha123>";
 
     /*
     Criando conexão com o banco de dados

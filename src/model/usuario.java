@@ -1,7 +1,8 @@
 package model;
+import javax.xml.crypto.Data;
 import java.time.LocalDate;
 
-public abstract class usuario {
+public class usuario {
     protected int id;
     protected String nome;
     protected LocalDate dataNasc;
@@ -9,9 +10,8 @@ public abstract class usuario {
     protected String senha;
     protected String endereco;
     protected String telefone;
-    protected String tipo;
 
-    public usuario(int id, String nome, LocalDate dataNasc, String e_mail, String senha, String endereco, String telefone, String tipo) {
+    public usuario(int id, String nome, LocalDate dataNasc, String e_mail, String senha, String endereco, String telefone) {
         this.id = id;
         this.nome = nome;
         this.dataNasc = dataNasc;
@@ -19,27 +19,18 @@ public abstract class usuario {
         this.senha = senha;
         this.endereco = endereco;
         this.telefone = telefone;
-        this.tipo = tipo;
     }
 
-    public usuario(String nome, LocalDate dataNasc, String e_mail, String senha, String endereco, String telefone, String tipo) {
+    public usuario() {
+    }
+
+    public usuario(String nome, LocalDate dataNasc, String e_mail, String senha, String endereco, String telefone) {
         this.nome = nome;
         this.dataNasc = dataNasc;
         this.e_mail = e_mail;
         this.senha = senha;
         this.endereco = endereco;
         this.telefone = telefone;
-        this.tipo = tipo;
-    }
-
-    public usuario(){
-        this.nome = "";
-        this.dataNasc = LocalDate.of(0000,00,00);
-        this.e_mail = "";
-        this.senha = "";
-        this.endereco = "";
-        this.telefone = "";
-        this.tipo = "";
     }
 
     @Override
@@ -52,17 +43,9 @@ public abstract class usuario {
                 "\nsenha = " + senha +
                 "\nendereço = " + endereco +
                 "\ntelefone = " + telefone +
-                "\ntipo = " + tipo +
                 "\n--------------------";
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
 
     public int getId() {
         return id;

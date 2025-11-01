@@ -21,6 +21,10 @@ public class historico {
         this.id_status = id_status;
     }
 
+    public historico() {
+
+    }
+
     @Override
     public String toString() {
         return data_historico + " - " + id_status;

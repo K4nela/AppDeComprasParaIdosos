@@ -8,13 +8,13 @@ import java.util.List;
 
 public class ItemListaDAO {
 
-    private Connection conn;
+    private static Connection conn;
 
     public ItemListaDAO(Connection conn) {
         this.conn = conn;
     }
 
-    public void insert(itens item) throws SQLException {
+    public static void insert(itens item) throws SQLException {
         String sql = "INSERT INTO itens (id_lista, nome_iten, descricao, quantidade, nome_loja, link) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, item.getId_lista().getId_lista());
@@ -27,7 +27,7 @@ public class ItemListaDAO {
         stmt.close();
     }
 
-    public List<itens> getAll() throws SQLException {
+    public static List<itens> getAll() throws SQLException {
         List<itens> listaItens = new ArrayList<>();
         String sql = "SELECT * FROM itens";
         Statement stmt = conn.createStatement();
@@ -50,7 +50,7 @@ public class ItemListaDAO {
         return listaItens;
     }
 
-    public itens getById(int id) throws SQLException {
+    public static itens getById(int id) throws SQLException {
         String sql = "SELECT * FROM itens WHERE id_iten = ?";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, id);
@@ -73,7 +73,7 @@ public class ItemListaDAO {
         return item;
     }
 
-    public void update(itens item) throws SQLException {
+    public static void update(itens item) throws SQLException {
         String sql = "UPDATE itens SET id_lista=?, nome_iten=?, descricao=?, quantidade=?, nome_loja=?, link=? WHERE id_iten=?";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, item.getId_lista().getId_lista());
@@ -88,7 +88,7 @@ public class ItemListaDAO {
     }
 
 
-    public void delete(int id) throws SQLException {
+    public static void delete(int id) throws SQLException {
         String sql = "DELETE FROM itens WHERE id_iten=?";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setInt(1, id);

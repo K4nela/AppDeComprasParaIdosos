@@ -4,34 +4,26 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class listaDeCompras extends idoso{
+public class listaDeDesejos{
     private int id_lista;
     private idoso id_idoso;
     private String nomeLista;
     private LocalDate dataCriacao;
     private String descricao;
-    private List<String> itens;
+    private List<itens> itens;
 
-    public listaDeCompras() {
-    }
-
-    public listaDeCompras(int id_lista) {
-        this.id_lista = id_lista;
-    }
-
-    public listaDeCompras(int id, String nome, LocalDate dataNasc, String e_mail, String senha, String endereco, String telefone, int id_idoso, usuario id_usuario, int id_lista, idoso id_idoso1) {
-        super(id, nome, dataNasc, e_mail, senha, endereco, telefone, id_idoso, id_usuario);
-        this.id_lista = id_lista;
-        this.id_idoso = id_idoso1;
-        this.nomeLista = nomeLista;
-        this.dataCriacao = dataCriacao;
-        this.descricao = descricao;
+    public listaDeDesejos() {
         this.itens = new ArrayList<>();
-
     }
 
-    public listaDeCompras(String nome, String e_mail, String senha, String endereco, String telefone, String nomeLista, LocalDate dataCriacao, String descricao, List<String> itens) {
-        super(nome, e_mail, senha, endereco, telefone);
+    public listaDeDesejos(String descricao, String nomeLista) {
+        this.descricao = descricao;
+        this.nomeLista = nomeLista;
+    }
+
+    public listaDeDesejos(int id_lista, idoso id_idoso, String nomeLista, LocalDate dataCriacao, String descricao, List<itens> itens) {
+        this.id_lista = id_lista;
+        this.id_idoso = id_idoso;
         this.nomeLista = nomeLista;
         this.dataCriacao = dataCriacao;
         this.descricao = descricao;
@@ -40,7 +32,7 @@ public class listaDeCompras extends idoso{
 
     @Override
     public String toString() {
-        return "\n------- Lista de Compras -------" +
+        return "\n------- Lista de Desejos -------" +
                 "\nID da lista: " + id_lista +
                 "\nNome da lista: " + nomeLista +
                 "\nData de criação: " + dataCriacao +
@@ -56,6 +48,7 @@ public class listaDeCompras extends idoso{
         this.id_lista = id_lista;
     }
 
+    public idoso getId_idoso(){return id_idoso;}
     public void setId_idoso(idoso id_idoso) {
         this.id_idoso = id_idoso;
     }
@@ -69,14 +62,14 @@ public class listaDeCompras extends idoso{
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public List<String> getItens() { return itens; }
-    public void setItens(List<String> itens) { this.itens = itens; }
+    public List<itens> getItens() { return itens; }
+    public void setItens(List<itens> itens) { this.itens = itens; }
 
-    public void adicionarItem(String item) {
+    public void adicionarItem(itens item) {
         this.itens.add(item);
     }
 
-    public void removerItem(String item) {
+    public void removerItem(itens item) {
         this.itens.remove(item);
     }
 

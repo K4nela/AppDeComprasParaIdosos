@@ -8,7 +8,7 @@ import model.usuario;
 import java.sql.*;
 import java.util.*;
 
-import static view.Menus.menuUpdate;
+import static view.Menus.menuUpdateUsuario;
 
 public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuario> {
 
@@ -59,13 +59,13 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
 
         while (true) {
             try {
-                menuUpdate();
+                menuUpdateUsuario();
                 int opcao = scn.nextInt();
                 scn.nextLine();
 
                 switch (opcao) {
 
-                    case 1://alterando nome de usuario
+                    case 1 -> {//alterando nome de usuario
                         sql = "UPDATE usuario SET nome = ? WHERE id = ?;";
 
                         try {
@@ -78,7 +78,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             super.update(sql, novoNome, id);
 
                             if (novoNome.equals("0")) {
-                                System.out.println("Saindo...");
+                                System.out.println("Voltando...");
                                 return;
                             } else {
                                 System.out.println("Nome alterado com sucesso!");
@@ -88,9 +88,9 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("ERRO! Não foi possível alterar o nome!");
                             e.printStackTrace();
                         }
-                        break;
+                    }
 
-                    case 2://alterando data de nascimento
+                    case 2 -> { //alterando data de nascimento
                         sql = "UPDATE usuario SET data_nasc = ? WHERE id = ?;";
 
                         try {
@@ -106,9 +106,9 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("ERRO! Não foi possível alterar a data de nascimento!");
                             e.printStackTrace();
                         }
-                        break;
+                    }
 
-                    case 3://alterando email
+                    case 3 -> { //alterando email
                         sql = "UPDATE usuario SET email = ? WHERE id = ?;";
 
                         try {
@@ -125,9 +125,9 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("ERRO! Não foi possível alterar o email!");
                             e.printStackTrace();
                         }
-                        break;
+                    }
 
-                    case 4://alterando senha
+                    case 4 -> { //alterando senha
                         sql = "UPDATE usuario SET senha = ? WHERE id = ?;";
 
                         try {
@@ -144,9 +144,9 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("ERRO! Não foi possível alterar a senha!");
                             e.printStackTrace();
                         }
-                        break;
+                    }
 
-                    case 5://alterando endereco
+                    case 5 -> {//alterando endereco
                         sql = "UPDATE usuario SET endereco = ? WHERE id = ?;";
 
                         try {
@@ -162,9 +162,9 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("ERRO! Não foi possível alterar o endereço!");
                             e.printStackTrace();
                         }
-                        break;
+                    }
 
-                    case 6://alterando telefone
+                    case 6 -> { //alterando telefone
                         sql = "UPDATE usuario SET telefone = ? WHERE id = ?;";
 
                         try {
@@ -180,11 +180,12 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("ERRO! Não foi possível alterar o telefone!");
                             e.printStackTrace();
                         }
-                        break;
+                    }
 
-                    case 0:
-                        System.out.println("Saindo...");
+                    case 0 -> {
+                        System.out.println("Voltando...");
                         return;
+                    }
                 }
             } catch (Exception e) {
                 System.out.println("ERRO! Digite apenas números.");
@@ -221,8 +222,8 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
             while (rs.next()) {
 
                 System.out.println(
-                        "\n-------Usuário-------\n" +
-                                "id = " + rs.getInt("id") +
+                                "\n-------Usuário-------" +
+                                "\nid = " + rs.getInt("id") +
                                 "\nnome = " + rs.getString("nome") +
                                 "\ndata de nascimento = " + rs.getDate("data_nasc").toLocalDate() +
                                 "\nemail = " + rs.getString("email") +
@@ -238,29 +239,6 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
             e.printStackTrace();
         }
         return uList;
-    }
-
-    //Desenvolvendo o metodo deletar (usuario)
-    @Override
-    public void delete(int id) {
-        String sql = "DELETE FROM usuario WHERE id = ?";
-
-        try {
-            System.out.println("Tem certeza que deseja excluir este usuário?");
-            System.out.println("[Y/N]");
-            String opcao = scn.nextLine();
-
-            if (Objects.equals(opcao, "Y")) {
-                super.delete(sql, id);
-                System.out.println("Usuário excluído com sucesso!");
-            } else {
-                System.out.println("Voltando...");
-            }
-
-        } catch (SQLException e) {
-            System.out.println("ERRO! Não foi possível deletar o usuário!");
-            e.printStackTrace();
-        }
     }
 
     //Desenvolveno o metoddo para listar por id (usuario)
@@ -317,6 +295,29 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
             e.printStackTrace();
         }
         return usuario;
+    }
+
+    //Desenvolvendo o metodo deletar (usuario)
+    @Override
+    public void delete(int id) {
+        String sql = "DELETE FROM usuario WHERE id = ?";
+
+        try {
+            System.out.println("Tem certeza que deseja excluir este usuário?");
+            System.out.println("[Y/N]");
+            String opcao = scn.nextLine();
+
+            if (Objects.equals(opcao, "Y")) {
+                super.delete(sql, id);
+                System.out.println("Usuário excluído com sucesso!");
+            } else {
+                System.out.println("Voltando...");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("ERRO! Não foi possível deletar o usuário!");
+            e.printStackTrace();
+        }
     }
 
     //Desenvolvendo o metodo para login (usuario)
@@ -487,6 +488,21 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         }
         return usuario;
     }
+
+    public int getIdIdosoByUsuario(int idUsuario) throws SQLException {
+        String sql = "SELECT id_idoso FROM idoso WHERE id_usuario = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idUsuario);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id_idoso"); // retorna o id do idoso
+                } else {
+                    return -1; // não encontrou
+                }
+            }
+        }
+    }
+
 
     public familiar getFamiliarByEmail(String email) throws SQLException {
         usuario u = getByEmailAndTipo(email, "familiar");

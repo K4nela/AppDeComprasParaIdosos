@@ -1,7 +1,7 @@
 package view;
 
 public abstract class Menus {
-    public static void menuUpdate() {
+    public static void menuUpdateUsuario() {
         System.out.println("-------DadosPessoais-------");
         System.out.println("1 - alterar nome");
         System.out.println("2 - alterar data de nascimento");
@@ -14,21 +14,8 @@ public abstract class Menus {
         System.out.printf("Escolha uma opção: ");
     }
 
-        /*
-        Menu beta para teste de métodos CRUD
-         */
-//    public static void menuMain(){
-//        System.out.println("-------Opções-------");
-//        System.out.println("1 - criar usuário");
-//        System.out.println("2 - listar informações");
-//        System.out.println("3 - atualizar dados pessoais");
-//        System.out.println("4 - DELETAR usuário");
-//        System.out.println("0 - Sair");
-//        System.out.printf("Escolha uma opção: ");
-//    }
-
     public static void menuTipoUsuario(){
-        System.out.println("-------Tipo de Usuário-------");
+        System.out.println("-------TipoDeUsuário-------");
         System.out.println("1 - Idoso");
         System.out.println("2 - Familiar");
         System.out.println("3 - Administrador");
@@ -38,7 +25,7 @@ public abstract class Menus {
     }
 
     public static void menuVerUsuarios(){
-        System.out.println("-------Lista de Usuários-------");
+        System.out.println("-------ListaDeUsuários-------");
         System.out.println("1 - Listar todos os usuários");
         System.out.println("2 - Listar usuário por ID");
         System.out.println("0 - Voltar");
@@ -47,7 +34,7 @@ public abstract class Menus {
     }
 
     public static void menuLogin() {
-        System.out.println("--------Tela De Login--------");
+        System.out.println("--------TelaDeLogin--------");
         System.out.println("1 - Entrar");
         System.out.println("2 - Cadastre-se");
         System.out.println("0 - Sair");
@@ -60,7 +47,7 @@ public abstract class Menus {
         System.out.println("1 - Ver perfil");
         System.out.println("2 - Ver lista de desejos");
         System.out.println("3 - Ver idosos");
-        System.out.println("0 - Sair");
+        System.out.println("0 - Voltar");
         System.out.println("------------------");
         System.out.printf("Escolha uma opção: ");
     }
@@ -69,10 +56,38 @@ public abstract class Menus {
         System.out.println("-------Menu-------");
         System.out.println("1 - Ver perfil");
         System.out.println("2 - Ver lista de desejos");
-        System.out.println("3 - Criar lista de desejos");
-        System.out.println("4 - Ver familiares");
-        System.out.println("0 - Sair");
+        System.out.println("3 - Ver familiares");
+        System.out.println("0 - Voltar");
         System.out.println("------------------");
+        System.out.printf("Escolha uma opção: ");
+    }
+
+    public static void menuItem(){
+        System.out.println("---------Itens---------");
+        System.out.println("1 - Cadastrar novo item");
+        System.out.println("2 - Editar item");
+        System.out.println("3 - Excluir item");
+        System.out.println("-----------------------");
+        System.out.printf("Escolha uma opção");
+    }
+
+    public static void menuOpcaoLista(){
+        System.out.println("--------Opções-------");
+        System.out.println("1 - Criar Lista");
+        System.out.println("2 - Ver Listas");
+        System.out.println("3 - Editar Lista");
+        System.out.println("4 - Adicionar Item");
+        System.out.println("0 - Voltar");
+        System.out.println("----------------------");
+        System.out.printf("Escolha uma opção: ");
+    }
+
+    public static void menuUpdateLista(){
+        System.out.println("-------DadosDaLista-------");
+        System.out.println("1 - alterar nome");
+        System.out.println("2 - alterar descrição");
+        System.out.println("0 - Voltar");
+        System.out.println("---------------------------");
         System.out.printf("Escolha uma opção: ");
     }
 
@@ -80,17 +95,17 @@ public abstract class Menus {
         System.out.println("-------Menu-------");
         System.out.println("1 - Ver perfil");
         System.out.println("2 - Gerenciar usuários");
-        System.out.println("0 - Sair");
+        System.out.println("0 - Voltar");
         System.out.println("------------------");
         System.out.printf("Escolha uma opção: ");
     }
 
     public static void menuGerenciarUsuarios(){
-        System.out.println("-------Gerenciar Usuários-------");
+        System.out.println("-------GerenciarUsuários-------");
         System.out.println("1 - Listar usuários");
         System.out.println("2 - Atualizar usuário");
         System.out.println("3 - Deletar usuário");
-        System.out.println("0 - Sair");
+        System.out.println("0 - Voltar");
         System.out.println("-------------------------------");
         System.out.printf("Escolha uma opção: ");
     }
@@ -105,4 +120,3 @@ public abstract class Menus {
         System.out.printf("Escolha uma opção: ");
     }
 }
-//

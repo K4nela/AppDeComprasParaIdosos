@@ -59,16 +59,15 @@ public abstract class CrudDAO<T> implements CrudInterface<T> {
     }
 
     //metodo para mostrar informações
-    public List<T> get (String sql, ResultSetMapper<T> mapper, Object... params) throws SQLException{
-        List<T>  lista = new ArrayList<>();
-
-        try(PreparedStatement psmt = conn.prepareStatement(sql)){
-            for(int i = 0 ; i < params.length; i++ ){
-                psmt.setObject(i + 1, params[i]);
+    public List<T> get(String sql, ResultSetMapper<T> mapper, Object... params) throws SQLException {
+        List<T> lista = new ArrayList<>();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            for (int i = 0; i < params.length; i++) {
+                ps.setObject(i + 1, params[i]);
             }
-            try(ResultSet rlts = psmt.executeQuery()){
-                while(rlts.next()){
-                    lista.add(mapper.map(rlts));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(mapper.map(rs));
                 }
             }
         }

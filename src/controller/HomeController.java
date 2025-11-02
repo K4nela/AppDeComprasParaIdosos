@@ -1,8 +1,8 @@
 package controller;
 
-import dao.UsuarioDAO;
 import model.usuario;
 
+import static controller.ListaDeDesejosController.telaListaDeDesejos;
 import static controller.MonitoraController.listarFamiliares;
 import static controller.MonitoraController.listarIdosos;
 import static controller.UsuarioController.*;
@@ -20,7 +20,7 @@ public final class HomeController {
 	Desenvolvendo a tela Home (tela inicial) do sistema.
 	Onde o usuário poderá acessar as funcionalidades de acordo com seu tipo (idoso, familiar ou administrador)
 	 */
-    public static void telaHome(usuario u, UsuarioDAO opcaoDao, Connection conn) throws Exception {
+    public static void telaHome(usuario u, Connection conn) throws Exception {
         String sql = "SELECT tipo FROM usuario WHERE id = ?";
         Scanner scn = new Scanner(System.in);
         int opcao = 0;
@@ -43,9 +43,8 @@ public final class HomeController {
 
                                 switch (opcao) {
                                     case 1 -> verPerfil(u, conn);
-                                    case 2 -> System.out.println("função ver lista de desejos sendo desenvolvida..."); // implementar
-                                    case 3 -> System.out.println("função criar lista de desejos sendo desenvolvida..."); // implementar
-                                    case 4 -> listarFamiliares(u, conn);
+                                    case 2 -> telaListaDeDesejos(u,conn); // implementar
+                                    case 3 -> listarFamiliares(u, conn);
                                     case 0 -> {
                                         System.out.println("Voltando...");
                                         return;

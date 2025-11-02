@@ -1,6 +1,17 @@
 package view;
 
 public abstract class Menus {
+    public static void menuTipoStatus(){
+        System.out.println("----------Status----------");
+        System.out.println("1 - Pendente");
+        System.out.println("2 - Em andamento");
+        System.out.println("3 - Concluído");
+        System.out.println("4 - Cancelado");
+        System.out.println("0 - Voltar");
+        System.out.println("--------------------------");
+        System.out.printf("Escolha uma opção: ");
+    }
+
     public static void menuUpdateUsuario() {
         System.out.println("-------DadosPessoais-------");
         System.out.println("1 - alterar nome");
@@ -68,6 +79,17 @@ public abstract class Menus {
         System.out.println("2 - Editar item");
         System.out.println("3 - Excluir item");
         System.out.println("-----------------------");
+        System.out.printf("Escolha uma opção");
+    }
+
+    public static void menuEditarItem(){
+        System.out.println("---------EditarItem---------");
+        System.out.println("1 - alterar nome ");
+        System.out.println("2 - alterar descrição ");
+        System.out.println("3 - alterar quantidade");
+        System.out.println("4 - alterar nome da loja ");
+        System.out.println("5 - alterar link ");
+        System.out.println("---------------------------");
         System.out.printf("Escolha uma opção");
     }
 

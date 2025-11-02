@@ -2,11 +2,15 @@ package controller;
 
 import dao.ListaDeDesejosDAO;
 import dao.UsuarioDAO;
+import model.idoso;
 import model.listaDeDesejos;
 import model.usuario;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static view.Menus.menuOpcaoLista;
@@ -43,11 +47,13 @@ public class ListaDeDesejosController {
             if (opcao == 1) {
                 menuOpcaoLista();
                 opcao = scn.nextInt();
+                scn.nextLine();
 
                 switch (opcao) {
                     case 1 -> {
                         System.out.println("Digite [0] para voltar");
                         System.out.println("---------CriandoLista---------");
+
                         System.out.printf("Nome da lista: ");
                         String nomeLista = scn.nextLine();
 
@@ -56,15 +62,15 @@ public class ListaDeDesejosController {
                             return;
                         }
 
-                        System.out.println("Descrição da lista: ");
+                        System.out.printf("Descrição da lista: ");
                         String descricao = scn.nextLine();
 
                         if(descricao.equals("0")){
                             System.out.println("Voltando...");
                             return;
                         }
-
-                        lista = new listaDeDesejos(nomeLista, descricao);
+                        int idIdoso = usuarioDao.getIdIdosoByUsuario(id_idoso);
+                        lista = new listaDeDesejos(idIdoso, nomeLista, descricao);
                         listaDao.save(lista);
                     }
                     case 2 -> listaDao.getByIdIdoso(usuarioDao.getIdIdosoByUsuario(id_idoso));

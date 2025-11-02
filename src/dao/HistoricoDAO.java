@@ -1,85 +1,141 @@
 package dao;
 
 import model.historico;
+import model.status;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class HistoricoDAO {
+import static view.Menus.menuTipoStatus;
+
+//alterar a tabela historico no banco de dados
+public class HistoricoDAO extends CrudDAO<historico> {
     private Connection conn;
 
     public HistoricoDAO(Connection conn) {
+        super(conn);
         this.conn = conn;
     }
 
-    public void insert(historico hist) throws SQLException {
-        String sql = "INSERT INTO historico (data_historico, id_item, id_status) VALUES (?, ?, ?)";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setDate(1, Date.valueOf(hist.getData_historico()));
-        ps.setInt(2, hist.getId_item());
-        ps.setInt(3, hist.getId_status());
-        ps.executeUpdate();
-        ps.close();
+    @Override
+    public void save(historico h) throws SQLException {
+        String sql = "INSERT INTO historico (data_historico, id_item, status) VALUES (?,?,?)";
+
+        try{
+            int idHistorico = super.save(sql,
+                    h.getId_historico(),
+                    h.getData_historico(),
+                    h.getId_item(),
+                    h.getStatus().name()
+            );
+            h.setId_historico(idHistorico);
+            System.out.println("Historico criado com sucesso!");
+        }catch (SQLException e){
+            System.out.println("ERRO! Não foi possível criar o histórico");
+            e.printStackTrace();
+        }
     }
 
-    public List<historico> getAll() throws SQLException {
-        List<historico> listaHist = new ArrayList<>();
-        String sql = "SELECT * FROM historico";
-        Statement ps = conn.createStatement();
-        ResultSet rs = ps.executeQuery(sql);
+    @Override
+    public void update(int id) throws SQLException {
+        String sql = "UPDATE historico SET status = ? WHERE id_historico = ?;";
+        status novoStatus = null;
 
-        while (rs.next()) {
-            historico hist = new historico();
-            hist.setId_histrico(rs.getInt("id_histrico"));
-            hist.setData_historico(rs.getDate("data_historico").toLocalDate());
-            hist.setId_item(rs.getInt("id_item"));
-            hist.setId_status(rs.getInt("id_status"));
-            listaHist.add(hist);
+        while (true) {
+            menuTipoStatus();
+            int opcao = scn.nextInt();
+            scn.nextLine();
+
+            if(opcao == 0){
+                System.out.println("Voltando...");
+                return;
+            }
+
+            switch (opcao) {
+                case 1 -> novoStatus = status.PENDENTE;
+                case 2 -> novoStatus = status.EM_ANDAMENTO;
+                case 3 -> novoStatus = status.CONCLUIDO;
+                case 4 -> novoStatus = status.CANCELADO;
+                case 0 -> {
+                    return;
+                }
+                default -> {
+                    System.out.println("ERRO! Opção inválida");
+                    return;
+                }
+            }
+            super.update(sql, novoStatus.name(), id);
+        }
+    }
+
+    @Override
+    public List<historico> get() throws SQLException {
+        List<historico> historicos = new ArrayList<>();
+        String sql = "SELECT * FROM historico";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                historico h = new historico();
+                h.setId_historico(rs.getInt("id_historico"));
+                h.setId_item(rs.getInt("id_item"));
+                h.setData_historico(rs.getDate("data_historico").toLocalDate());
+                h.setStatus(status.valueOf(rs.getString("status")));
+                historicos.add(h);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("ERRO! Não foi possível listar os históricos!");
+            e.printStackTrace();
         }
 
-        rs.close();
-        ps.close();
-        return listaHist;
+        return historicos;
     }
 
     public historico getById(int id) throws SQLException {
-        String sql = "SELECT * FROM historico WHERE id_histrico = ?";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
+        historico h = null;
+        String sql = "SELECT * FROM historico WHERE id_historico = ?";
 
-        historico hist = null;
-
-        if (rs.next()) {
-            hist = new historico();
-            hist.setId_histrico(rs.getInt("id_histrico"));
-            hist.setData_historico(rs.getDate("data_historico").toLocalDate());
-            hist.setId_item(rs.getInt("id_item"));
-            hist.setId_status(rs.getInt("id_status"));
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    h = new historico();
+                    h.setId_historico(rs.getInt("id_historico"));
+                    h.setId_item(rs.getInt("id_item"));
+                    h.setData_historico(rs.getDate("data_historico").toLocalDate());
+                    h.setStatus(status.valueOf(rs.getString("status")));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("ERRO! Não foi possível buscar o histórico por ID!");
+            e.printStackTrace();
         }
 
-        rs.close();
-        ps.close();
-        return hist;
+        return h;
     }
 
-    public void update(historico hist) throws SQLException {
-        String sql = "UPDATE historico SET data_historico=?, id_item=?, id_status=? WHERE id_histrico=?";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setDate(1, Date.valueOf(hist.getData_historico()));
-        ps.setInt(2, hist.getId_item());
-        ps.setInt(3, hist.getId_status());
-        ps.setInt(4, hist.getId_histrico());
-        ps.executeUpdate();
-        ps.close();
-    }
-
+    @Override
     public void delete(int id) throws SQLException {
-        String sql = "DELETE FROM historico WHERE id_histrico=?";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setInt(1, id);
-        ps.executeUpdate();
-        ps.close();
+        String sql = "DELETE FROM historico WHERE id_historico=?";
+        try{
+            System.out.println("Tem certeza que deseja excluir o historico?");
+            System.out.println("[Y/N]");
+            String opcao = scn.nextLine();
+
+            if(Objects.equals(opcao, "Y") || Objects.equals(opcao, "y")){
+                super.update(sql, id);
+                System.out.println("Historico excluído com sucesso!");
+            }else{
+                System.out.println("Voltando...");
+            }
+        }catch (SQLException e){
+            System.out.println("ERRO! Não foi possível deletar o historico!");
+            e.printStackTrace();
+        }
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class listaDeDesejos{
     private int id_lista;
-    private idoso id_idoso;
+    private int id_idoso;
     private String nomeLista;
     private LocalDate dataCriacao;
     private String descricao;
@@ -16,28 +16,26 @@ public class listaDeDesejos{
         this.itens = new ArrayList<>();
     }
 
-    public listaDeDesejos(String descricao, String nomeLista) {
+    public listaDeDesejos(int id_idoso, String descricao, String nomeLista) {
+        this.id_idoso = id_idoso;
         this.descricao = descricao;
+        this.dataCriacao = LocalDate.now();
         this.nomeLista = nomeLista;
     }
 
-    public listaDeDesejos(int id_lista, idoso id_idoso, String nomeLista, LocalDate dataCriacao, String descricao, List<itens> itens) {
-        this.id_lista = id_lista;
+    public listaDeDesejos(int id_idoso, String nomeLista, LocalDate dataCriacao, String descricao) {
         this.id_idoso = id_idoso;
         this.nomeLista = nomeLista;
         this.dataCriacao = dataCriacao;
         this.descricao = descricao;
-        this.itens = itens;
     }
 
     @Override
     public String toString() {
-        return "\n------- Lista de Desejos -------" +
-                "\nID da lista: " + id_lista +
+        return  "\n------- Lista de Desejos -------" +
                 "\nNome da lista: " + nomeLista +
                 "\nData de criação: " + dataCriacao +
                 "\nObservações: " + descricao +
-                "\nItens: " + itens +
                 "\n-------------------------------";
     }
 
@@ -48,8 +46,8 @@ public class listaDeDesejos{
         this.id_lista = id_lista;
     }
 
-    public idoso getId_idoso(){return id_idoso;}
-    public void setId_idoso(idoso id_idoso) {
+    public int getId_idoso(){return id_idoso;}
+    public void setId_idoso(int id_idoso) {
         this.id_idoso = id_idoso;
     }
 

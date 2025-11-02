@@ -72,18 +72,14 @@ public class MonitoraDAO extends CrudDAO<monitora> {
     //Lista os idosos associados a um determinado familiar.
     public List<usuario> getById(int idFamiliar) {
         List<usuario> idosos = new ArrayList<>();
-        // O parâmetro recebido normalmente é o id do usuário (usuario.id) do familiar.
-        // Fazer JOIN para localizar o id_usuario dos idosos associados.
-        String sql = "SELECT i.id_usuario AS id_usuario "
-                + "FROM monitora m "
-                + "JOIN familiar f ON m.id_familiar = f.id_familiar "
-                + "JOIN idoso i ON m.id_idoso = i.id_idoso "
-                + "WHERE f.id_usuario = ?";
+        String sql = "SELECT i.id_usuario AS id_usuario FROM monitora m  JOIN familiar f ON m.id_familiar = f.id_familiar JOIN idoso i ON m.id_idoso = i.id_idoso WHERE f.id_usuario = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, idFamiliar); // idFamiliar aqui é o id do usuário do familiar
+            ps.setInt(1, idFamiliar);
+
             try (ResultSet rs = ps.executeQuery()) {
                 UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
+
                 while (rs.next()) {
                     int idUsuario = rs.getInt("id_usuario");
                     usuario u = usuarioDAO.getById(idUsuario);
@@ -96,29 +92,6 @@ public class MonitoraDAO extends CrudDAO<monitora> {
         }
 
         return idosos;
-    }
-
-    //Metodo para listar de acordo com o tipo de usuario
-    public List<usuario> getByTipo(int familiar, int idIdoso) {
-        // se 'familiar' for 1, entendemos que listamos familiares do idoso; caso contrário, listamos idosos do familiar
-        if (familiar == 1) return getByFm(idIdoso);
-        return getById(familiar);
-    }
-
-    //Metodo para retornar id de acordo com o email
-    public static int getIdByEmail(Connection conn, String email) throws Exception {
-        String sql = "SELECT i.id_idoso FROM idoso i JOIN usuario u ON i.fk_usuario = u.fk_usuario WHERE u.email = ? ";
-        try(PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setString(1, email);
-
-            try(ResultSet rs = ps.executeQuery()){
-                if(rs.next()){
-                    return rs.getInt("id_idoso");
-                }else{
-                    return -1;
-                }
-            }
-        }
     }
 
     //Salva o vinculo entre usuarios
@@ -137,12 +110,6 @@ public class MonitoraDAO extends CrudDAO<monitora> {
             System.out.println("ERRO! Não foi possível associar familiar e idoso: " + e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    //Desenvolvendo...
-    @Override
-    public void update(int id) throws SQLException {
-        System.out.println("Desenvolvendo...");
     }
 
     //Lista todas os vinculos entre usuarios
@@ -176,6 +143,10 @@ public class MonitoraDAO extends CrudDAO<monitora> {
             System.out.println("ERRO! Não foi possível remover a associação: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void update(int id) throws SQLException {
     }
 }
 

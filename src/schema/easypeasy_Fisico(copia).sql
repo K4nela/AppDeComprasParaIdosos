@@ -86,30 +86,22 @@ CREATE TABLE itens (
     ( 3, 'Chinelo Ortopedico', 'Chinelo tamanho 40', 1, 'Loja Calçados', 'https://shein.com'),
     ( 4, 'Samgsung A15', 'Modelo 5G', 1, 'Loja Tech', 'https://mercadolivre.com');
 
-CREATE TABLE status (
-    id_status INT AUTO_INCREMENT PRIMARY KEY,
-    status_item ENUM ('Pendente', 'Em andamento', 'Concluído', 'Cancelado') NOT NULL
-);
-    INSERT INTO status (status_item) VALUES
-    ('Pendente'),
-    ('Em andamento'),
-    ('Concluído'),
-    ('Cancelado');
 
 CREATE TABLE historico (
     id_historico INT AUTO_INCREMENT PRIMARY KEY,
     data_historico DATE NOT NULL,
+    status ENUM ('Pendente', 'Em andamento', 'Concluído', 'Cancelado') NOT NULL,
     id_item INT NULL,
     id_status INT,
     FOREIGN KEY (id_item) REFERENCES itens (id_item) ON DELETE SET NULL,
     FOREIGN KEY (id_status) REFERENCES status(id_status)
 );
 
-    INSERT INTO historico(id_item, id_status, data_historico)VALUES
-    (1,1,CURDATE()),
-    (2,1,CURDATE()),
-    (3,1,CURDATE()),
-    (4,1,CURDATE());
+    INSERT INTO historico(id_item, id_status, data_historico, status)VALUES
+    (1,1,CURDATE(), 'Pendente'),
+    (2,1,CURDATE(), 'Pendente'),
+    (3,1,CURDATE(), 'Pendente'),
+    (4,1,CURDATE(), 'Pendente');
 
 
 -- -- Modificando com SELECT e UPDATE--

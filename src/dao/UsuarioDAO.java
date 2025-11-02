@@ -214,26 +214,54 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
     @Override
     public List<usuario> get() {
         List<usuario> uList = new ArrayList<>();
-        String sql = "SELECT * FROM usuario ";
+        String sql = "SELECT * FROM usuario";
 
         try (PreparedStatement ps = super.conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
+                String tipo = rs.getString("tipo");
+                usuario u = null;
 
-                System.out.println(
-                                "\n-------Usuário-------" +
-                                "\nid = " + rs.getInt("id") +
-                                "\nnome = " + rs.getString("nome") +
-                                "\ndata de nascimento = " + rs.getDate("data_nasc").toLocalDate() +
-                                "\nemail = " + rs.getString("email") +
-                                "\nsenha = " + rs.getString("senha") +
-                                "\nendereço = " + rs.getString("endereco") +
-                                "\ntelefone = " + rs.getString("telefone") +
-                                "\ntipo = " + rs.getString("tipo") +
-                                "\n--------------------"
-                );
+                switch (tipo) {
+                    case "idoso" -> u = new idoso(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getDate("data_nasc").toLocalDate(),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("endereco"),
+                            rs.getString("telefone"),
+                            rs.getString("tipo")
+                    );
+                    case "familiar" -> u = new familiar(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getDate("data_nasc").toLocalDate(),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("endereco"),
+                            rs.getString("telefone"),
+                            rs.getString("tipo")
+                    );
+                    case "administrador" -> u = new administrador(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getDate("data_nasc").toLocalDate(),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("endereco"),
+                            rs.getString("telefone"),
+                            rs.getString("tipo")
+                    );
+                }
+
+                if (u != null) {
+                    uList.add(u);
+                    System.out.println(u);
+                }
             }
+
         } catch (SQLException e) {
             System.out.println("ERRO! Não foi possível listar a tabela usuário!");
             e.printStackTrace();
@@ -503,6 +531,26 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         }
     }
 
+    public idoso getIdosoByUsuarioId(int idUsuario) throws SQLException {
+        String sql = "SELECT * FROM idoso WHERE id_usuario = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idUsuario);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    idoso i = new idoso();
+                    i.setId(rs.getInt("id_idoso"));
+                    i.setNome(rs.getString("nome"));
+                    i.setDataNasc(rs.getDate("data_nascimento").toLocalDate());
+                    // adiciona o resto dos campos se tiver mais
+                    return i;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar idoso pelo id do usuário!");
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public familiar getFamiliarByEmail(String email) throws SQLException {
         usuario u = getByEmailAndTipo(email, "familiar");
@@ -668,5 +716,4 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         // caso contrário retorna o id do usuário
         return generatedId != -1 ? generatedId : idUsuario;
     }
-
 }

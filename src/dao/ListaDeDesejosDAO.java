@@ -17,11 +17,11 @@ public class ListaDeDesejosDAO extends CrudDAO<listaDeDesejos> {
 
     @Override
     public void save(listaDeDesejos lista) throws SQLException {
-        String sql = "INSERT INTO listadedesejos (id_idoso, nome, dataCriacao, descricao) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO listadedesejos (id_idoso, nome_lista, data_solicitacao, descricao) VALUES (?, ?, ?, ?)";
 
         try{
           int idLista = super.save( sql,
-                  lista.getId_idoso().getId(),
+                  lista.getId_idoso(),
                   lista.getNomeLista(),
                   lista.getDataCriacao(),
                   lista.getDescricao()
@@ -48,9 +48,9 @@ public class ListaDeDesejosDAO extends CrudDAO<listaDeDesejos> {
                 switch (opcao){
                     case 1 -> {
                         try {
-                            sql = "UPDATE listadedesejos SET nome = ? WHERE id_lista = ?";
+                            sql = "UPDATE listadedesejos SET nome_lista = ? WHERE id_lista = ?";
                             System.out.println("Digite [0] para sair.");
-                            System.out.printf("Digite o novo nome da lista: ");
+                            System.out.printf("Digite o novo nome_lista da lista: ");
                             String novoNome = scn.nextLine();
 
                             super.update(sql, novoNome, id);
@@ -62,7 +62,7 @@ public class ListaDeDesejosDAO extends CrudDAO<listaDeDesejos> {
                                 System.out.println("Nome alterado com sucesso!");
                             }
                         }catch (SQLException e ){
-                            System.out.println("ERRO! Não foi possível alterar o nome!");
+                            System.out.println("ERRO! Não foi possível alterar o nome_lista!");
                             e.printStackTrace();
                         }
                     }
@@ -96,61 +96,30 @@ public class ListaDeDesejosDAO extends CrudDAO<listaDeDesejos> {
     }
 
     @Override
-    public List<listaDeDesejos> get() throws SQLException {
+
+    public List<listaDeDesejos> get() {
         List<listaDeDesejos> listas = new ArrayList<>();
         String sql = "SELECT * FROM listadedesejos";
 
-        try(PreparedStatement ps = super.conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery()){
-
-            if (!rs.isBeforeFirst()) { // checa se não tem nenhum registro
-                System.out.println("Nenhuma lista de desejos encontrada!");
-                return null;
-            }
+        try (PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                System.out.println(
-                                "\n-----------Lista De Desejos-----------" +
-                                "\nnome: " + rs.getString("nome") +
-                                "\ndata de criação: " + rs.getDate("dataCriacao").toLocalDate() +
-                                "\ndescrição: " + rs.getString("descricao") +
-                                "\n----------------------------------------"
-                );
+                listaDeDesejos lista = new listaDeDesejos();
+                lista.setId_lista(rs.getInt("id_lista"));
+                lista.setNomeLista(rs.getString("nome_lista"));
+                lista.setDataCriacao(rs.getDate("data_solicitacao").toLocalDate());
+                lista.setDescricao(rs.getString("descricao"));
+                lista.setId_idoso(rs.getInt("id_idoso"));
+                listas.add(lista);
             }
-        }catch (SQLException e){
-            System.out.println("ERRO! Não foi possível listar a lista de Desejos");
+
+        } catch (SQLException e) {
+            System.out.println("ERRO! Não foi possível listar as listas de desejos!");
             e.printStackTrace();
         }
+
         return listas;
-    }
-
-    public listaDeDesejos getById(int id) throws SQLException {
-        String sql = "SELECT * FROM listadedesejos WHERE id_lista = ?";
-        listaDeDesejos lista = null;
-
-        try(PreparedStatement ps = conn.prepareStatement(sql);) {
-            ps.setInt(1, id);
-            try(ResultSet rs = ps.executeQuery();) {
-
-                if (!rs.isBeforeFirst()) { // checa se não tem nenhum registro
-                    System.out.println("Nenhuma lista de desejos encontrada!");
-                    return null;
-                }
-
-                if (rs.next()) {
-                    lista = new listaDeDesejos();
-                    lista.setNomeLista(rs.getString("nome"));
-                    lista.setDataCriacao(rs.getDate("dataCriacao").toLocalDate());
-                    lista.setDescricao(rs.getString("descricao"));
-                }
-            }
-            return lista;
-
-        }catch (SQLException e){
-            System.out.println("ERRO! Não foi possível listar a lista de Desejos atraves do id da lista");
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public List<listaDeDesejos> getByIdIdoso(int id) throws SQLException {
@@ -169,8 +138,8 @@ public class ListaDeDesejosDAO extends CrudDAO<listaDeDesejos> {
             while (rs.next()) {
                 System.out.println(
                         "\n-----------Lista De Desejos-----------" +
-                        "\nnome: " + rs.getString("nome") +
-                        "\ndata de criação: " + rs.getDate("dataCriacao").toLocalDate() +
+                        "\nnome_lista: " + rs.getString("nome_lista") +
+                        "\ndata de criação: " + rs.getDate("data_solicitacao").toLocalDate() +
                         "\ndescrição: " + rs.getString("descricao") +
                         "\n----------------------------------------"
                 );

@@ -9,6 +9,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import static view.Menus.menuPerfil;
+import static view.Listas.telaUsuarios;
 
 public final class LoginController {
 
@@ -86,7 +87,7 @@ public final class LoginController {
                     opcao = scn.nextInt();
 
                     switch (opcao){
-                        case 1 -> System.out.println(UsuarioDAO.getById(id));
+                        case 1 -> telaUsuarios(u);
                         case 2 -> UsuarioDAO.update(id);
                         case 3 -> {
                             UsuarioDAO.delete(id);

@@ -30,11 +30,6 @@ public class idoso extends usuario {
     public idoso(String nome, String eMail, String senha, String endereco, String telefone) {
     }
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
     public int getId_idoso() {
         return id_idoso;
     }

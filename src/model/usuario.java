@@ -1,5 +1,6 @@
 package model;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public abstract class usuario {
     public Object getTipo;
@@ -43,19 +44,6 @@ public abstract class usuario {
         this.tipo = "";
     }
 
-    @Override
-    public String toString() {
-        return  "\n-------Usuário-------" +
-                "\nid = " + id +
-                "\nnome = " + nome +
-                "\ndata de nascimento = " + dataNasc +
-                "\nemail = " + e_mail +
-                "\nendereço = " + endereco +
-                "\ntelefone = " + telefone +
-                "\ntipo = " + tipo +
-                "\n--------------------";
-    }
-
     public String getTipo() {
         return tipo;
     }
@@ -80,8 +68,10 @@ public abstract class usuario {
         this.nome = nome;
     }
 
-    public LocalDate getDataNasc() {
-        return dataNasc;
+    public String getDataNasc() {
+        DateTimeFormatter formatado = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dataFormatada = dataNasc.format(formatado);
+        return dataFormatada;
     }
 
     public void setDataNasc(LocalDate dataNasc) {

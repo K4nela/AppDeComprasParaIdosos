@@ -7,12 +7,10 @@ import model.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-import static view.Menus.menuTipoStatus;
-import static view.ToStrings.exibirListasDeDesejos;
+import static view.Listas.exibirListasDeDesejos;
 import static view.Menus.menuOpcaoLista;
 
 public class ListaDeDesejosController {
@@ -100,6 +98,46 @@ public class ListaDeDesejosController {
         }
     }
 
+//    public static void telaListasDeDesejosPorFamiliar(usuario u, Connection conn) throws SQLException {
+//        UsuarioDAO usuarioDao = new UsuarioDAO(conn);
+//        ListaDeDesejosDAO listaDao = new ListaDeDesejosDAO(conn);
+//        itemDAO itemDao = new itemDAO(conn);
+//        HistoricoDAO historicoDao = new HistoricoDAO(conn);
+//        MonitoraDAO monitoraDAO = new MonitoraDAO(conn);
+//        Scanner scn = new Scanner(System.in);
+//        idoso uIdoso = null;
+//
+//        // Pega o familiar logado
+//        familiar fam = usuarioDao.getFamiliarByEmail(u.getE_mail());
+//
+//        // Pega os idosos vinculados
+//        List<usuario> idosos = monitoraDAO.getById(fam.getId());
+//
+//        // Itera pelos idosos
+//        List<Integer> idsIdosos = monitoraDAO.getIdososByFamiliar(u.getId());
+//
+//        if (idsIdosos.isEmpty()) {
+//            System.out.println("ERRO! Nenhum idoso vinculado ao familiar " + fam.getNome());
+//        } else {
+//            for (int idIdoso : idsIdosos) {
+//                exibirListasDeDesejos(idIdoso, usuarioDao, itemDao, listaDao);
+//            }
+//        }
+//
+//
+//        // Pergunta se quer alterar status de algum item
+//        System.out.println("\nDeseja alterar o status de algum item? [S/N]");
+//        String opcao = scn.nextLine();
+//
+//        if (opcao.equalsIgnoreCase("S")) {
+//            System.out.print("Digite o ID do item: ");
+//            int idItem = scn.nextInt();
+//            scn.nextLine();
+//
+//            historicoDao.update(idItem);
+//        }
+//    }
+
     public static void telaListasDeDesejosPorFamiliar(usuario u, Connection conn) throws SQLException {
         UsuarioDAO usuarioDao = new UsuarioDAO(conn);
         ListaDeDesejosDAO listaDao = new ListaDeDesejosDAO(conn);
@@ -107,7 +145,6 @@ public class ListaDeDesejosController {
         HistoricoDAO historicoDao = new HistoricoDAO(conn);
         MonitoraDAO monitoraDAO = new MonitoraDAO(conn);
         Scanner scn = new Scanner(System.in);
-        idoso uIdoso = null;
 
         // Pega o familiar logado
         familiar fam = usuarioDao.getFamiliarByEmail(u.getE_mail());
@@ -115,17 +152,39 @@ public class ListaDeDesejosController {
         // Pega os idosos vinculados
         List<usuario> idosos = monitoraDAO.getById(fam.getId());
 
-        // Itera pelos idosos
-        List<Integer> idsIdosos = monitoraDAO.getIdososByFamiliar(u.getId());
+        boolean algumTemLista = false;
 
-        if (idsIdosos.isEmpty()) {
-            System.out.println("ERRO! Nenhum idoso vinculado ao familiar " + fam.getNome());
-        } else {
-            for (int idIdoso : idsIdosos) {
-                exibirListasDeDesejos(idIdoso, usuarioDao, itemDao, listaDao);
+        // Itera pelos idosos
+        for (usuario uIdoso : idosos) {
+            int idIdoso = usuarioDao.getIdIdosoByUsuario(uIdoso.getId());
+
+            List<listaDeDesejos> listas = listaDao.getByIdIdoso(idIdoso);
+            if (listas == null || listas.isEmpty()) {
+                System.out.println("===== Idoso: " + uIdoso.getNome() + " =====");
+                System.out.println("Nenhuma lista de desejos encontrada!\n");
+                continue;
             }
+
+            algumTemLista = true;
+            System.out.println("===== Idoso: " + uIdoso.getNome() + " =====");
+            for (listaDeDesejos lista : listas) {
+                System.out.println("\n------- Lista: " + lista.getNomeLista() + " -------");
+                List<item> itens = itemDao.getByLista(lista.getId_lista());
+
+                if (itens.isEmpty()) {
+                    System.out.println("Nenhum item adicionado ainda!");
+                } else {
+                    for (item it : itens) {
+                        System.out.println("ID: " + it.getId_item() + " | " + it.getNome_item() + " | Status: " + it.getStatus());
+                    }
+                }
+            }
+            System.out.println(); // quebra de linha entre idosos
         }
 
+        if (!algumTemLista) {
+            System.out.println("Nenhuma lista de desejos encontrada para os idosos vinculados.");
+        }
 
         // Pergunta se quer alterar status de algum item
         System.out.println("\nDeseja alterar o status de algum item? [S/N]");

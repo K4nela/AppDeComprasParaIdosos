@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 import static view.Menus.menuItem;
-import static view.ToStrings.exibirListaDeDesejosById;
+import static view.Listas.exibirListaDeDesejosById;
 
 public class ItemListaController {
 

@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,17 +35,6 @@ public class listaDeDesejos{
         this.item.add((item) item);
     }
 
-    @Override
-    public String toString() {
-        return  "\n------- Lista de Desejos -------" +
-                "\nid: " + id_lista +
-                "\nNome da lista: " + nomeLista +
-                "\nData de criação: " + dataCriacao +
-                "\nObservações: " + descricao +
-                "\n-------------------------------" +
-                "\n" + item;
-    }
-
     public int getId_lista() {
         return id_lista;
     }
@@ -60,7 +50,12 @@ public class listaDeDesejos{
     public String getNomeLista() { return nomeLista; }
     public void setNomeLista(String nomeLista) { this.nomeLista = nomeLista; }
 
-    public LocalDate getDataCriacao() { return dataCriacao; }
+    public String getDataCriacao() {
+        DateTimeFormatter formatado = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dataFormatada = dataCriacao.format(formatado);
+        return dataFormatada;
+    }
+
     public void setDataCriacao(LocalDate dataCriacao) { this.dataCriacao = dataCriacao; }
 
     public String getDescricao() { return descricao; }

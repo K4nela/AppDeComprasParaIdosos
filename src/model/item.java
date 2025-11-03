@@ -17,7 +17,6 @@ public class item {
     public item() {
     }
 
-    //Construror base
     public item(List<historico> historicos) {
         this.historicos = historicos;
     }
@@ -41,7 +40,6 @@ public class item {
         this.link = link;
     }
 
-    //Construtor com todos os campos (menos id)
     public item(String nome_item, String descricao, int quantidade, String nome_loja, String link, status status) {
         this.nome_item = nome_item;
         this.descricao = descricao;
@@ -49,19 +47,6 @@ public class item {
         this.nome_loja = nome_loja;
         this.link = link;
         this.status = status;
-    }
-
-
-    @Override
-    public String toString() {
-        return  "\n------- Item -------" +
-                "\nNome do item: " + nome_item +
-                "\nDescrição: " + descricao +
-                "\nQuantidade: " + quantidade +
-                "\nNome da loja: " + nome_loja +
-                "\nLink: " + link +
-                "\nStatus: " + historicos +
-                "\n--------------------";
     }
 
     // Getters e Setters

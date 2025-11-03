@@ -94,6 +94,36 @@ public class MonitoraDAO extends CrudDAO<monitora> {
         return idosos;
     }
 
+    public List<Integer> getIdososByFamiliarId(int idFamiliar) throws SQLException {
+        List<Integer> ids = new ArrayList<>();
+        String sql = "SELECT id_idoso FROM monitora WHERE id_familiar = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idFamiliar);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    ids.add(rs.getInt("id_idoso"));
+                }
+            }
+        }
+        return ids;
+    }
+
+    // No MonitoraDAO
+    public List<Integer> getUsuarioIdsByFamiliar(int idFamiliar) throws SQLException {
+        List<Integer> usuarioIds = new ArrayList<>();
+        String sql = "SELECT i.id_usuario FROM monitora m JOIN idoso i ON m.id_idoso = i.id_idoso WHERE m.id_familiar = ?;";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idFamiliar);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    usuarioIds.add(rs.getInt("id_usuario"));
+                }
+            }
+        }
+        return usuarioIds;
+    }
+
+
     public int getIdIdosoByFamiliar(int idFamiliar) throws SQLException {
         String sql = "SELECT id_idoso FROM monitora WHERE id_familiar = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -121,8 +151,6 @@ public class MonitoraDAO extends CrudDAO<monitora> {
         }
         return idsIdosos;
     }
-
-
 
     //Salva o vinculo entre usuarios
     @Override

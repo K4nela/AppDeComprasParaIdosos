@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class historico {
@@ -50,8 +51,10 @@ public class historico {
         this.id_historico = id_historico;
     }
 
-    public LocalDate getData_historico() {
-        return data_historico;
+    public String getData_historico() {
+        DateTimeFormatter formatado = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dataFormatada = data_historico.format(formatado);
+        return dataFormatada;
     }
 
     public void setData_historico(LocalDate data_historico) {

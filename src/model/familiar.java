@@ -14,11 +14,6 @@ public class familiar extends usuario{
         super(nome, dataNasc, e_mail, senha, endereco, telefone, "familiar");
     }
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
     public int getId_familiar() {
         return id_familiar;
     }

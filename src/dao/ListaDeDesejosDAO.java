@@ -134,7 +134,7 @@ public class ListaDeDesejosDAO extends CrudDAO<listaDeDesejos> {
 
             if (!rs.isBeforeFirst()) { // checa se não tem nenhum registro
                 System.out.println("Nenhuma lista de desejos encontrada!");
-                return null;
+                return lista;
             }
 
             while (rs.next()) {
@@ -156,6 +156,7 @@ public class ListaDeDesejosDAO extends CrudDAO<listaDeDesejos> {
         String sql = "SELECT * FROM listadedesejos WHERE id_idoso = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 

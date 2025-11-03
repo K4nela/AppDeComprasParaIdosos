@@ -7,8 +7,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import static view.Menus.*;
-import static view.ToStrings.exibirListaUsuarios;
-import static view.ToStrings.exibirUsuarioPorId;
+import static view.Listas.exibirListaUsuarios;
+import static view.Listas.exibirUsuarioPorId;
 
 public class UsuarioController {
 

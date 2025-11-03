@@ -13,9 +13,7 @@ import static view.Listas.telaUsuarios;
 
 public final class LoginController {
 
-    /*
-    Desenvolvendo função para realizar login no sistema através do email e senha.
-     */
+    //Desenvolvendo função para realizar login no sistema através do email e senha.
     public static usuario telaLogin() throws Exception {
         Scanner scn = new Scanner(System.in);
         Connection conn = Conexao.createConnectionToMySQL();
@@ -31,7 +29,7 @@ public final class LoginController {
             System.out.print("email: ");
             String email = scn.nextLine();
 
-            if(email.equals("0")){
+            if (email.equals("0")) {
                 System.out.println("Voltando...");
                 System.out.println("-----------------------------");
                 return null;
@@ -40,7 +38,7 @@ public final class LoginController {
             System.out.print("Senha: ");
             String senha = scn.nextLine();
 
-            if(senha.equals("0")){
+            if (senha.equals("0")) {
                 System.out.println("Voltando...");
                 System.out.println("-----------------------------");
                 return null;
@@ -56,15 +54,15 @@ public final class LoginController {
                 System.out.println("-----------------------------");
                 return usuario;
 
-            }else if( usuarioEmail == null && usuarioSenha == null) {
+            } else if (usuarioEmail == null && usuarioSenha == null) {
                 System.out.println("ERRO! Email não cadastrado.");
                 System.out.println("-----------------------------");
 
-            } else if ( usuarioEmail != null && usuarioSenha == null) {
+            } else if (usuarioEmail != null && usuarioSenha == null) {
                 System.out.println("ERRO! Senha incorreta.");
                 System.out.println("-----------------------------");
 
-            }else{
+            } else {
                 System.out.println("ERRO! Email incorreto.");
                 System.out.println("-----------------------------");
             }
@@ -72,39 +70,37 @@ public final class LoginController {
         return usuario;
     }
 
-    /*
-    Desenvolvendo função para ver perfil do usuário logado
-     */
-    public static usuario verPerfil(usuario u, Connection conn){
-            Scanner scn = new Scanner(System.in);
-            UsuarioDAO UsuarioDAO = new UsuarioDAO(conn);
-            int id = u.getId();
-            int opcao = -1;
+    //Desenvolvendo função para ver perfil do usuário logado
+    public static usuario verPerfil(usuario u, Connection conn) {
+        Scanner scn = new Scanner(System.in);
+        UsuarioDAO UsuarioDAO = new UsuarioDAO(conn);
+        int id = u.getId();
+        int opcao = -1;
 
-            while (true){
-                try{
-                    menuPerfil();
-                    opcao = scn.nextInt();
+        while (true) {
+            try {
+                menuPerfil();
+                opcao = scn.nextInt();
 
-                    switch (opcao){
-                        case 1 -> telaUsuarios(u);
-                        case 2 -> UsuarioDAO.update(id);
-                        case 3 -> {
-                            UsuarioDAO.delete(id);
-                            return null;
-                        }
-                        case 0 -> {
-                            System.out.println("Voltando...");
-                            return u;
-                        }
-                        default -> System.out.println("Opção inválida!");
+                switch (opcao) {
+                    case 1 -> telaUsuarios(u);
+                    case 2 -> UsuarioDAO.update(id);
+                    case 3 -> {
+                        UsuarioDAO.delete(id);
+                        return null;
                     }
-
-                }catch (InputMismatchException e){
-                    System.out.println("ERRO! Digite apenas números");
-                    scn.nextLine();
+                    case 0 -> {
+                        System.out.println("Voltando...");
+                        return u;
+                    }
+                    default -> System.out.println("Opção inválida!");
                 }
 
+            } catch (InputMismatchException e) {
+                System.out.println("ERRO! Digite apenas números");
+                scn.nextLine();
             }
+
         }
+    }
 }

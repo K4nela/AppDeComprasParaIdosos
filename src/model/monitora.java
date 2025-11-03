@@ -12,17 +12,6 @@ public class monitora {
 
     public monitora() {}
 
-    public monitora(int id_monitora, int id_familiar, int id_idoso) {
-        this.id_monitora = id_monitora;
-        this.id_familiar = id_familiar;
-        this.id_idoso = id_idoso;
-    }
-
-    public monitora(int id_familiar, int id_idoso) {
-        this.id_familiar = id_familiar;
-        this.id_idoso = id_idoso;
-    }
-
     public int getId() {
         return id_monitora;
     }

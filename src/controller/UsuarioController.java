@@ -13,17 +13,17 @@ import static view.Listas.exibirUsuarioPorId;
 public class UsuarioController {
 
     //Desenvolvendo função para gerenciar usuários do sistema (função para Administradores)
-    public static final void gerenciarUsuarios(Connection conn){
+    public static final void gerenciarUsuarios(Connection conn) {
         Scanner scn = new Scanner(System.in);
         UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
         int opcao = -1;
 
-        while (true){
-            try{
+        while (true) {
+            try {
                 menuGerenciarUsuarios();
                 opcao = scn.nextInt();
 
-                switch (opcao){
+                switch (opcao) {
                     case 1 -> VerUsuarios(conn);
                     case 2 -> {
                         System.out.println("Digite [0] para voltar");
@@ -34,7 +34,7 @@ public class UsuarioController {
                         usuarioDAO.update(id);
 
 
-                        if(id == 0){
+                        if (id == 0) {
                             System.out.println("Voltando...");
                             return;
                         }
@@ -47,7 +47,7 @@ public class UsuarioController {
                         int id = scn.nextInt();
                         usuarioDAO.delete(id);
 
-                        if(id == 0){
+                        if (id == 0) {
                             System.out.println("Voltando...");
                             return;
                         }
@@ -59,7 +59,7 @@ public class UsuarioController {
                     default -> System.out.println("Opção inválida!");
                 }
 
-            }catch (InputMismatchException e){
+            } catch (InputMismatchException e) {
                 System.out.println("ERRO! Digite apenas números");
                 scn.nextLine();
             }
@@ -69,18 +69,18 @@ public class UsuarioController {
     }
 
     //Desenvolvendo função para ver usuários do sistema (função para Administradores)
-    public static final void VerUsuarios(Connection conn){
+    public static final void VerUsuarios(Connection conn) {
         Scanner scn = new Scanner(System.in);
         UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
         int opcao = -1;
 
-        while (true){
-            try{
+        while (true) {
+            try {
                 menuVerUsuarios();
                 opcao = scn.nextInt();
                 scn.nextLine();
 
-                switch (opcao){
+                switch (opcao) {
                     case 1 -> exibirListaUsuarios(usuarioDAO);
                     case 2 -> {
                         System.out.print("Digite o ID do usuário: ");
@@ -94,7 +94,7 @@ public class UsuarioController {
                     default -> System.out.println("Opção inválida!");
                 }
 
-            }catch (InputMismatchException e){
+            } catch (InputMismatchException e) {
                 System.out.println("ERRO! Digite apenas números");
                 scn.nextLine();
             }

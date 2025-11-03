@@ -3,7 +3,7 @@ package controller;
 import model.usuario;
 
 import static controller.ListaDeDesejosController.telaListaDeDesejos;
-import static controller.ListaDeDesejosController.telaListasDeDesejosPorFamiliar;
+import static controller.ListaDeDesejosController.verListasDeIdosos;
 import static controller.MonitoraController.listarFamiliares;
 import static controller.MonitoraController.listarIdosos;
 import static controller.UsuarioController.*;
@@ -68,7 +68,7 @@ public final class HomeController {
 
                                 switch (opcao) {
                                     case 1 -> verPerfil(u, conn);
-                                    case 2 -> telaListasDeDesejosPorFamiliar(u, conn);
+                                    case 2 -> verListasDeIdosos(u, conn);
                                     case 3 -> listarIdosos(u, conn);
                                     case 0 -> {
                                         System.out.println("Voltando...");

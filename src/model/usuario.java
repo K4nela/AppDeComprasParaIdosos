@@ -35,13 +35,18 @@ public abstract class usuario {
     }
 
     public usuario(){
-        this.nome = "";
-        this.dataNasc = LocalDate.of(0000,00,00);
-        this.e_mail = "";
-        this.senha = "";
-        this.endereco = "";
-        this.telefone = "";
-        this.tipo = "";
+    }
+
+    public usuario(String nome, LocalDate dataNasc, String e_mail, String endereco, String telefone) {
+        this.nome = nome;
+        this.dataNasc = dataNasc;
+        this.e_mail = e_mail;
+        this.endereco = endereco;
+        this.telefone = telefone;
+    }
+
+    public usuario(String nome) {
+        this.nome = nome;
     }
 
     public String getTipo() {
@@ -68,11 +73,7 @@ public abstract class usuario {
         this.nome = nome;
     }
 
-    public String getDataNasc() {
-        DateTimeFormatter formatado = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String dataFormatada = dataNasc.format(formatado);
-        return dataFormatada;
-    }
+    public LocalDate getDataNasc() {return dataNasc;}
 
     public void setDataNasc(LocalDate dataNasc) {
         this.dataNasc = dataNasc;
@@ -110,4 +111,3 @@ public abstract class usuario {
         this.telefone = telefone;
     }
 }
-//

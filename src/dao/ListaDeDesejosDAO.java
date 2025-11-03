@@ -5,6 +5,7 @@ import model.listaDeDesejos;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,7 +17,6 @@ public class ListaDeDesejosDAO extends CrudDAO<listaDeDesejos> {
         super(conn);
         this.conn = conn;
     }
-
 
     @Override
     public void save(listaDeDesejos lista) throws SQLException {
@@ -31,6 +31,7 @@ public class ListaDeDesejosDAO extends CrudDAO<listaDeDesejos> {
             );
             lista.setId_lista(idLista);
             System.out.println("Lista criada com sucesso!");
+            return;
 
         } catch (SQLException e) {
             System.out.println("ERRO! Não foi possível criar a lista");
@@ -44,53 +45,62 @@ public class ListaDeDesejosDAO extends CrudDAO<listaDeDesejos> {
 
         while (true) {
             try {
-                menuUpdateLista();
-                int opcao = scn.nextInt();
-                scn.nextLine();
 
-                switch (opcao) {
-                    case 1 -> {
-                        try {
-                            sql = "UPDATE listadedesejos SET nome_lista = ? WHERE id_lista = ?";
+                try {
+                    menuUpdateLista();
+                    int opcao = scn.nextInt();
+                    scn.nextLine();
+
+                    switch (opcao) {
+                        case 1 -> {
+                            try {
+                                sql = "UPDATE listadedesejos SET nome_lista = ? WHERE id_lista = ?";
+                                System.out.println("Digite [0] para sair.");
+                                System.out.printf("Digite o novo nome da lista: ");
+                                String novoNome = scn.nextLine();
+
+                                super.update(sql, novoNome, id);
+
+                                if (novoNome.equals("0")) {
+                                    System.out.println("Voltando...");
+                                    return;
+                                } else {
+                                    System.out.println("Nome alterado com sucesso!");
+                                    return;
+                                }
+                            } catch (SQLException e) {
+                                System.out.println("ERRO! Não foi possível alterar o nome da lista!");
+                                e.printStackTrace();
+                            }
+                        }
+
+                        case 2 -> {
+                            sql = "UPDATE listadedesejos SET descricao = ? WHERE id_lista = ?";
                             System.out.println("Digite [0] para sair.");
-                            System.out.printf("Digite o novo da lista: ");
-                            String novoNome = scn.nextLine();
+                            System.out.printf("Digite a nova descrição da lista: ");
+                            String novaDescricao = scn.nextLine();
 
-                            super.update(sql, novoNome, id);
+                            super.update(sql, novaDescricao, id);
 
-                            if (novoNome.equals("0")) {
+                            if (novaDescricao.equals("0")) {
                                 System.out.println("Voltando...");
                                 return;
                             } else {
-                                System.out.println("Nome alterado com sucesso!");
+                                System.out.println("Descrição alterada com sucesso!");
+                                return;
                             }
-                        } catch (SQLException e) {
-                            System.out.println("ERRO! Não foi possível alterar o nome da lista!");
-                            e.printStackTrace();
                         }
-                    }
 
-                    case 2 -> {
-                        sql = "UPDATE listadedesejos SET descricao = ? WHERE id_lista = ?";
-                        System.out.println("Digite [0] para sair.");
-                        System.out.printf("Digite a nova descrição da lista: ");
-                        String novaDescricao = scn.nextLine();
-
-                        super.update(sql, novaDescricao, id);
-
-                        if (novaDescricao.equals("0")) {
+                        case 0 -> {
                             System.out.println("Voltando...");
                             return;
-                        } else {
-                            System.out.println("Descrição alterada com sucesso!");
                         }
                     }
-
-                    case 0 -> {
-                        System.out.println("Voltando...");
-                        return;
-                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("ERRO! Digite apenas números");
+                    scn.nextLine();
                 }
+
             } catch (SQLException e) {
                 System.out.println("ERRO! Não foi possível fazer o update!");
                 e.printStackTrace();
@@ -160,11 +170,6 @@ public class ListaDeDesejosDAO extends CrudDAO<listaDeDesejos> {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
-            if (!rs.isBeforeFirst()) { // checa se não tem nenhum registro
-                System.out.println("ERRO! Não foi possível encontrar uma lista de desejos!");
-                return listas;
-            }
-
             while (rs.next()) {
                     listaDeDesejos lista = new listaDeDesejos();
                     lista.setId_lista(rs.getInt("id_lista"));
@@ -191,6 +196,7 @@ public class ListaDeDesejosDAO extends CrudDAO<listaDeDesejos> {
             if (Objects.equals(opcao, "Y")) {
                 super.update(sql, id);
                 System.out.println("Lista de desejos excluída com sucesso!");
+                return;
             } else {
                 System.out.println("Voltando...");
             }

@@ -405,6 +405,50 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         return usuario;
     }
 
+    public int getIdFmById(int id) throws SQLException{
+        String sql = "SELECT id_familiar FROM familiar WHERE id_usuario = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id_familiar");
+                }
+            }
+        }
+        return -1;
+    }
+
+
+    public usuario getUsByIds(int id) throws SQLException {
+        usuario u = null;
+        String sql = "SELECT u.* FROM usuario u JOIN idoso i ON u.id = i.id_usuario WHERE i.id_idoso = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+
+            try(ResultSet rs = ps.executeQuery()) {
+
+                if (rs.next()) {
+                    u = new idoso(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getDate("data_nasc").toLocalDate(),
+                            rs.getString("email"),
+                            rs.getString("senha"),
+                            rs.getString("endereco"),
+                            rs.getString("telefone"),
+                            rs.getString("tipo")
+                    );
+                }
+            }
+        }catch (SQLException e){
+            System.out.println("ERRO! Não foi possível encontrar o idoso por id");
+            e.printStackTrace();
+        }
+
+        return u;
+    }
+
     //Desenvolvendo o metodo para validar liogin (senha)
     public usuario getBySenha(String senha) {
         usuario usuario = null;
@@ -455,7 +499,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
             }
 
         } catch (SQLException e) {
-            System.out.println("ERRO! Não foi possível realizar o login!");
+            System.out.println("ERRO! Senha incorreta!");
             e.printStackTrace();
         }
         return usuario;
@@ -531,26 +575,6 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         }
     }
 
-    public idoso getIdosoByUsuarioId(int idUsuario) throws SQLException {
-        String sql = "SELECT * FROM idoso WHERE id_usuario = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, idUsuario);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    idoso i = new idoso();
-                    i.setId(rs.getInt("id_idoso"));
-                    i.setNome(rs.getString("nome"));
-                    i.setDataNasc(rs.getDate("data_nascimento").toLocalDate());
-                    // adiciona o resto dos campos se tiver mais
-                    return i;
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Erro ao buscar idoso pelo id do usuário!");
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public familiar getFamiliarByEmail(String email) throws SQLException {
         usuario u = getByEmailAndTipo(email, "familiar");
@@ -639,7 +663,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                         ps2.setInt(1, usuarioId);
                         try (ResultSet rs2 = ps2.executeQuery()) {
                             if (rs2.next()) {
-                                // o id específico normalmente é a primeira coluna (ex: id_familiar ou id_idoso)
+
                                 int idEspecifico = rs2.getInt(1);
                                 switch (tipo) {
                                     case "idoso" -> {
@@ -665,55 +689,4 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         return usuario;
     }
 
-    // Salva o usuário e retorna o id gerado (útil para associar a outras tabelas)
-    public int saveAndReturnId(usuario u) throws SQLException {
-        String sqlUsuario = "INSERT INTO usuario(nome, data_nasc, email, senha, endereco, telefone, tipo) VALUES (?, ?, ?, ?, ?, ?, ?);";
-
-        // inserção na tabela 'usuario'
-        int idUsuario = super.save(sqlUsuario,
-                u.getNome(),
-                java.sql.Date.valueOf(u.getDataNasc()),
-                u.getE_mail(),
-                u.getSenha(),
-                u.getEndereco(),
-                u.getTelefone(),
-                u.getTipo());
-
-        if (idUsuario == -1) throw new SQLException("Não foi possível inserir usuário");
-
-        // inserir na tabela específica e recuperar o id gerado (id_idoso, id_familiar, ...)
-        String tabela = switch (u.getTipo()) {
-            case "idoso" -> "idoso";
-            case "familiar" -> "familiar";
-            case "administrador" -> "administrador";
-            default -> null;
-        };
-
-        if (tabela == null) throw new IllegalArgumentException("Tipo de usuário inválido: " + u.getTipo());
-
-        String sqlTipo = "INSERT INTO " + tabela + " (id_usuario) VALUES (?);";
-        int generatedId = -1;
-        try (PreparedStatement ps = conn.prepareStatement(sqlTipo, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setInt(1, idUsuario);
-            ps.executeUpdate();
-            try (ResultSet rs = ps.getGeneratedKeys()) {
-                if (rs.next()) {
-                    generatedId = rs.getInt(1);
-                }
-            }
-        }
-
-        // popular o objeto com o id específico, se possível
-        if (generatedId != -1) {
-            switch (u.getTipo()) {
-                case "idoso" -> { if (u instanceof idoso) ((idoso) u).setId_idoso(generatedId); }
-                case "familiar" -> { if (u instanceof familiar) ((familiar) u).setId_familiar(generatedId); }
-                case "administrador" -> { if (u instanceof administrador) ((administrador) u).setId_administrador(generatedId); }
-            }
-        }
-
-        // retornar preferencialmente o id da tabela específica (para ser usado em vinculacoes),
-        // caso contrário retorna o id do usuário
-        return generatedId != -1 ? generatedId : idUsuario;
-    }
 }

@@ -98,9 +98,8 @@ public abstract class Menus {
     public static void menuOpcaoLista(){
         System.out.println("--------Opções-------");
         System.out.println("1 - Criar Lista");
-        System.out.println("2 - Ver Listas");
+        System.out.println("2 - Acessar lista");
         System.out.println("3 - Editar Lista");
-        System.out.println("4 - Itens");
         System.out.println("0 - Voltar");
         System.out.println("----------------------");
         System.out.printf("Escolha uma opção: ");

@@ -300,6 +300,7 @@ public class itemDAO extends CrudDAO<item> {
             if(Objects.equals(opcao, "Y") || Objects.equals(opcao, "y")){
                 super.update(sql, id);
                 System.out.println("Item excluído com sucesso!");
+
             }else{
                 System.out.println("Voltando...");
             }
@@ -307,6 +308,7 @@ public class itemDAO extends CrudDAO<item> {
             System.out.println("ERRO! Não foi possível deletar o item!");
             e.printStackTrace();
         }
+        return;
     }
 }
 

@@ -6,6 +6,7 @@ import model.status;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,7 +25,7 @@ public class HistoricoDAO extends CrudDAO<historico> {
     public void save(historico h) throws SQLException {
         String sql = "INSERT INTO historico (id_item, data_historico, status) VALUES (?,?,?)";
 
-        try{
+        try {
             int idHistorico = super.save(sql,
                     h.getId_item(),
                     h.getData_historico(),
@@ -32,7 +33,7 @@ public class HistoricoDAO extends CrudDAO<historico> {
             );
             h.setId_historico(idHistorico);
             System.out.println("Historico criado com sucesso!");
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("ERRO! Não foi possível criar o histórico");
             e.printStackTrace();
         }
@@ -40,15 +41,15 @@ public class HistoricoDAO extends CrudDAO<historico> {
 
     @Override
     public void update(int id) throws SQLException {
-        String sql = "UPDATE historico SET status = ? WHERE id_historico = ?;";
+        String sql = "UPDATE historico SET status = ? WHERE id_item= ?;";
         status novoStatus = null;
 
-        while (true) {
+        try{
             menuTipoStatus();
             int opcao = scn.nextInt();
             scn.nextLine();
 
-            if(opcao == 0){
+            if (opcao == 0) {
                 System.out.println("Voltando...");
                 return;
             }
@@ -59,6 +60,7 @@ public class HistoricoDAO extends CrudDAO<historico> {
                 case 3 -> novoStatus = status.CONCLUIDO;
                 case 4 -> novoStatus = status.CANCELADO;
                 case 0 -> {
+                    System.out.println("Voltando...");
                     return;
                 }
                 default -> {
@@ -67,6 +69,9 @@ public class HistoricoDAO extends CrudDAO<historico> {
                 }
             }
             super.update(sql, novoStatus.name(), id);
+        }catch (InputMismatchException e){
+            System.out.println("ERRO! Digite apenas números");
+            scn.nextLine();
         }
     }
 
@@ -95,44 +100,21 @@ public class HistoricoDAO extends CrudDAO<historico> {
         return historicos;
     }
 
-    public historico getById(int id) throws SQLException {
-        historico h = null;
-        String sql = "SELECT * FROM historico WHERE id_historico = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    h = new historico();
-                    h.setId_historico(rs.getInt("id_historico"));
-                    h.setId_item(rs.getInt("id_item"));
-                    h.setData_historico(rs.getDate("data_historico").toLocalDate());
-                    h.setStatus(status.valueOf(rs.getString("status")));
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("ERRO! Não foi possível buscar o histórico por ID!");
-            e.printStackTrace();
-        }
-
-        return h;
-    }
-
     @Override
     public void delete(int id) throws SQLException {
         String sql = "DELETE FROM historico WHERE id_historico=?";
-        try{
+        try {
             System.out.println("Tem certeza que deseja excluir o historico?");
             System.out.println("[Y/N]");
             String opcao = scn.nextLine();
 
-            if(Objects.equals(opcao, "Y") || Objects.equals(opcao, "y")){
+            if (Objects.equals(opcao, "Y") || Objects.equals(opcao, "y")) {
                 super.update(sql, id);
                 System.out.println("Historico excluído com sucesso!");
-            }else{
+            } else {
                 System.out.println("Voltando...");
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("ERRO! Não foi possível deletar o historico!");
             e.printStackTrace();
         }

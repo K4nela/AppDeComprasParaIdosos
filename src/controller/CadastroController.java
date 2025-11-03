@@ -18,9 +18,7 @@ import static view.Menus.menuTipoUsuario;
 
 public final class CadastroController {
 
-    /*
-    Desenvolvendo tela de cadastro de usuários com seus métodos correspondentes
-     */
+    //Desenvolvendo tela de cadastro de usuários com seus métodos correspondentes
     public static void telaCadastro() throws Exception {
         Scanner scn = new Scanner(System.in);
         Connection conn = Conexao.createConnectionToMySQL();

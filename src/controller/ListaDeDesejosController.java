@@ -1,16 +1,16 @@
 package controller;
 
 import dao.*;
-
-
 import model.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import static view.Listas.exibirListasDeDesejos;
+import static controller.ItemListaController.telaItens;
+import static view.Listas.*;
 import static view.Menus.menuOpcaoLista;
 
 public class ListaDeDesejosController {
@@ -20,182 +20,162 @@ public class ListaDeDesejosController {
         this.listaDao = new ListaDeDesejosDAO(conn);
     }
 
+    public static void criarLista(int id, Scanner scn, UsuarioDAO usuarioDao, listaDeDesejos lista, ListaDeDesejosDAO listaDao) throws SQLException {
+        System.out.println("Digite [0] para voltar");
+        System.out.println("---------CriandoLista---------");
+
+        System.out.printf("Nome da lista: ");
+        String nomeLista = scn.nextLine();
+
+        if (nomeLista.equals("0")) {
+            System.out.println("Voltando...");
+            return;
+        }
+
+        System.out.printf("Descrição da lista: ");
+        String descricao = scn.nextLine();
+
+        if (descricao.equals("0")) {
+            System.out.println("Voltando...");
+            return;
+        }
+        int ididoso = usuarioDao.getIdIdosoByUsuario(id);
+        lista = new listaDeDesejos(ididoso, nomeLista, descricao);
+        listaDao.save(lista);
+    }
+
+    public static void editarLista(int id_idoso, UsuarioDAO usuarioDao, itemDAO itemDao, Scanner scn, ListaDeDesejosDAO listaDao) throws SQLException {
+
+        while (true) {
+            try {
+                exibirCabecalhoLista(id_idoso, usuarioDao, itemDao, listaDao);
+
+                System.out.println("Digite [0] para voltar");
+                System.out.printf("Digite o id da lista que deseja editar: ");
+                int id = scn.nextInt();
+                scn.nextLine();
+
+                if (id == 0) {
+                    System.out.println("Voltando...");
+                    return;
+                }
+
+                listaDao.update(id);
+
+            } catch (InputMismatchException e) {
+                System.out.println("ERRO! Digite apenas números");
+                scn.nextLine();
+            }
+        }
+    }
+
+    public static void acessarLista(Connection conn, Scanner scn, ListaDeDesejosDAO listaDao, itemDAO itemDao) throws SQLException {
+        while(true) {
+            try {
+                System.out.println("Digite [0] para voltar");
+                System.out.printf("Digite o id da lista para acessar: ");
+                int id = scn.nextInt();
+                scn.nextLine();
+
+                if (id == 0) {
+                    System.out.println("Voltando...");
+                    return;
+                }
+                    exibirListaDeDesejosById(id, listaDao, itemDao);
+                    telaItens(id, conn);
+
+            } catch (InputMismatchException e) {
+                System.out.println("ERRO! Digite apenas números");
+                scn.nextLine();
+            }
+        }
+    }
+
     public static void telaListaDeDesejos(usuario u, Connection conn) throws SQLException {
         Scanner scn = new Scanner(System.in);
         UsuarioDAO usuarioDao = new UsuarioDAO(conn);
         ListaDeDesejosDAO listaDao = new ListaDeDesejosDAO(conn);
-        itemDAO itemDao =  new itemDAO(conn);
+        itemDAO itemDao = new itemDAO(conn);
         listaDeDesejos lista = null;
 
         int opcao = -1;
 
         while (true) {
-            int id_idoso = u.getId();
-            exibirListasDeDesejos(id_idoso, usuarioDao, itemDao, listaDao);
+            try {
+                int id_idoso = u.getId();
+                exibirCabecalhoLista(id_idoso, usuarioDao, itemDao, listaDao);
 
-            menuOpcaoLista();
-            opcao = scn.nextInt();
-            scn.nextLine();
+                menuOpcaoLista();
+                opcao = scn.nextInt();
+                scn.nextLine();
 
-            switch (opcao) {
-                case 1 -> {
-                    System.out.println("Digite [0] para voltar");
-                    System.out.println("---------CriandoLista---------");
-
-                    System.out.printf("Nome da lista: ");
-                    String nomeLista = scn.nextLine();
-
-                    if (nomeLista.equals("0")) {
-                        System.out.println("Voltando...");
+                switch (opcao) {
+                    case 1 -> criarLista(id_idoso, scn, usuarioDao, lista, listaDao);
+                    case 2 -> acessarLista(conn, scn, listaDao, itemDao);
+                    case 3 -> editarLista(id_idoso, usuarioDao, itemDao,scn, listaDao);
+                    case 0 -> {
                         return;
                     }
-
-                    System.out.printf("Descrição da lista: ");
-                    String descricao = scn.nextLine();
-
-                    if (descricao.equals("0")) {
-                        System.out.println("Voltando...");
-                        return;
-                    }
-                    int idIdoso = usuarioDao.getIdIdosoByUsuario(id_idoso);
-                    lista = new listaDeDesejos(idIdoso, nomeLista, descricao);
-                    listaDao.save(lista);
                 }
-                case 2 -> listaDao.getByIdIdoso(usuarioDao.getIdIdosoByUsuario(id_idoso));
-
-                case 3 -> {
-                    System.out.println("Digite [0] para voltar");
-                    System.out.printf("Digite o id da lista que deseja editar: ");
-                    int id = scn.nextInt();
-                    scn.nextLine();
-
-                    if (id == 0) {
-                        System.out.println("Voltando...");
-                        return;
-                    }
-
-                    listaDao.update(id);
-                }
-
-                case 4 -> {
-                    System.out.println("Digite [0] para voltar");
-                    System.out.printf("Digite o id da lista para acessar seus itens: ");
-                    int id = scn.nextInt();
-                    scn.nextLine();
-
-                    if (id == 0) {
-                        System.out.println("Voltando...");
-                        return;
-                    }
-
-                    ItemListaController.telaItens(id, conn);
-                }
-
-                case 0 -> {
-                    return;
-                }
+            } catch (InputMismatchException e) {
+                System.out.println("ERRO! Digite apenas números");
+                scn.nextLine();
             }
         }
     }
 
-//    public static void telaListasDeDesejosPorFamiliar(usuario u, Connection conn) throws SQLException {
-//        UsuarioDAO usuarioDao = new UsuarioDAO(conn);
-//        ListaDeDesejosDAO listaDao = new ListaDeDesejosDAO(conn);
-//        itemDAO itemDao = new itemDAO(conn);
-//        HistoricoDAO historicoDao = new HistoricoDAO(conn);
-//        MonitoraDAO monitoraDAO = new MonitoraDAO(conn);
-//        Scanner scn = new Scanner(System.in);
-//        idoso uIdoso = null;
-//
-//        // Pega o familiar logado
-//        familiar fam = usuarioDao.getFamiliarByEmail(u.getE_mail());
-//
-//        // Pega os idosos vinculados
-//        List<usuario> idosos = monitoraDAO.getById(fam.getId());
-//
-//        // Itera pelos idosos
-//        List<Integer> idsIdosos = monitoraDAO.getIdososByFamiliar(u.getId());
-//
-//        if (idsIdosos.isEmpty()) {
-//            System.out.println("ERRO! Nenhum idoso vinculado ao familiar " + fam.getNome());
-//        } else {
-//            for (int idIdoso : idsIdosos) {
-//                exibirListasDeDesejos(idIdoso, usuarioDao, itemDao, listaDao);
-//            }
-//        }
-//
-//
-//        // Pergunta se quer alterar status de algum item
-//        System.out.println("\nDeseja alterar o status de algum item? [S/N]");
-//        String opcao = scn.nextLine();
-//
-//        if (opcao.equalsIgnoreCase("S")) {
-//            System.out.print("Digite o ID do item: ");
-//            int idItem = scn.nextInt();
-//            scn.nextLine();
-//
-//            historicoDao.update(idItem);
-//        }
-//    }
-
-    public static void telaListasDeDesejosPorFamiliar(usuario u, Connection conn) throws SQLException {
+    public static void verListasDeIdosos(usuario u, Connection conn) throws SQLException {
+        Scanner scn = new Scanner(System.in);
+        MonitoraDAO monitoraDAO = new MonitoraDAO(conn);
+        ListaDeDesejosDAO listaDAO = new ListaDeDesejosDAO(conn);
         UsuarioDAO usuarioDao = new UsuarioDAO(conn);
-        ListaDeDesejosDAO listaDao = new ListaDeDesejosDAO(conn);
         itemDAO itemDao = new itemDAO(conn);
         HistoricoDAO historicoDao = new HistoricoDAO(conn);
-        MonitoraDAO monitoraDAO = new MonitoraDAO(conn);
-        Scanner scn = new Scanner(System.in);
+        int opcao = -1;
 
-        // Pega o familiar logado
-        familiar fam = usuarioDao.getFamiliarByEmail(u.getE_mail());
 
-        // Pega os idosos vinculados
-        List<usuario> idosos = monitoraDAO.getById(fam.getId());
+        do {
+            try {
+                int idFamiliar = usuarioDao.getIdFmById(u.getId());
 
-        boolean algumTemLista = false;
+                List<idoso> idososIds = monitoraDAO.getIdososByFamiliar(idFamiliar);
 
-        // Itera pelos idosos
-        for (usuario uIdoso : idosos) {
-            int idIdoso = usuarioDao.getIdIdosoByUsuario(uIdoso.getId());
-
-            List<listaDeDesejos> listas = listaDao.getByIdIdoso(idIdoso);
-            if (listas == null || listas.isEmpty()) {
-                System.out.println("===== Idoso: " + uIdoso.getNome() + " =====");
-                System.out.println("Nenhuma lista de desejos encontrada!\n");
-                continue;
-            }
-
-            algumTemLista = true;
-            System.out.println("===== Idoso: " + uIdoso.getNome() + " =====");
-            for (listaDeDesejos lista : listas) {
-                System.out.println("\n------- Lista: " + lista.getNomeLista() + " -------");
-                List<item> itens = itemDao.getByLista(lista.getId_lista());
-
-                if (itens.isEmpty()) {
-                    System.out.println("Nenhum item adicionado ainda!");
-                } else {
-                    for (item it : itens) {
-                        System.out.println("ID: " + it.getId_item() + " | " + it.getNome_item() + " | Status: " + it.getStatus());
-                    }
+                if (idososIds.isEmpty()) {
+                    System.out.println("Você ainda não monitora nenhum idoso");
+                    return;
                 }
+
+                for (idoso idosoId : idososIds) {
+                    usuario idoso = usuarioDao.getUsByIds(idosoId.getId_idoso());
+                    List<listaDeDesejos> listas = listaDAO.getByIdIdoso(idosoId.getId_idoso());
+                    telaListaDosIsosos(listas, idoso);
+                }
+
+                System.out.println("Digite [0] para voltar");
+                System.out.printf("Digite um ID para acessar a lista de desejos: ");
+                opcao = scn.nextInt();
+                scn.nextLine();
+
+                while (true) {
+                    exibirListaDeDesejosById(opcao, listaDAO, itemDao);
+
+                    System.out.println("Digite [0] para voltar");
+                    System.out.printf("Digite um ID para atualizar o status de um item: ");
+                    opcao = scn.nextInt();
+                    scn.nextLine();
+
+                    if (opcao == 0) {
+                        System.out.println("Voltando...");
+                        return;
+                    }
+
+                    historicoDao.update(opcao);
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("ERRO! Digite apenas números");
+                scn.nextLine();
             }
-            System.out.println(); // quebra de linha entre idosos
-        }
 
-        if (!algumTemLista) {
-            System.out.println("Nenhuma lista de desejos encontrada para os idosos vinculados.");
-        }
-
-        // Pergunta se quer alterar status de algum item
-        System.out.println("\nDeseja alterar o status de algum item? [S/N]");
-        String opcao = scn.nextLine();
-
-        if (opcao.equalsIgnoreCase("S")) {
-            System.out.print("Digite o ID do item: ");
-            int idItem = scn.nextInt();
-            scn.nextLine();
-
-            historicoDao.update(idItem);
-        }
+        } while (opcao != 0);
     }
 }

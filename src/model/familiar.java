@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 public class familiar extends usuario{
     private int id_familiar;
-    private int id_usuario;
 
     public familiar(int id, String nome, LocalDate dataNasc, String e_mail, String senha, String endereco, String telefone, String tipo) {
         super(id, nome, dataNasc, e_mail, senha, endereco, telefone, "familiar");

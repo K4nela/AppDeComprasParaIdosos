@@ -39,19 +39,11 @@ public abstract class CrudDAO<T> implements CrudInterface<T> {
         return generatedId;
     }
 
-    //metodo para salvar tipo de usuario
-    public void saveTipo(String tabela, int idUsuario) throws SQLException {
-        String sql = "INSERT INTO " + tabela + " (id_usuario) VALUES (?);";
-        try (PreparedStatement psmt = conn.prepareStatement(sql)) {
-            psmt.setInt(1, idUsuario);
-            psmt.executeUpdate();
-        }
-    }
 
     //metodo para fazer update
-    public void update (String sql, Object... params) throws SQLException{
-        try(PreparedStatement psmt = conn.prepareStatement(sql)){
-            for(int i = 0 ; i < params.length; i++ ){
+    public void update(String sql, Object... params) throws SQLException {
+        try (PreparedStatement psmt = conn.prepareStatement(sql)) {
+            for (int i = 0; i < params.length; i++) {
                 psmt.setObject(i + 1, params[i]);
             }
             psmt.executeUpdate();
@@ -76,9 +68,9 @@ public abstract class CrudDAO<T> implements CrudInterface<T> {
 
 
     //metodo para deletar
-    public void delete (String sql, Object... params) throws SQLException{
-        try(PreparedStatement psmt = conn.prepareStatement(sql)){
-            for(int i = 0 ; i < params.length; i++ ){
+    public void delete(String sql, Object... params) throws SQLException {
+        try (PreparedStatement psmt = conn.prepareStatement(sql)) {
+            for (int i = 0; i < params.length; i++) {
                 psmt.setObject(i + 1, params[i]);
             }
             psmt.executeUpdate();

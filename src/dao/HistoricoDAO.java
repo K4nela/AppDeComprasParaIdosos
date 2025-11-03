@@ -22,13 +22,12 @@ public class HistoricoDAO extends CrudDAO<historico> {
 
     @Override
     public void save(historico h) throws SQLException {
-        String sql = "INSERT INTO historico (data_historico, id_item, status) VALUES (?,?,?)";
+        String sql = "INSERT INTO historico (id_item, data_historico, status) VALUES (?,?,?)";
 
         try{
             int idHistorico = super.save(sql,
-                    h.getId_historico(),
-                    h.getData_historico(),
                     h.getId_item(),
+                    h.getData_historico(),
                     h.getStatus().name()
             );
             h.setId_historico(idHistorico);
@@ -138,4 +137,5 @@ public class HistoricoDAO extends CrudDAO<historico> {
             e.printStackTrace();
         }
     }
+
 }

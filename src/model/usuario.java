@@ -50,7 +50,6 @@ public abstract class usuario {
                 "\nnome = " + nome +
                 "\ndata de nascimento = " + dataNasc +
                 "\nemail = " + e_mail +
-                "\nsenha = " + senha +
                 "\nendereço = " + endereco +
                 "\ntelefone = " + telefone +
                 "\ntipo = " + tipo +

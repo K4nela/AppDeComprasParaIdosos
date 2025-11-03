@@ -7,12 +7,12 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import static view.Menus.*;
+import static view.ToStrings.exibirListaUsuarios;
+import static view.ToStrings.exibirUsuarioPorId;
 
 public class UsuarioController {
 
-    /*
-    Desenvolvendo função para gerenciar usuários do sistema (função para Administradores)
-     */
+    //Desenvolvendo função para gerenciar usuários do sistema (função para Administradores)
     public static final void gerenciarUsuarios(Connection conn){
         Scanner scn = new Scanner(System.in);
         UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
@@ -68,9 +68,7 @@ public class UsuarioController {
 
     }
 
-    /*
-    Desenvolvendo função para ver usuários do sistema (função para Administradores)
-     */
+    //Desenvolvendo função para ver usuários do sistema (função para Administradores)
     public static final void VerUsuarios(Connection conn){
         Scanner scn = new Scanner(System.in);
         UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
@@ -80,13 +78,14 @@ public class UsuarioController {
             try{
                 menuVerUsuarios();
                 opcao = scn.nextInt();
+                scn.nextLine();
 
                 switch (opcao){
-                    case 1 -> System.out.println(usuarioDAO.get());
+                    case 1 -> exibirListaUsuarios(usuarioDAO);
                     case 2 -> {
                         System.out.print("Digite o ID do usuário: ");
                         int id = scn.nextInt();
-                        System.out.println(usuarioDAO.getById(id));
+                        exibirUsuarioPorId(usuarioDAO, id);
                     }
                     case 0 -> {
                         System.out.println("Voltando...");

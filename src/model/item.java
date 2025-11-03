@@ -3,10 +3,10 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class itens {
-    private int id_iten;
+public class item {
+    private int id_item;
     private int id_lista;
-    private String nome_iten;
+    private String nome_item;
     private String descricao;
     private int quantidade;
     private String nome_loja;
@@ -14,14 +14,36 @@ public class itens {
     private status status;
     private List<historico> historicos = new ArrayList<>();
 
+    public item() {
+    }
+
     //Construror base
-    public itens(List<historico> historicos) {
+    public item(List<historico> historicos) {
         this.historicos = historicos;
     }
 
+    public item(int id_lista, String nome_item, String descricao, int quantidade, String nome_loja, String link) {
+        this.id_lista = id_lista;
+        this.nome_item = nome_item;
+        this.descricao = descricao;
+        this.quantidade = quantidade;
+        this.nome_loja = nome_loja;
+        this.link = link;
+    }
+
+    public item(int id_item, int id_lista, String nome_item, String descricao, int quantidade, String nome_loja, String link) {
+        this.id_item = id_item;
+        this.id_lista = id_lista;
+        this.nome_item = nome_item;
+        this.descricao = descricao;
+        this.quantidade = quantidade;
+        this.nome_loja = nome_loja;
+        this.link = link;
+    }
+
     //Construtor com todos os campos (menos id)
-    public itens(String nome_iten, String descricao, int quantidade, String nome_loja, String link, status status) {
-        this.nome_iten = nome_iten;
+    public item(String nome_item, String descricao, int quantidade, String nome_loja, String link, status status) {
+        this.nome_item = nome_item;
         this.descricao = descricao;
         this.quantidade = quantidade;
         this.nome_loja = nome_loja;
@@ -30,11 +52,10 @@ public class itens {
     }
 
 
-
     @Override
     public String toString() {
         return  "\n------- Item -------" +
-                "\nNome do item: " + nome_iten +
+                "\nNome do item: " + nome_item +
                 "\nDescrição: " + descricao +
                 "\nQuantidade: " + quantidade +
                 "\nNome da loja: " + nome_loja +
@@ -44,14 +65,14 @@ public class itens {
     }
 
     // Getters e Setters
-    public int getId_iten() { return id_iten; }
-    public void setId_iten(int id_iten) { this.id_iten = id_iten; }
+    public int getId_item() { return id_item; }
+    public void setId_item(int id_item) { this.id_item = id_item; }
 
     public int getId_lista() { return id_lista; }
     public void setId_lista(int id_lista) { this.id_lista = id_lista; }
 
-    public String getNome_iten() { return nome_iten; }
-    public void setNome_iten(String nome_iten) { this.nome_iten = nome_iten; }
+    public String getNome_item() { return nome_item; }
+    public void setNome_item(String nome_item) { this.nome_item = nome_item; }
 
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
@@ -62,7 +83,7 @@ public class itens {
     public String getNome_loja() { return nome_loja; }
     public void setNome_loja(String nome_loja) { this.nome_loja = nome_loja; }
 
-    public String getLink() { return link; }
+    public String getLink() { return this.link; }
     public void setLink(String link) { this.link = link; }
 
     public status getStatus() {
@@ -77,5 +98,12 @@ public class itens {
     }
     public void setHistoricos(historico h) {
         this.historicos.add(h);
+    }
+
+    public void addHistorico(historico h) {
+        this.historicos.add(h);
+    }
+    public void setHistoricos(List<historico> historicos) {
+        this.historicos = historicos;
     }
 }

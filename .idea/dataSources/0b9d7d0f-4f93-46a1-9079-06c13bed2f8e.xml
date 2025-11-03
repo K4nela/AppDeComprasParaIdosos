@@ -985,7 +985,7 @@
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
-    <table id="309" parent="299" name="itens">
+    <table id="309" parent="299" name="item">
       <DetailsLevel>3</DetailsLevel>
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
@@ -1181,7 +1181,7 @@
       <Position>7</Position>
       <StoredType>varchar(255)|0s</StoredType>
     </column>
-    <foreign-key id="350" parent="309" name="itens_ibfk_1">
+    <foreign-key id="350" parent="309" name="item_ibfk_1">
       <ColNames>id_lista</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>id_lista</RefColNames>

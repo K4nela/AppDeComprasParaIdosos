@@ -70,7 +70,7 @@ CREATE TABLE listaDeDesejos (
     (2,CURDATE()),
     (2,CURDATE());
 
-CREATE TABLE itens (
+CREATE TABLE item (
     id_item INT AUTO_INCREMENT PRIMARY KEY,
     id_lista INT,
     nome_item VARCHAR(100) NOT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE itens (
     link VARCHAR(255),
     FOREIGN KEY (id_lista) REFERENCES listaDeDesejos(id_lista) ON DELETE CASCADE
 );
-    INSERT INTO itens (id_lista, nome_item, descricao, quantidade, nome_loja, link) VALUES
+    INSERT INTO item (id_lista, nome_item, descricao, quantidade, nome_loja, link) VALUES
     ( 1, 'Blusa do Brasil', 'Tamanho: G', 1, 'Loja TeamShirt','https://shopee.com'),
     ( 2, 'Óculos de Sol', 'Moledo preto', 1, 'Loja Óptica', 'https://firmo.com'),
     ( 3, 'Chinelo Ortopedico', 'Chinelo tamanho 40', 1, 'Loja Calçados', 'https://shein.com'),
@@ -93,8 +93,7 @@ CREATE TABLE historico (
     status ENUM ('Pendente', 'Em andamento', 'Concluído', 'Cancelado') NOT NULL,
     id_item INT NULL,
     id_status INT,
-    FOREIGN KEY (id_item) REFERENCES itens (id_item) ON DELETE SET NULL,
-    FOREIGN KEY (id_status) REFERENCES status(id_status)
+    FOREIGN KEY (id_item) REFERENCES item (id_item) ON DELETE SET NULL
 );
 
     INSERT INTO historico(id_item, id_status, data_historico, status)VALUES
@@ -139,7 +138,7 @@ CREATE TABLE historico (
 -- JOIN idoso i ON i.id_idoso = m.id_idoso
 -- JOIN usuario u_i ON u_i.id = i.id_usuario   -- nome do idoso
 -- LEFT JOIN listadedesejos ld ON ld.id_idoso = i.id_idoso
--- LEFT JOIN itens it ON it.id_lista = ld.id_lista
+-- LEFT JOIN item it ON it.id_lista = ld.id_lista
 -- LEFT JOIN historico h ON it.id_item = h.id_item
 -- LEFT JOIN status s ON h.id_status = s.id_status
 -- WHERE it.nome_item = "Blusa do Brasil";
@@ -164,5 +163,5 @@ CREATE TABLE historico (
 -- SELECT * FROM historico; 
 
 -- --  deletando o item cancelado
--- DELETE FROM itens
+-- DELETE FROM item
 -- WHERE id_item = 1;

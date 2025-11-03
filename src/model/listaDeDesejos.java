@@ -10,10 +10,10 @@ public class listaDeDesejos{
     private String nomeLista;
     private LocalDate dataCriacao;
     private String descricao;
-    private List<itens> itens;
+    private List<item> item;
 
     public listaDeDesejos() {
-        this.itens = new ArrayList<>();
+        this.item = new ArrayList<>();
     }
 
     public listaDeDesejos(int id_idoso, String descricao, String nomeLista) {
@@ -30,13 +30,19 @@ public class listaDeDesejos{
         this.descricao = descricao;
     }
 
+    public listaDeDesejos(item itens) {
+        this.item.add((item) item);
+    }
+
     @Override
     public String toString() {
         return  "\n------- Lista de Desejos -------" +
+                "\nid: " + id_lista +
                 "\nNome da lista: " + nomeLista +
                 "\nData de criação: " + dataCriacao +
                 "\nObservações: " + descricao +
-                "\n-------------------------------";
+                "\n-------------------------------" +
+                "\n" + item;
     }
 
     public int getId_lista() {
@@ -60,15 +66,17 @@ public class listaDeDesejos{
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public List<itens> getItens() { return itens; }
-    public void setItens(List<itens> itens) { this.itens = itens; }
+    public List<item> getItens() { return item; }
+    public void setItens(List<item> item) { this.item = item; }
 
-    public void adicionarItem(itens item) {
-        this.itens.add(item);
+    public void adicionarItem(item item) {
+        this.item.add(item);
     }
 
-    public void removerItem(itens item) {
-        this.itens.remove(item);
+    public void removerItem(item item) {
+        this.item.remove(item);
     }
+
+
 
 }

@@ -3,6 +3,7 @@ package controller;
 import model.usuario;
 
 import static controller.ListaDeDesejosController.telaListaDeDesejos;
+import static controller.ListaDeDesejosController.telaListasDeDesejosPorFamiliar;
 import static controller.MonitoraController.listarFamiliares;
 import static controller.MonitoraController.listarIdosos;
 import static controller.UsuarioController.*;
@@ -67,7 +68,7 @@ public final class HomeController {
 
                                 switch (opcao) {
                                     case 1 -> verPerfil(u, conn);
-                                    case 2 -> System.out.println("função ver lista de desejos sendo desenvolvida..."); // implementar
+                                    case 2 -> telaListasDeDesejosPorFamiliar(u, conn);
                                     case 3 -> listarIdosos(u, conn);
                                     case 0 -> {
                                         System.out.println("Voltando...");
@@ -96,6 +97,7 @@ public final class HomeController {
                                         if (u == null) return;
                                     }
                                     case 2 -> gerenciarUsuarios(conn);
+
                                     case 0 -> {
                                         System.out.println("Voltando...");
                                         return;
@@ -116,6 +118,7 @@ public final class HomeController {
             }
         } catch (SQLException e) {
             System.out.println("ERRO! Não foi possível acessar a tela inicial!");
+            e.printStackTrace();
         }
     }
 }

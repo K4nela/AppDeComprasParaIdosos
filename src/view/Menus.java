@@ -78,19 +78,21 @@ public abstract class Menus {
         System.out.println("1 - Cadastrar novo item");
         System.out.println("2 - Editar item");
         System.out.println("3 - Excluir item");
+        System.out.println("0 - Voltar");
         System.out.println("-----------------------");
-        System.out.printf("Escolha uma opção");
+        System.out.printf("Escolha uma opção: ");
     }
 
-    public static void menuEditarItem(){
+    public static void menuUpdateItem(){
         System.out.println("---------EditarItem---------");
         System.out.println("1 - alterar nome ");
         System.out.println("2 - alterar descrição ");
         System.out.println("3 - alterar quantidade");
         System.out.println("4 - alterar nome da loja ");
         System.out.println("5 - alterar link ");
+        System.out.println("0 - Voltar");
         System.out.println("---------------------------");
-        System.out.printf("Escolha uma opção");
+        System.out.printf("Escolha uma opção: ");
     }
 
     public static void menuOpcaoLista(){
@@ -98,7 +100,7 @@ public abstract class Menus {
         System.out.println("1 - Criar Lista");
         System.out.println("2 - Ver Listas");
         System.out.println("3 - Editar Lista");
-        System.out.println("4 - Adicionar Item");
+        System.out.println("4 - Itens");
         System.out.println("0 - Voltar");
         System.out.println("----------------------");
         System.out.printf("Escolha uma opção: ");

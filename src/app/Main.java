@@ -54,11 +54,13 @@ public class Main {
 
         } catch (Exception e) {
             System.out.println("ERRO! Não foi possível rodar o aplicativo!");
+            e.printStackTrace();
         } finally {
             try {
                 closeConnection(conn);
             } catch (Exception e) {
                 System.out.println("ERRO! Não foi possível fechar a conexão com o banco de dados!");
+                e.printStackTrace();
             }
         }
     }

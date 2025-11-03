@@ -31,7 +31,7 @@ public class MonitoraDAO extends CrudDAO<monitora> {
             e.printStackTrace();
         }
     }
-    
+
     //Desvincula por par familiar/idoso.
     public void delete(int idFamiliar, int idIdoso) {
         String sql = "DELETE FROM monitora WHERE id_familiar = ? AND id_idoso = ?";
@@ -93,6 +93,36 @@ public class MonitoraDAO extends CrudDAO<monitora> {
 
         return idosos;
     }
+
+    public int getIdIdosoByFamiliar(int idFamiliar) throws SQLException {
+        String sql = "SELECT id_idoso FROM monitora WHERE id_familiar = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idFamiliar);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id_idoso"); // pega o idoso associado
+                } else {
+                    return -1; // não tem nenhum idoso vinculado
+                }
+            }
+        }
+    }
+
+    public List<Integer> getIdososByFamiliar(int idFamiliar) throws SQLException {
+        List<Integer> idsIdosos = new ArrayList<>();
+        String sql = "SELECT id_idoso FROM monitora WHERE id_familiar = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idFamiliar);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    idsIdosos.add(rs.getInt("id_idoso"));
+                }
+            }
+        }
+        return idsIdosos;
+    }
+
+
 
     //Salva o vinculo entre usuarios
     @Override

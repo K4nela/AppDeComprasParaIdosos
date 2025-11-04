@@ -402,6 +402,33 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         return usuario;
     }
 
+    //metodo para retornar o tipo por id
+    public String getTipoById(int idUsuario) {
+        String tipo = null;
+        String sql = "SELECT tipo FROM usuario WHERE id = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            // Define o ID que será buscado
+            ps.setInt(1, idUsuario);
+
+            // Executa a query
+            try (ResultSet rs = ps.executeQuery()) {
+                // Se encontrar o usuário, pega o tipo (idoso, familiar, administrador)
+                if (rs.next()) {
+                    tipo = rs.getString("tipo");
+                }
+            }
+        } catch (SQLException e) {
+            // Caso aconteça algum erro, mostra no console (útil pra debug)
+            System.out.println("ERRO! Não foi possível buscar o tipo do usuário.");
+            e.printStackTrace();
+        }
+
+        // Retorna o tipo encontrado (ou null, se não achar nada)
+        return tipo;
+    }
+
+
     //metodo para pegar o id de um familiar pelo id de um idoso
     public int getIdFmById(int id) throws SQLException{
         String sql = "SELECT id_familiar FROM familiar WHERE id_usuario = ?";

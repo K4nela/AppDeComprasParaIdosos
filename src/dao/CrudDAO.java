@@ -65,7 +65,6 @@ public abstract class CrudDAO<T> implements CrudInterface<T> {
         return lista;
     }
 
-
     //metodo com parametro generalizado para deletar
     public void delete(String sql, Object... params) throws SQLException {
         try (PreparedStatement psmt = conn.prepareStatement(sql)) {

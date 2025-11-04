@@ -944,7 +944,7 @@
       <AutoIntrospectionLevel>3</AutoIntrospectionLevel>
       <Current>1</Current>
       <LastIntrospectionLevel>3</LastIntrospectionLevel>
-      <LastIntrospectionLocalTimestamp>2025-11-01.13:24:09</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2025-11-04.06:57:19</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <user id="300" parent="1" name="Maria">
@@ -1006,7 +1006,7 @@
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </table>
     <column id="313" parent="305" name="id_administrador">
-      <AutoIncrement>5</AutoIncrement>
+      <AutoIncrement>7</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
@@ -1040,7 +1040,7 @@
       <UnderlyingIndexName>id_usuario</UnderlyingIndexName>
     </key>
     <column id="320" parent="306" name="id_familiar">
-      <AutoIncrement>1</AutoIncrement>
+      <AutoIncrement>4</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
@@ -1074,7 +1074,7 @@
       <UnderlyingIndexName>id_usuario</UnderlyingIndexName>
     </key>
     <column id="327" parent="307" name="id_historico">
-      <AutoIncrement>1</AutoIncrement>
+      <AutoIncrement>4</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
@@ -1096,7 +1096,7 @@
       <ColNames>id_item</ColNames>
       <OnDelete>set-null</OnDelete>
       <RefColNames>id_item</RefColNames>
-      <RefTableName>itens</RefTableName>
+      <RefTableName>item</RefTableName>
     </foreign-key>
     <index id="332" parent="307" name="PRIMARY">
       <ColNames>id_historico</ColNames>
@@ -1117,7 +1117,7 @@
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="336" parent="308" name="id_idoso">
-      <AutoIncrement>2</AutoIncrement>
+      <AutoIncrement>6</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
@@ -1151,7 +1151,7 @@
       <UnderlyingIndexName>id_usuario</UnderlyingIndexName>
     </key>
     <column id="343" parent="309" name="id_item">
-      <AutoIncrement>1</AutoIncrement>
+      <AutoIncrement>6</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
@@ -1256,7 +1256,7 @@
       <StoredType>int|0s</StoredType>
     </column>
     <column id="365" parent="311" name="id_monitora">
-      <AutoIncrement>1</AutoIncrement>
+      <AutoIncrement>5</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>int|0s</StoredType>
@@ -1298,7 +1298,7 @@
       <UnderlyingIndexName>id_monitora</UnderlyingIndexName>
     </key>
     <column id="374" parent="312" name="id">
-      <AutoIncrement>7</AutoIncrement>
+      <AutoIncrement>14</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>

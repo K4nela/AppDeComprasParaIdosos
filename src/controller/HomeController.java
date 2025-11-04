@@ -1,5 +1,6 @@
 package controller;
 
+import dao.UsuarioDAO;
 import model.usuario;
 
 import static controller.ListaDeDesejosController.telaListaDeDesejos;
@@ -10,123 +11,124 @@ import static controller.UsuarioController.*;
 import static controller.LoginController.*;
 import static view.Menus.*;
 
-import java.sql.*;
+import java.sql.Connection;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-
 public final class HomeController {
     static Scanner scn = new Scanner(System.in);
-    static int opcao = -1;
 
     /*
       Controla a tela inicial (home) da aplicação após login.
-      Exibe menu personalizado conforme o tipo de usuário (idoso, familiar, admin)
+      Exibe o menu personalizado conforme o tipo de usuário (idoso, familiar ou administrador).
+      O Controller não faz consultas diretas ao banco — ele chama o DAO responsável.
      */
     public static void telaHome(usuario u, Connection conn) throws Exception {
-        // SQL para buscar o tipo do usuário (idoso/familiar/administrador)
-        String sql = "SELECT tipo FROM usuario WHERE id = ?";
-        int opcao = 0;
-        int id = u.getId(); //pega o id do usuário logado
+        // Instancia o DAO para acessar os dados do usuário
+        UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id); //define a variável que será usada na query
-            ResultSet rs = ps.executeQuery();
+        // Busca o tipo do usuário (idoso / familiar / administrador) no banco
+        String tipo = usuarioDAO.getTipoById(u.getId());
 
-            if (rs.next()) {
-                String tipo = rs.getString("tipo");//tipo retonado pelo banco após a seleção
+        if (tipo == null) {
+            System.out.println("Usuário não encontrado!");
+            return;
+        }
 
-                /*
-                SELECIONA O MENU DE ACORDO COM O TIPO DE USUÁRIO
-                 */
-                switch (tipo) {
-                    case "idoso" -> { //Menu Home adaptado para usuários do tipo Idoso.
+        /*
+         SELECIONA O MENU DE ACORDO COM O TIPO DE USUÁRIO
+         */
+        switch (tipo) {
+            case "idoso" -> menuIdoso(u, conn);            // Menu adaptado para usuários idosos
+            case "familiar" -> menuFamiliar(u, conn);      // Menu adaptado para usuários familiares
+            case "administrador" -> menuAdmin(u, conn);    // Menu adaptado para usuários administradores
+            default -> System.out.println("Tipo de usuário inválido!");
+        }
+    }
 
-                        while (true) {
-                            try {
-                                menuHomeIdoso();
-                                opcao = scn.nextInt();
-                                scn.nextLine();
+    /*
+      Menu Home adaptado para usuários do tipo Idoso.
+      Permite acessar o perfil, listas de desejos e familiares associados.
+     */
+    private static void menuIdoso(usuario u, Connection conn) throws Exception {
+        while (true) {
+            try {
+                menuHomeIdoso(); // Exibe o menu do idoso
+                int opcao = scn.nextInt();
+                scn.nextLine();
 
-                                switch (opcao) {
-                                    case 1 -> verPerfil(u, conn);//acessa o perfil e suas configurações (metodo da LoginController)
-                                    case 2 -> telaListaDeDesejos(u,conn); //acessa a lista de desejos e suas opções (metodo da ListaDeDesejosController)
-                                    case 3 -> listarFamiliares(u, conn); //lista os familiares associados (metodo da MonitoraController)
-                                    case 0 -> {
-                                        System.out.println("Voltando..."); //volta para a tela de login
-                                        return;
-                                    }
-                                    default -> System.out.println("Opção inválida!");
-                                }
-                                //erro, trata entradas que não são numéricas
-                            } catch (InputMismatchException e) {
-                                System.out.println("ERRO! Digite apenas números");
-                                scn.nextLine();
-                            }
-                        }
+                switch (opcao) {
+                    case 1 -> verPerfil(u, conn);          // Acessa o perfil e suas configurações
+                    case 2 -> telaListaDeDesejos(u, conn); // Acessa a lista de desejos
+                    case 3 -> listarFamiliares(u, conn);   // Lista os familiares associados
+                    case 0 -> {
+                        System.out.println("Voltando..."); // Volta para a tela de login
+                        return;
                     }
-
-                    case "familiar" -> { //Menu Home adaptado para usuários do tipo Familiar.
-
-                        while (true) {
-
-                            try {
-                                menuHomeFamiliar();
-                                opcao = scn.nextInt();
-                                scn.nextLine();
-
-                                switch (opcao) {
-                                    case 1 -> verPerfil(u, conn);//acessa o perfil e suas configurações (metodo da LoginController)
-                                    case 2 -> verListasDeIdosos(u, conn); //acessa a lista de desejos dos idosos associados (metodo da ListaDeDesejosController)
-                                    case 3 -> listarIdosos(u, conn); //lista os usuários idosos associados ao usuário familiar (metodo da MonitoraController)
-                                    case 0 -> {
-                                        System.out.println("Voltando..."); //volta para a tela de login
-                                        return;
-                                    }
-                                    default -> System.out.println("Opção inválida!");
-                                }
-                                //erro, trata entradas que não são numéricas
-                            } catch (InputMismatchException e) {
-                                System.out.println("ERRO! Digite apenas números");
-                                scn.nextLine();
-                            }
-                        }
-                    }
-
-                    case "administrador" -> { //Menu Home adaptado para usuários do tipo Administrador.
-
-                        while (true) {
-                            try {
-                                menuHomeAdmin();
-                                opcao = scn.nextInt();
-                                scn.nextLine();
-
-                                switch (opcao) {
-                                    case 1 ->verPerfil(u, conn); //acessa o perfil e suas configurações (metodo da LoginController)
-                                    case 2 -> gerenciarUsuarios(conn); //acessa a lista de todos os usuários cadastrados no banco de dados, gerencia os dados dos usuários (metodo da UsuarioController)
-                                    case 0 -> {
-                                        System.out.println("Voltando..."); //volta para a tela de login
-                                        return;
-                                    }
-                                    default -> System.out.println("Opção inválida!");
-                                }
-                                //erro, trata entradas que não são numéricas
-                            } catch (InputMismatchException e) {
-                                System.out.println("ERRO! Digite apenas números");
-                                scn.nextLine();
-                            }
-                        }
-                    }
-                    default -> System.out.println("Tipo de usuário inválido!");
+                    default -> System.out.println("Opção inválida!");
                 }
-            } else {
-                System.out.println("Usuário não encontrado!");
+            } catch (InputMismatchException e) {
+                // Trata entradas que não são numéricas
+                System.out.println("ERRO! Digite apenas números");
+                scn.nextLine();
             }
-        } catch (SQLException e) {
-            System.out.println("ERRO! Não foi possível acessar a tela inicial!");
-            e.printStackTrace();
+        }
+    }
+
+    /*
+      Menu Home adaptado para usuários do tipo Familiar.
+      Permite acessar o perfil, visualizar listas dos idosos e listar idosos monitorados.
+     */
+    private static void menuFamiliar(usuario u, Connection conn) throws Exception {
+        while (true) {
+            try {
+                menuHomeFamiliar(); // Exibe o menu do familiar
+                int opcao = scn.nextInt();
+                scn.nextLine();
+
+                switch (opcao) {
+                    case 1 -> verPerfil(u, conn);           // Acessa o perfil e suas configurações
+                    case 2 -> verListasDeIdosos(u, conn);   // Acessa as listas de desejos dos idosos associados
+                    case 3 -> listarIdosos(u, conn);        // Lista os idosos monitorados
+                    case 0 -> {
+                        System.out.println("Voltando...");  // Volta para a tela de login
+                        return;
+                    }
+                    default -> System.out.println("Opção inválida!");
+                }
+            } catch (InputMismatchException e) {
+                // Trata entradas que não são numéricas
+                System.out.println("ERRO! Digite apenas números");
+                scn.nextLine();
+            }
+        }
+    }
+
+    /*
+      Menu Home adaptado para usuários do tipo Administrador.
+      Permite acessar o perfil e gerenciar todos os usuários cadastrados no sistema.
+     */
+    private static void menuAdmin(usuario u, Connection conn) throws Exception {
+        while (true) {
+            try {
+                menuHomeAdmin(); // Exibe o menu do administrador
+                int opcao = scn.nextInt();
+                scn.nextLine();
+
+                switch (opcao) {
+                    case 1 -> verPerfil(u, conn);         // Acessa o perfil e suas configurações
+                    case 2 -> gerenciarUsuarios(conn);    // Gerencia os dados de todos os usuários
+                    case 0 -> {
+                        System.out.println("Voltando..."); // Volta para a tela de login
+                        return;
+                    }
+                    default -> System.out.println("Opção inválida!");
+                }
+            } catch (InputMismatchException e) {
+                // Trata entradas que não são numéricas
+                System.out.println("ERRO! Digite apenas números");
+                scn.nextLine();
+            }
         }
     }
 }
-
-

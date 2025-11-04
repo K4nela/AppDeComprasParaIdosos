@@ -110,4 +110,11 @@ public abstract class usuario {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
+
+    @Override
+    public String toString() {
+        return String.format("|ID: %d | Tipo: %s | Nome: %s | Data de nascimento: %s | Email: %s | Telefone: %s | Endereço: %s |",
+                id, tipo, nome, dataNasc.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), e_mail, telefone, endereco);
+    }
+
 }

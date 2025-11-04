@@ -1,10 +1,10 @@
 package app;
 
 import dao.Conexao;
-import dao.UsuarioDAO;
 import model.usuario;
 
 import java.sql.Connection;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import static controller.CadastroController.telaCadastro;
@@ -14,48 +14,53 @@ import static controller.HomeController.telaHome;
 import static controller.LoginController.telaLogin;
 
 public class Main {
+    //definindo variáveis globais para evitar múltiplas instâncias
     static Scanner scn = new Scanner(System.in);
-    static usuario logado = null;
     static int opcao;
+    static usuario logado = null;
 
     public static void main(String[] args) {
-        Connection conn = null;
+        Connection conn = null; //instanciando uma futura conexão com o banco de dados
 
         try {
-            conn = Conexao.createConnectionToMySQL();//Conecta no banco de dados
-            UsuarioDAO UsuarioDao = new UsuarioDAO(conn);//Instancia o DAO
+            conn = Conexao.createConnectionToMySQL();//Conectando no banco de dados
 
-            do {
+            while (true) {//iniciando um looping para a aplicação rodar enquando o usuário não escolher sair
+
                 menuLogin();
-                String opcaoTexto = scn.nextLine();
+                opcao = scn.nextInt();
+                scn.nextLine();
 
                 try {
-                    opcao = Integer.parseInt(opcaoTexto);
-                } catch (NumberFormatException e) {
-                    System.out.println("ERRO! Entrada inválida, insira um número.");
-                    opcao = -1;
-                    continue;
-                }
+                    switch (opcao) {
+                        //
+                        case 1 -> {//login - chama o metodo que retorna um usuário logado ou null;
+                            logado = telaLogin(conn);
 
-                switch (opcao) {
-                    case 1 -> {
-                        logado = telaLogin();
-
-                        if (logado != null){
-                            telaHome(logado, conn);
+                            //Se o login der certo, ele vai usar o login e a conexão para chamar a tela inicial
+                            if (logado != null) {
+                                telaHome(logado, conn);
+                            }
                         }
+                        case 2 -> telaCadastro(); //metodo para cadastro de usuário
+                        case 0 -> {
+                            System.out.println("Saindo...");
+                            return;
+                        }
+                        default -> System.out.println("Opção inválida!");
                     }
-                    case 2 -> telaCadastro();
-                    case 0 -> System.out.println("Saindo...");
-                    default -> System.out.println("Opção inválida!");
+
+                  //tratamento de erro para entradas inválidas
+                } catch (InputMismatchException e) {
+                    System.out.println("ERRO! Entrada inválida, insira um número.");
+                    return;
                 }
-
-            } while (opcao != 0);
-
+            }
+        //tratamento de erro caso a conexão seja perdida, driver não esteja sendo usado corretamente, etc.
         } catch (Exception e) {
             System.out.println("ERRO! Não foi possível rodar o aplicativo!");
             e.printStackTrace();
-        } finally {
+        } finally { //fecha a conexão com o banco de dados
             try {
                 closeConnection(conn);
             } catch (Exception e) {

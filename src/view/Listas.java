@@ -16,43 +16,47 @@ public abstract class Listas {
             System.out.println("--------------------------------");
             System.out.println("lista de: " + i.getNome());
             System.out.println("================================");
-            System.out.println("                            ID:" + lista.getId_lista() );
+            System.out.println("                            ID:" + lista.getId_lista());
             System.out.println("        " + lista.getNomeLista());
             System.out.println("            " + lista.getDataCriacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
             System.out.println("================================");
         }
     }
 
-    public static void telaLista(listaDeDesejos lista){
+    public static void telaLista(listaDeDesejos lista) {
         System.out.println("================================");
-        System.out.println("                            ID:" + lista.getId_lista() );
+        System.out.println("                            ID:" + lista.getId_lista());
         System.out.println("        " + lista.getNomeLista());
         System.out.println("            " + lista.getDataCriacao().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         System.out.println("================================");
     }
 
-    public static void telaUsuarios(List<usuario> usuarios){
+    public static void telaUsuarios(List<usuario> usuarios) {
         System.out.println(" ");
         for (usuario u : usuarios) {
-            System.out.println("|ID: " +  u.getId() + " | " + "Tipo: " +  u.getTipo() + " | " + "Nome: " + u.getNome() + " | " + "Data de nascimento: " + u.getDataNasc().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " | " + "Email: " + u.getE_mail() + " | " + "Telefone: " + u.getTelefone() + " | " + "Telefone: " + u.getTelefone() + " | " + "Endereço: " + u.getEndereco()+ " | ");
+            System.out.println("|ID: " + u.getId() + " | " + "Tipo: " + u.getTipo() + " | " + "Nome: " + u.getNome() + " | " + "Data de nascimento: " + u.getDataNasc().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " | " + "Email: " + u.getE_mail() + " | " + "Telefone: " + u.getTelefone() + " | " + "Telefone: " + u.getTelefone() + " | " + "Endereço: " + u.getEndereco() + " | ");
         }
         System.out.println(" ");
         System.out.println("Digite [0] para voltar");
     }
 
-    public static void telaUsuarios(usuario u){
-        System.out.println("====================================");
-            System.out.println("                               ID:" + u.getId());
-            System.out.println("            " + u.getNome());
-            System.out.println("Tipo: " + u.getTipo());
-            System.out.println("Data de nascimento: " + u.getDataNasc().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            System.out.println("Email: " + u.getE_mail());
-            System.out.println("Telefone: " + u.getTelefone());
-            System.out.println("Endereço: " + u.getEndereco());
-            System.out.println("====================================");
+    public static void telaUsuariosAdm(usuario u) {
+        System.out.println("|ID: " + u.getId() + " | " + "Tipo: " + u.getTipo() + " | " + "Nome: " + u.getNome() + " | " + "Data de nascimento: " + u.getDataNasc().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " | " + "Email: " + u.getE_mail() + " | " + "Telefone: " + u.getTelefone() + " | " + "Telefone: " + u.getTelefone() + " | " + "Endereço: " + u.getEndereco() + " | ");
     }
 
-    public static void telaItem(item i){
+    public static void telaUsuarios(usuario u) {
+        System.out.println("====================================");
+        System.out.println("                               ID:" + u.getId());
+        System.out.println("            " + u.getNome());
+        System.out.println("Tipo: " + u.getTipo());
+        System.out.println("Data de nascimento: " + u.getDataNasc().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        System.out.println("Email: " + u.getE_mail());
+        System.out.println("Telefone: " + u.getTelefone());
+        System.out.println("Endereço: " + u.getEndereco());
+        System.out.println("====================================");
+    }
+
+    public static void telaItem(item i) {
         System.out.println("                            ID: " + i.getId_item());
         System.out.println("            " + i.getNome_item());
         System.out.println("Descrição: " + i.getDescricao());
@@ -71,12 +75,10 @@ public abstract class Listas {
     public static void exibirCabecalhoLista(int id_idoso, UsuarioDAO usuarioDao, itemDAO itemDao, ListaDeDesejosDAO listaDao) throws SQLException {
         List<listaDeDesejos> listas = listaDao.getByIdIdoso(usuarioDao.getIdIdosoByUsuario(id_idoso));
 
-
         if (listas.isEmpty()) {
             System.out.println("ERRO! Não foi possível encontrar uma lista");
             return;
         }
-
         for (listaDeDesejos lista : listas) {
 
             List<item> itens = itemDao.getByLista(lista.getId_lista());
@@ -109,7 +111,8 @@ public abstract class Listas {
                 telaItem(i);
             }
         }
-        System.out.println("================================");;
+        System.out.println("================================");
+        ;
     }
 
     public static void exibirListasDeDesejos(int id_idoso, UsuarioDAO usuarioDao, itemDAO itemDao, ListaDeDesejosDAO listaDao) throws SQLException {
@@ -144,10 +147,24 @@ public abstract class Listas {
         List<usuario> usuarios = usuarioDao.get();
 
         if (usuarios.isEmpty()) {
+            System.out.println("Nenhum usuário encontrado!");
+            return;
+        }
+
+        for (usuario u : usuarios) {
+            telaUsuariosAdm(u);
+        }
+    }
+
+    public static void exibirUsuario(UsuarioDAO usuarioDao, usuario u) {
+        u = usuarioDao.getById(u.getId());
+
+        if (u == null) {
             System.out.println("ERRO! Não foi possível encontrar o usuário");
             return;
         }
-        telaUsuarios(usuarios);
+
+        telaUsuarios(u);
     }
 
     public static void exibirUsuarioPorId(UsuarioDAO usuarioDao, int id) {

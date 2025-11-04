@@ -16,12 +16,12 @@ public abstract class CrudDAO<T> implements CrudInterface<T> {
         this.conn = conn;
     }
 
-    //interface generica para transformar tuplas em objetos
+    //interface para transformar tuplas em objetos
     public interface ResultSetMapper<T> {
         T map(ResultSet rs) throws SQLException;
     }
 
-    //metodo para salvar
+    //metodo com parametro generalizado  para salvar
     public int save(String sql, Object... params) throws SQLException {
         int generatedId = -1;
         try (PreparedStatement psmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -39,8 +39,7 @@ public abstract class CrudDAO<T> implements CrudInterface<T> {
         return generatedId;
     }
 
-
-    //metodo para fazer update
+    //metodo com parametro generalizado  para fazer update
     public void update(String sql, Object... params) throws SQLException {
         try (PreparedStatement psmt = conn.prepareStatement(sql)) {
             for (int i = 0; i < params.length; i++) {
@@ -50,7 +49,7 @@ public abstract class CrudDAO<T> implements CrudInterface<T> {
         }
     }
 
-    //metodo para mostrar informações
+    //metodo com parametro generalizado  para mostrar informações
     public List<T> get(String sql, ResultSetMapper<T> mapper, Object... params) throws SQLException {
         List<T> lista = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -67,7 +66,7 @@ public abstract class CrudDAO<T> implements CrudInterface<T> {
     }
 
 
-    //metodo para deletar
+    //metodo com parametro generalizado para deletar
     public void delete(String sql, Object... params) throws SQLException {
         try (PreparedStatement psmt = conn.prepareStatement(sql)) {
             for (int i = 0; i < params.length; i++) {

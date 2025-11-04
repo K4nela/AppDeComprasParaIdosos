@@ -2,9 +2,6 @@ package model;
 
 import java.time.LocalDate;
 
-/**
- * Representa a associação (monitoramento) entre um familiar e um id_monitoraoso.
- */
 public class monitora {
     private int id_monitora;
     private int id_familiar;
@@ -34,15 +31,6 @@ public class monitora {
 
     public void setId_idoso(int id_idoso) {
         this.id_idoso = id_idoso;
-    }
-
-    @Override
-    public String toString() {
-        return "monitora{" +
-                "id_monitora=" + id_monitora +
-                ", id_familiar=" + id_familiar +
-                ", id_idoso=" + id_idoso +
-                '}';
     }
 
 }

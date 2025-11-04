@@ -16,7 +16,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         super(conn);
     }
 
-    //Desenvolvendo o metodo salvar (usuario)
+    //metodo salvar (usuario)
     @Override
     public void save(usuario u) {
         // SQL para inserir no usuário
@@ -52,7 +52,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         }
     }
 
-    //Desenvolvendo o metodo update (usuario)
+    //metodo update (usuario)
     @Override
     public void update(int id) {
         String sql;
@@ -210,7 +210,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
 
     }
 
-    //Desenvolvendo o metodo listar (usuario)
+    //metodo listar (usuario)
     @Override
     public List<usuario> get() {
         List<usuario> uList = new ArrayList<>();
@@ -221,10 +221,8 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
 
             while (rs.next()) {
                 String tipo = rs.getString("tipo");
-                usuario u = null;
-
-                switch (tipo) {
-                    case "idoso" -> u = new idoso(
+                usuario u = switch (tipo) {
+                    case "idoso" -> new idoso(
                             rs.getInt("id"),
                             rs.getString("nome"),
                             rs.getDate("data_nasc").toLocalDate(),
@@ -234,7 +232,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             rs.getString("telefone"),
                             rs.getString("tipo")
                     );
-                    case "familiar" -> u = new familiar(
+                    case "familiar" -> new familiar(
                             rs.getInt("id"),
                             rs.getString("nome"),
                             rs.getDate("data_nasc").toLocalDate(),
@@ -244,7 +242,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             rs.getString("telefone"),
                             rs.getString("tipo")
                     );
-                    case "administrador" -> u = new administrador(
+                    case "administrador" -> new administrador(
                             rs.getInt("id"),
                             rs.getString("nome"),
                             rs.getDate("data_nasc").toLocalDate(),
@@ -254,11 +252,11 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             rs.getString("telefone"),
                             rs.getString("tipo")
                     );
-                }
+                    default -> null;
+                };
 
                 if (u != null) {
                     uList.add(u);
-                    System.out.println(u);
                 }
             }
 
@@ -268,7 +266,6 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         }
         return uList;
     }
-
     //Desenvolveno o metoddo para listar por id (usuario)
     public usuario getById(int id) {
         usuario usuario = null;
@@ -325,7 +322,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         return usuario;
     }
 
-    //Desenvolvendo o metodo deletar (usuario)
+    //metodo deletar (usuario)
     @Override
     public void delete(int id) {
         String sql = "DELETE FROM usuario WHERE id = ?";
@@ -348,7 +345,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         }
     }
 
-    //Desenvolvendo o metodo para login (usuario)
+    //metodo para login (usuario)
     public usuario login(String email, String senha) {
         usuario usuario = null;
         String sql = "SELECT * FROM usuario WHERE email = ? AND senha = ?";
@@ -405,6 +402,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         return usuario;
     }
 
+    //metodo para pegar o id de um familiar pelo id de um idoso
     public int getIdFmById(int id) throws SQLException{
         String sql = "SELECT id_familiar FROM familiar WHERE id_usuario = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -418,7 +416,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         return -1;
     }
 
-
+    //metodo para pegar o usuario pelo id de um idoso
     public usuario getUsByIds(int id) throws SQLException {
         usuario u = null;
         String sql = "SELECT u.* FROM usuario u JOIN idoso i ON u.id = i.id_usuario WHERE i.id_idoso = ?";
@@ -449,7 +447,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         return u;
     }
 
-    //Desenvolvendo o metodo para validar liogin (senha)
+    //metodo para validar liogin (senha) pegando uma senha de um usuario
     public usuario getBySenha(String senha) {
         usuario usuario = null;
         String sql = "SELECT * FROM usuario WHERE senha = ?";
@@ -505,7 +503,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         return usuario;
     }
 
-    //Desenvolvendo o metodo para validar login (email)
+    //metodo para validar login (email) pegando um email de um usuario
     public usuario getByEmail(String email) {
         usuario usuario = null;
         String sql = "SELECT * FROM usuario WHERE email = ?";
@@ -561,6 +559,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         return usuario;
     }
 
+    //metodo para pegar o id de um idoso atraves de um id de um usuário
     public int getIdIdosoByUsuario(int idUsuario) throws SQLException {
         String sql = "SELECT id_idoso FROM idoso WHERE id_usuario = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -575,7 +574,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         }
     }
 
-
+    //metodo para validar login (email) metodo par apegar um usuario familiar atraves do email
     public familiar getFamiliarByEmail(String email) throws SQLException {
         usuario u = getByEmailAndTipo(email, "familiar");
         if (u instanceof familiar) {
@@ -584,6 +583,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         return null;
     }
 
+    //metodo para validar login (email) metodo par apegar um usuario familiar atraves do email
     public idoso getIdosoByEmail(String email) throws SQLException {
         usuario u = getByEmailAndTipo(email, "idoso");
         if (u instanceof idoso) {
@@ -688,5 +688,4 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
 
         return usuario;
     }
-
 }

@@ -1202,7 +1202,7 @@
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="354" parent="310" name="id_lista">
-      <AutoIncrement>1</AutoIncrement>
+      <AutoIncrement>4</AutoIncrement>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StoredType>int|0s</StoredType>
@@ -1218,7 +1218,7 @@
       <Position>3</Position>
       <StoredType>varchar(100)|0s</StoredType>
     </column>
-    <column id="357" parent="310" name="data_solicitacao">
+    <column id="357" parent="310" name="data_criacao">
       <Position>4</Position>
       <StoredType>date|0s</StoredType>
     </column>

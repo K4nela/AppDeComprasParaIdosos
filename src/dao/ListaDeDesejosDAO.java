@@ -20,7 +20,7 @@ public class ListaDeDesejosDAO extends CrudDAO<listaDeDesejos> {
 
     @Override
     public void save(listaDeDesejos lista) throws SQLException {
-        String sql = "INSERT INTO listadedesejos (id_idoso, nome_lista, data_solicitacao, descricao) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO listadedesejos (id_idoso, nome_lista, data_criacao, descricao) VALUES (?, ?, ?, ?)";
 
         try {
             int idLista = super.save(sql,
@@ -120,7 +120,7 @@ public class ListaDeDesejosDAO extends CrudDAO<listaDeDesejos> {
                 listaDeDesejos lista = new listaDeDesejos();
                 lista.setId_lista(rs.getInt("id_lista"));
                 lista.setNomeLista(rs.getString("nome_lista"));
-                lista.setDataCriacao(rs.getDate("data_solicitacao").toLocalDate());
+                lista.setDataCriacao(rs.getDate("data_criacao").toLocalDate());
                 lista.setDescricao(rs.getString("descricao"));
                 lista.setId_idoso(rs.getInt("id_idoso"));
                 listas.add(lista);
@@ -151,7 +151,7 @@ public class ListaDeDesejosDAO extends CrudDAO<listaDeDesejos> {
                 lista = new listaDeDesejos();
                 lista.setId_lista(rs.getInt("id_lista"));
                 lista.setNomeLista(rs.getString("nome_lista"));
-                lista.setDataCriacao(rs.getDate("data_solicitacao").toLocalDate());
+                lista.setDataCriacao(rs.getDate("data_criacao").toLocalDate());
                 lista.setDescricao(rs.getString("descricao"));
             }
         } catch (SQLException e) {
@@ -174,7 +174,7 @@ public class ListaDeDesejosDAO extends CrudDAO<listaDeDesejos> {
                     listaDeDesejos lista = new listaDeDesejos();
                     lista.setId_lista(rs.getInt("id_lista"));
                     lista.setNomeLista(rs.getString("nome_lista"));
-                    lista.setDataCriacao(rs.getDate("data_solicitacao").toLocalDate());
+                    lista.setDataCriacao(rs.getDate("data_criacao").toLocalDate());
                     lista.setDescricao(rs.getString("descricao"));
                     listas.add(lista);
             }

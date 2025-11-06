@@ -18,7 +18,7 @@ import static view.Menus.menuOpcaoLista;
 Controla as listas de desejos dos idosos.
 Permite criar, editar, deletar e visualizar listas.
 */
-public class ListaDeDesejosController {
+public final class ListaDeDesejosController {
     static int opcao = -1;
     static ListaDeDesejosDAO listaDao;
     static Scanner scn = new Scanner(System.in);

@@ -4,7 +4,6 @@ import dao.Conexao;
 import model.usuario;
 
 import java.sql.Connection;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import static controller.CadastroController.telaCadastro;

@@ -1,5 +1,6 @@
 package model;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public abstract class usuario {
     public Object getTipo;
@@ -34,27 +35,18 @@ public abstract class usuario {
     }
 
     public usuario(){
-        this.nome = "";
-        this.dataNasc = LocalDate.of(0000,00,00);
-        this.e_mail = "";
-        this.senha = "";
-        this.endereco = "";
-        this.telefone = "";
-        this.tipo = "";
     }
 
-    @Override
-    public String toString() {
-        return  "\n-------Usuário-------" +
-                "\nid = " + id +
-                "\nnome = " + nome +
-                "\ndata de nascimento = " + dataNasc +
-                "\nemail = " + e_mail +
-                "\nsenha = " + senha +
-                "\nendereço = " + endereco +
-                "\ntelefone = " + telefone +
-                "\ntipo = " + tipo +
-                "\n--------------------";
+    public usuario(String nome, LocalDate dataNasc, String e_mail, String endereco, String telefone) {
+        this.nome = nome;
+        this.dataNasc = dataNasc;
+        this.e_mail = e_mail;
+        this.endereco = endereco;
+        this.telefone = telefone;
+    }
+
+    public usuario(String nome) {
+        this.nome = nome;
     }
 
     public String getTipo() {
@@ -81,9 +73,7 @@ public abstract class usuario {
         this.nome = nome;
     }
 
-    public LocalDate getDataNasc() {
-        return dataNasc;
-    }
+    public LocalDate getDataNasc() {return dataNasc;}
 
     public void setDataNasc(LocalDate dataNasc) {
         this.dataNasc = dataNasc;
@@ -120,5 +110,11 @@ public abstract class usuario {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
+
+    @Override
+    public String toString() {
+        return String.format("|ID: %d | Tipo: %s | Nome: %s | Data de nascimento: %s | Email: %s | Telefone: %s | Endereço: %s |",
+                id, tipo, nome, dataNasc.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), e_mail, telefone, endereco);
+    }
+
 }
-//

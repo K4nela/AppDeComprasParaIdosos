@@ -58,7 +58,7 @@ public abstract class Listas {
 
     public static void telaItem(item i) {
         System.out.println("                            ID: " + i.getId_item());
-        System.out.println("            " + i.getNome_item());
+        System.out.println("       " + i.getNome_item());
         System.out.println("Descrição: " + i.getDescricao());
         System.out.println("Quantidade: " + i.getQuantidade());
         System.out.println("Loja: " + i.getNome_loja());

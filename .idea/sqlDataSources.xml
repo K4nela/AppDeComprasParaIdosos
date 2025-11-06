@@ -4,5 +4,13 @@
     <mapping uuid="87afae6d-8442-4d1e-9614-09c89e6f1d49" name="easypeasy@localhost Mapping">
       <data-sources db="9f6b090f-8238-4bcb-83af-5006425a7638" ddl="22f3bdba-d812-426a-9d59-20ea4a71ebd9" />
     </mapping>
+    <mapping uuid="863b2ef1-e18c-4993-a89c-f9f319f42175" name="easypeasy@localhost Mapping">
+      <data-sources db="0b9d7d0f-4f93-46a1-9079-06c13bed2f8e" />
+      <scope>
+        <node kind="database" qname="@">
+          <node kind="schema" negative="1" />
+        </node>
+      </scope>
+    </mapping>
   </component>
 </project>

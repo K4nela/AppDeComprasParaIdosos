@@ -6,13 +6,15 @@ import java.sql.SQLException;
 
 public class Conexao {
     //caminho do banco de dados, porta, nome do banco de dados
-    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/easypeasy";
+    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/easypeasy2";
     //nome do usuario
     private static final String USERNAME = "root";
     //senha do banco de dados
     private static final String PASSWORD = "1234";
 
-    //Criando conexão com o banco de dados
+    /*
+    Criando conexão com o banco de dados
+    */
 
     public static Connection createConnectionToMySQL() throws Exception {
         //Carregando a classe pela jvm

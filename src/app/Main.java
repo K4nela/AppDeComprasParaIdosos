@@ -26,14 +26,15 @@ public class Main {
             conn = Conexao.createConnectionToMySQL();//Conectando no banco de dados
 
             while (true) {//iniciando um looping para a aplicação rodar enquando o usuário não escolher sair
-
                 menuLogin();
-                opcao = scn.nextInt();
-                scn.nextLine();
+                String opcaoSt = scn.nextLine();
 
                 try {
+                    opcao = Integer.parseInt(opcaoSt);
+
                     switch (opcao) {
-                        //
+
+
                         case 1 -> {//login - chama o metodo que retorna um usuário logado ou null;
                             logado = telaLogin(conn);
 
@@ -51,9 +52,8 @@ public class Main {
                     }
 
                   //tratamento de erro para entradas inválidas
-                } catch (InputMismatchException e) {
-                    System.out.println("ERRO! Entrada inválida, insira um número.");
-                    return;
+                } catch (NumberFormatException e) {
+                    System.out.println("ERRO! Entrada inválida, insira um número");
                 }
             }
         //tratamento de erro caso a conexão seja perdida, driver não esteja sendo usado corretamente, etc.

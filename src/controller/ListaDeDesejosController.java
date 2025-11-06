@@ -27,7 +27,8 @@ public class ListaDeDesejosController {
         listaDao = new ListaDeDesejosDAO(conn);
     }
 
-    public static int erroLista(ListaDeDesejosDAO listaDao, int id) throws SQLException {
+    public static int erroLista(ListaDeDesejosDAO listaDao, int id, Connection conn) throws SQLException {
+        listaDao = new ListaDeDesejosDAO(conn);
         listaDeDesejos lista = listaDao.getById(id);
 
         while (lista == null) {
@@ -124,7 +125,7 @@ public class ListaDeDesejosController {
                 int id = scn.nextInt();
                 scn.nextLine();
 
-                id = erroLista(listaDao, id);
+                id = erroLista(listaDao, id, conn);
 
                 if (id == 0) {
                     System.out.println("Voltando...");
@@ -133,6 +134,70 @@ public class ListaDeDesejosController {
                     exibirListaDeDesejosById(id, listaDao, itemDao); //Acessa a lista de desejos e exibe dados da lista e seus itens (metodo da view -> Listas)
                     telaItens(id, conn);//Abre tela de gerenciamento de itens (metodo da view -> Listas)
 
+            } catch (InputMismatchException e) {
+                System.out.println("ERRO! Digite apenas números");
+                scn.nextLine();
+            }
+        }
+    }
+
+    /*
+Permite ao familiar visualizar listas de todos os idosos que monitora
+e atualizar o status dos itens (PENDENTE → CONCLUÍDO).
+ */
+    public static void verListasDeIdosos(usuario u, Connection conn) throws SQLException {
+        //DAOs para busca e atualização de historico
+        MonitoraDAO monitoraDAO = new MonitoraDAO(conn);
+        ListaDeDesejosDAO listaDAO = new ListaDeDesejosDAO(conn);
+        UsuarioDAO usuarioDao = new UsuarioDAO(conn);
+        itemDAO itemDao = new itemDAO(conn);
+        HistoricoDAO historicoDao = new HistoricoDAO(conn);
+
+        while (true){
+            try {
+                int idFamiliar = usuarioDao.getIdFmById(u.getId()); //Busca ID específico do familiar na tabela filha
+                List<idoso> idososIds = monitoraDAO.getIdososByFamiliar(idFamiliar); //Busca todos os idosos associados via tabela monitora
+
+                if (idososIds.isEmpty()) {
+                    System.out.println("Você ainda não monitora nenhum idoso");
+                    return;
+                }
+
+                //Para cada idoso associado, busca e exibe suas listas
+                for (idoso idosoId : idososIds) {
+                    usuario idoso = usuarioDao.getUsByIds(idosoId.getId_idoso());
+                    List<listaDeDesejos> listas = listaDAO.getByIdIdoso(idosoId.getId_idoso());
+                    telaListaDosIsosos(listas, idoso); //exibe as listas dos idosos associados (metodo da view -> Listas)
+                }
+
+                System.out.println("Digite [0] para voltar");
+                System.out.printf("Digite um ID para acessar a lista de desejos: ");
+                opcao = scn.nextInt();
+                scn.nextLine();
+
+                erroLista(listaDao, opcao, conn);
+
+                while (true) {
+                        exibirListaDeDesejosById(opcao, listaDAO, itemDao); //exibe lista escolhida por id e seus itens
+
+                    try {
+                        //opcao para usuario logado escolher editar os historicos dos itens da lista
+                        System.out.println("Digite [0] para voltar");
+                        System.out.printf("Digite um ID para atualizar o status de um item: ");
+                        opcao = scn.nextInt();
+                        scn.nextLine();
+
+                        if (opcao == 0) {
+                            System.out.println("Voltando...");
+                            return;
+                        }
+
+                        historicoDao.update(opcao); //metodo para atualizar o status no histórico
+                    } catch (InputMismatchException e) {
+                        System.out.println("ERRO! Entrada inválida!");
+                        scn.nextLine();
+                    }
+                }
             } catch (InputMismatchException e) {
                 System.out.println("ERRO! Digite apenas números");
                 scn.nextLine();
@@ -171,65 +236,5 @@ public class ListaDeDesejosController {
                 scn.nextLine();
             }
         }
-    }
-
-    /*
-    Permite ao familiar visualizar listas de todos os idosos que monitora
-    e atualizar o status dos itens (PENDENTE → CONCLUÍDO).
-     */
-    public static void verListasDeIdosos(usuario u, Connection conn) throws SQLException {
-        //DAOs para busca e atualização de historico
-        MonitoraDAO monitoraDAO = new MonitoraDAO(conn);
-        ListaDeDesejosDAO listaDAO = new ListaDeDesejosDAO(conn);
-        UsuarioDAO usuarioDao = new UsuarioDAO(conn);
-        itemDAO itemDao = new itemDAO(conn);
-        HistoricoDAO historicoDao = new HistoricoDAO(conn);
-
-        do {
-            try {
-                int idFamiliar = usuarioDao.getIdFmById(u.getId()); //Busca ID específico do familiar na tabela filha
-                List<idoso> idososIds = monitoraDAO.getIdososByFamiliar(idFamiliar); //Busca todos os idosos associados via tabela monitora
-
-                if (idososIds.isEmpty()) {
-                    System.out.println("Você ainda não monitora nenhum idoso");
-                    return;
-                }
-
-                //Para cada idoso associado, busca e exibe suas listas
-                for (idoso idosoId : idososIds) {
-                    usuario idoso = usuarioDao.getUsByIds(idosoId.getId_idoso());
-                    List<listaDeDesejos> listas = listaDAO.getByIdIdoso(idosoId.getId_idoso());
-                    telaListaDosIsosos(listas, idoso); //exibe as listas dos idosos associados (metodo da view -> Listas)
-                }
-
-                System.out.println("Digite [0] para voltar");
-                System.out.printf("Digite um ID para acessar a lista de desejos: ");
-                opcao = scn.nextInt();
-                scn.nextLine();
-
-                erroLista(listaDao, opcao);
-
-                while (true) {
-                    exibirListaDeDesejosById(opcao, listaDAO, itemDao); //exibe lista escolhida por id e seus itens
-
-                    //opcao para usuario logado escolher editar os historicos dos itens da lista
-                    System.out.println("Digite [0] para voltar");
-                    System.out.printf("Digite um ID para atualizar o status de um item: ");
-                    opcao = scn.nextInt();
-                    scn.nextLine();
-
-                    if (opcao == 0) {
-                        System.out.println("Voltando...");
-                        return;
-                    }
-
-                    historicoDao.update(opcao); //metodo para atualizar o status no histórico
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("ERRO! Digite apenas números");
-                scn.nextLine();
-            }
-
-        } while (opcao != 0); //fecha o loop quando escolhe opcao 0
     }
 }

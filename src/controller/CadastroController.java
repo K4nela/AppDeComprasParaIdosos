@@ -33,16 +33,19 @@ public final class CadastroController {
         LocalDate localData;
 
         while (true) {
+            System.out.println("Digite [0] para voltar");
             System.out.println("----------Cadastro----------");
+            System.out.println(" ");
             menuTipoUsuario(); // exibe o menu para selecionar o tipo de usuário que será cadastrado (metodo da view -> menus)
 
             // === VALIDA TIPO DE USUÁRIO ===
             while (true) {
                 System.out.print("Tipo: ");
-                tipo = scn.nextInt();
-                scn.nextLine();
+                String tipoTXT = scn.nextLine();
 
                 try {
+
+                    tipo = Integer.parseInt(tipoTXT);
 
                     if (tipo == 0) {
                         System.out.println("Voltando...");
@@ -51,11 +54,10 @@ public final class CadastroController {
 
                     if (tipo >= 1 && tipo <= 3) {
                         break; // Tipo válido
-                    } else {
-                        System.out.println("ERRO! Tipo de usuário inválido. Escolha entre 1, 2 ou 3.");
                     }
+
                 } catch (NumberFormatException e) {
-                    System.out.println("ERRO! Digite apenas números. Escolha entre 1, 2 ou 3.");
+                    System.out.println("ERRO! Digite apenas números (Escolha entre 1, 2 ou 3)");
                 }
             }
 

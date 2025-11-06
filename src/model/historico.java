@@ -15,6 +15,10 @@ public class historico {
         this.status = status.PENDENTE;
     }
 
+    public historico() {
+
+    }
+
     @Override
     public String toString() {
         return data_historico + " - " + status;

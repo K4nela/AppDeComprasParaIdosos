@@ -1,141 +1,176 @@
-create database easypeasy2;
-use easypeasy2;
+CREATE DATABASE easypeasy;
+USE easypeasy;
 
-create table usuario (
-    id int auto_increment primary key,
-    nome varchar(100) not null,
-    data_nasc date not null,
-    email varchar(100) not null unique,
-    senha varchar(100) not null,
-    endereco varchar(200),
-    telefone varchar(20),
-    tipo varchar(20)
+CREATE TABLE usuario (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    data_nasc DATE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha VARCHAR(100) NOT NULL,
+    endereco VARCHAR(200),
+    telefone VARCHAR(20)
+);   
+    INSERT INTO usuario ( nome, data_nasc, email, senha, endereco, telefone) VALUES
+    ( 'Maria Souza', '2000-01-22', 'maria.souza@gmail.com', '1234', 'Rua B, 456', '61988888888'),
+    ( 'Ana Pereira',  '1995-07-08', 'ana.pereira@gmail.com', '1234', 'Rua D, 101', '61966666666'),
+    ( 'Carlos Oliveira', '1948-03-12' , 'carlos.oliveira@gmail.com', '1234', 'Rua C, 789', '61977777777'),
+    ( 'João Silva', '1955-11-27', 'joao.silva@gmail.com', '1234', 'Rua A, 123', '61999999999'),
+    ( 'Maria Eduarda', '1988-09-15' , 'maria.eduarda@gmail.com', '1234', 'Rua E, 102', '61955555555');
+
+CREATE TABLE administrador (
+    id_administrador INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT UNIQUE,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+);
+    INSERT INTO administrador(id_usuario)VALUES
+    (5);
+
+CREATE TABLE familiar (
+    id_familiar INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT UNIQUE,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+);
+    INSERT INTO familiar (id_usuario) VALUES
+    (1),
+    (2);
+
+CREATE TABLE idoso (
+    id_idoso INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT UNIQUE,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+);
+    INSERT INTO idoso (id_usuario) VALUES
+    (3),
+    (4);
+
+CREATE TABLE monitora (
+    id_monitora INT NOT NULL AUTO_INCREMENT,
+    id_familiar INT NOT NULL,
+    id_idoso    INT NOT NULL,
+    PRIMARY KEY (id_monitora),
+    FOREIGN KEY (id_familiar) REFERENCES familiar (id_familiar),
+    FOREIGN KEY (id_idoso) REFERENCES idoso (id_idoso)
+);
+    INSERT INTO monitora (id_familiar, id_idoso) VALUES 
+        (1, 1),
+        (2, 2),
+        (2, 1);
+
+CREATE TABLE listaDeDesejos (
+    id_lista INT AUTO_INCREMENT PRIMARY KEY,
+    nome_lista VARCHAR(100) NOT NULL DEFAULT 'LISTA',
+    descricao VARCHAR(100) DEFAULT 'LISTA DE COMPRAS',
+    data_solicitacao DATE ,
+    id_idoso INT,
+    FOREIGN KEY (id_idoso) REFERENCES idoso(id_idoso)
+);
+    INSERT INTO listaDeDesejos (id_idoso, data_solicitacao) VALUES
+    (1,CURDATE()),
+    (1,CURDATE()),
+    (2,CURDATE()),
+    (2,CURDATE());
+
+CREATE TABLE itens (
+    id_item INT AUTO_INCREMENT PRIMARY KEY,
+    id_lista INT,
+    nome_item VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    quantidade INT,
+    nome_loja VARCHAR(100),
+    link VARCHAR(255),
+    FOREIGN KEY (id_lista) REFERENCES listaDeDesejos(id_lista) ON DELETE CASCADE
+);
+    INSERT INTO itens (id_lista, nome_item, descricao, quantidade, nome_loja, link) VALUES
+    ( 1, 'Blusa do Brasil', 'Tamanho: G', 1, 'Loja TeamShirt','https://shopee.com'),
+    ( 2, 'Óculos de Sol', 'Moledo preto', 1, 'Loja Óptica', 'https://firmo.com'),
+    ( 3, 'Chinelo Ortopedico', 'Chinelo tamanho 40', 1, 'Loja Calçados', 'https://shein.com'),
+    ( 4, 'Samgsung A15', 'Modelo 5G', 1, 'Loja Tech', 'https://mercadolivre.com');
+
+CREATE TABLE status (
+    id_status INT AUTO_INCREMENT PRIMARY KEY,
+    status_item ENUM ('Pendente', 'Em andamento', 'Concluído', 'Cancelado') NOT NULL
+);
+    INSERT INTO status (status_item) VALUES
+    ('Pendente'),
+    ('Em andamento'),
+    ('Concluído'),
+    ('Cancelado');
+
+CREATE TABLE historico (
+    id_historico INT AUTO_INCREMENT PRIMARY KEY,
+    data_historico DATE NOT NULL,
+    id_item INT NULL,
+    id_status INT,
+    FOREIGN KEY (id_item) REFERENCES itens (id_item) ON DELETE SET NULL,
+    FOREIGN KEY (id_status) REFERENCES status(id_status)
 );
 
-create table administrador (
-    id_administrador int auto_increment primary key,
-    id_usuario int unique,
-    constraint fk_admin_usuario
-    foreign key (id_usuario) references usuario (id)
-    on delete cascade
-);
+    INSERT INTO historico(id_item, id_status, data_historico)VALUES
+    (1,1,CURDATE()),
+    (2,1,CURDATE()),
+    (3,1,CURDATE()),
+    (4,1,CURDATE());
 
-create table familiar (
-    id_familiar int auto_increment primary key,
-    id_usuario int unique,
-    constraint fk_familiar_usuario
-    foreign key (id_usuario) references usuario (id)
-    on delete cascade
-);
 
-create table idoso (
-    id_idoso int auto_increment primary key,
-    id_usuario int unique,
-    constraint fk_idoso_usuario
-    foreign key (id_usuario) references usuario (id)
-    on delete cascade
-);
+-- -- Modificando com SELECT e UPDATE--
 
-create table listadedesejos (
-    id_lista int auto_increment primary key,
-    nome_lista varchar(100) not null default 'LISTA',
-    descricao varchar(100) default 'LISTA DE COMPRAS',
-    data_criacao date,
-    id_idoso int,
-    constraint fk_lista_idoso
-    foreign key (id_idoso) references idoso (id_idoso)
-);
+-- -- troca de email ou senha
+-- SELECT * FROM usuario;
 
-create table item (
-    id_item int auto_increment primary key,
-    id_lista int,
-    nome_item varchar(100) not null,
-    descricao text,
-    quantidade int,
-    nome_loja varchar(100),
-    link varchar(255),
-    constraint fk_item_lista
-    foreign key (id_lista) references listadedesejos (id_lista)
-    on delete cascade
-);
+-- -- alterando o email do Joao
+-- UPDATE usuario
+-- SET email = 'Joao.Silva123@gmail.com' 
+-- WHERE id = 4;
 
-create table historico (
-    id_historico int auto_increment primary key,
-    data_historico date not null,
-    id_item int,
-    status enum('PENDENTE', 'EM_ANDAMENTO', 'CONCLUIDO', 'CANCELADO'),
-    constraint fk_historico_item
-    foreign key (id_item) references item (id_item)
-    on delete set null
-);
+-- -- Alterando a senha do Joao (usuario 4)
+-- UPDATE usuario 
+-- SET senha = 'ABC123'
+-- WHERE id = 4;
 
-create index idx_historico_item on historico (id_item);
-create index idx_historico_status on historico (status);
-create index idx_item_lista on item (id_lista);
-create index idx_lista_idoso on listadedesejos (id_idoso);
+-- -- Conferindo o as alterações feitas no ususario Joao
+-- SELECT * FROM usuario
+-- WHERE id = 4;
 
-create table monitora (
-    id_monitora int auto_increment primary key,
-    id_familiar int not null,
-    id_idoso int not null,
-    constraint fk_monitora_familiar
-    foreign key (id_familiar) references familiar (id_familiar),
-    constraint fk_monitora_idoso
-    foreign key (id_idoso) references idoso (id_idoso)
-);
+-- -- conferindo as listas de desejo
+-- SELECT * FROM listadedesejos;
 
-INSERT INTO usuario (id, nome, data_nasc, email, senha, endereco, telefone, tipo) VALUES
-(1, 'Jaime', '2006-03-15', 'adm@gmail.com', '1234', 'Brazlandia', '61 9999-9999', 'administrador'),
-(2, 'Adalberto Junior', '1970-06-12', 'adalberto@gmail.com', '1234', 'xixique brasilia ', '61 40028922', 'idoso'),
-(3, 'Maria', '2006-03-15', 'maria@gmail.com', '1234', 'Brazlandia', '61 9999-9999', 'familiar'),
-(4, 'evaldro', '1970-03-15', 'idoso@gmail.com', '1234', 'Brazlandia', '61 9999-9999', 'idoso'),
-(5, 'idoso2', '1970-03-15', 'idoso2@gmail.com', '1234', 'Brazlandia', '61 9999-9999', 'idoso'),
-(6, 'idoso3', '1970-03-15', 'idoso3@gmail.com', '1234', 'Brazlandia', '61 9999-9999', 'idoso'),
-(7, 'Jaiminhp', '2006-03-15', 'adm2@gmail.com', '1234', 'Brazlandia', '61 9999-8888', 'administrador');
+-- -- exibindo lista de desejos através do acesso dos familiares 
+-- SELECT 
+--        u_f.nome AS familiar,
+--        u_i.nome AS idoso,
+--        ld.nome_lista AS lista,
+--        it.nome_item AS item,
+--        s.status_item AS status
+-- FROM monitora m
+-- JOIN familiar f ON f.id_familiar = m.id_familiar
+-- JOIN usuario u_f ON u_f.id = f.id_usuario   -- nome do familiar
+-- JOIN idoso i ON i.id_idoso = m.id_idoso
+-- JOIN usuario u_i ON u_i.id = i.id_usuario   -- nome do idoso
+-- LEFT JOIN listadedesejos ld ON ld.id_idoso = i.id_idoso
+-- LEFT JOIN itens it ON it.id_lista = ld.id_lista
+-- LEFT JOIN historico h ON it.id_item = h.id_item
+-- LEFT JOIN status s ON h.id_status = s.id_status
+-- WHERE it.nome_item = "Blusa do Brasil";
 
--- administrador (ligando com usuario tipo administrador)
-INSERT INTO administrador (id_administrador, id_usuario) VALUES
-    (1, 1),
-    (2, 7);
+-- -- atualizando o status do pedido 1 do historico atraves do id_historico
+-- -- atualizando para "Em andamento"
+-- UPDATE historico
+-- SET id_status = 2
+-- WHERE id_historico = 1;
+-- SELECT * FROM historico;
 
--- familiar (ligando com usuario tipo familiar)
-INSERT INTO familiar (id_familiar, id_usuario) VALUES
-    (1, 3);
+-- -- atualizando para "Concluído"
+-- UPDATE historico
+-- SET id_status = 3
+-- WHERE id_historico = 1;
+-- SELECT * FROM historico;
 
--- idoso (ligando com usuario tipo idoso)
-INSERT INTO idoso (id_idoso, id_usuario) VALUES
-    (1, 2),
-    (2, 4),
-    (3, 5),
-    (4, 6);
+-- -- atualizando para "Cancelado"
+-- UPDATE historico
+-- SET id_status = 4
+-- WHERE id_historico = 1;
+-- SELECT * FROM historico; 
 
--- listadedesejos (uma pra cada idoso)
-INSERT INTO listadedesejos (id_lista, nome_lista, descricao, data_criacao, id_idoso) VALUES
-    (1, 'Lista do Seu Adalberto', 'Compras do mês', '2025-11-01', 1),
-    (2, 'Lista do Evaldro', 'Necessidades básicas', '2025-11-02', 2),
-    (3, 'Lista do Idoso 2', 'Itens pessoais', '2025-11-03', 3),
-    (4, 'Lista do Idoso 3', 'Coisas diversas', '2025-11-04', 4);
-
--- item (itens de cada lista)
-INSERT INTO item (id_item, id_lista, nome_item, descricao, quantidade, nome_loja, link) VALUES
-    (1, 1, 'Fralda geriátrica', 'Tamanho G, pacote com 20', 2, 'Drogasil', 'https://lojaexemplo.com/fralda'),
-    (2, 1, 'Sabonete neutro', 'Para pele sensível', 5, 'Extra', 'https://lojaexemplo.com/sabonete'),
-    (3, 2, 'Arroz 5kg', 'Tipo 1', 3, 'Carrefour', 'https://lojaexemplo.com/arroz'),
-    (4, 3, 'Cobertor', 'Para o frio', 1, 'Americanas', 'https://lojaexemplo.com/cobertor'),
-    (5, 4, 'Remédio para pressão', 'Comprimidos 10mg', 1, 'Farmácia Popular', 'https://lojaexemplo.com/remedio');
-
--- historico (mudanças de status de itens)
-INSERT INTO historico (id_historico, data_historico, id_item, status) VALUES
-    (1, '2025-11-01', 1, 'PENDENTE'),
-    (2, '2025-11-02', 2, 'EM_ANDAMENTO'),
-    (3, '2025-11-03', 3, 'CONCLUIDO'),
-    (4, '2025-11-04', 4, 'PENDENTE'),
-    (5, '2025-11-05', 5, 'CANCELADO');
-
--- monitora (ligação familiar ↔ idoso)
-INSERT INTO monitora (id_monitora, id_familiar, id_idoso) VALUES
-    (1, 1, 1),
-    (2, 1, 2),
-    (3, 1, 3),
-    (4, 1, 4);
-
+-- --  deletando o item cancelado
+-- DELETE FROM itens
+-- WHERE id_item = 1;

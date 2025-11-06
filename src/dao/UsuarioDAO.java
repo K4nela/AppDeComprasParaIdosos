@@ -8,7 +8,7 @@ import model.usuario;
 import java.sql.*;
 import java.util.*;
 
-import static view.Menus.menuUpdateUsuario;
+import static view.Menus.menuUpdate;
 
 public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuario> {
 
@@ -16,7 +16,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         super(conn);
     }
 
-    //metodo salvar (usuario)
+    //Desenvolvendo o metodo salvar (usuario)
     @Override
     public void save(usuario u) {
         // SQL para inserir no usuário
@@ -52,20 +52,20 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         }
     }
 
-    //metodo update (usuario)
+    //Desenvolvendo o metodo update (usuario)
     @Override
     public void update(int id) {
         String sql;
 
         while (true) {
             try {
-                menuUpdateUsuario();
+                menuUpdate();
                 int opcao = scn.nextInt();
                 scn.nextLine();
 
                 switch (opcao) {
 
-                    case 1 -> {//alterando nome de usuario
+                    case 1://alterando nome de usuario
                         sql = "UPDATE usuario SET nome = ? WHERE id = ?;";
 
                         try {
@@ -78,7 +78,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             super.update(sql, novoNome, id);
 
                             if (novoNome.equals("0")) {
-                                System.out.println("Voltando...");
+                                System.out.println("Saindo...");
                                 return;
                             } else {
                                 System.out.println("Nome alterado com sucesso!");
@@ -88,9 +88,9 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("ERRO! Não foi possível alterar o nome!");
                             e.printStackTrace();
                         }
-                    }
+                        break;
 
-                    case 2 -> { //alterando data de nascimento
+                    case 2://alterando data de nascimento
                         sql = "UPDATE usuario SET data_nasc = ? WHERE id = ?;";
 
                         try {
@@ -106,9 +106,9 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("ERRO! Não foi possível alterar a data de nascimento!");
                             e.printStackTrace();
                         }
-                    }
+                        break;
 
-                    case 3 -> { //alterando email
+                    case 3://alterando email
                         sql = "UPDATE usuario SET email = ? WHERE id = ?;";
 
                         try {
@@ -125,9 +125,9 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("ERRO! Não foi possível alterar o email!");
                             e.printStackTrace();
                         }
-                    }
+                        break;
 
-                    case 4 -> { //alterando senha
+                    case 4://alterando senha
                         sql = "UPDATE usuario SET senha = ? WHERE id = ?;";
 
                         try {
@@ -144,9 +144,9 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("ERRO! Não foi possível alterar a senha!");
                             e.printStackTrace();
                         }
-                    }
+                        break;
 
-                    case 5 -> {//alterando endereco
+                    case 5://alterando endereco
                         sql = "UPDATE usuario SET endereco = ? WHERE id = ?;";
 
                         try {
@@ -162,9 +162,9 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("ERRO! Não foi possível alterar o endereço!");
                             e.printStackTrace();
                         }
-                    }
+                        break;
 
-                    case 6 -> { //alterando telefone
+                    case 6://alterando telefone
                         sql = "UPDATE usuario SET telefone = ? WHERE id = ?;";
 
                         try {
@@ -180,12 +180,11 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                             System.out.println("ERRO! Não foi possível alterar o telefone!");
                             e.printStackTrace();
                         }
-                    }
+                        break;
 
-                    case 0 -> {
-                        System.out.println("Voltando...");
+                    case 0:
+                        System.out.println("Saindo...");
                         return;
-                    }
                 }
             } catch (Exception e) {
                 System.out.println("ERRO! Digite apenas números.");
@@ -210,62 +209,60 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
 
     }
 
-    //metodo listar (usuario)
+    //Desenvolvendo o metodo listar (usuario)
     @Override
     public List<usuario> get() {
         List<usuario> uList = new ArrayList<>();
-        String sql = "SELECT * FROM usuario";
+        String sql = "SELECT * FROM usuario ";
 
         try (PreparedStatement ps = super.conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                String tipo = rs.getString("tipo");
-                usuario u = switch (tipo) {
-                    case "idoso" -> new idoso(
-                            rs.getInt("id"),
-                            rs.getString("nome"),
-                            rs.getDate("data_nasc").toLocalDate(),
-                            rs.getString("email"),
-                            rs.getString("senha"),
-                            rs.getString("endereco"),
-                            rs.getString("telefone"),
-                            rs.getString("tipo")
-                    );
-                    case "familiar" -> new familiar(
-                            rs.getInt("id"),
-                            rs.getString("nome"),
-                            rs.getDate("data_nasc").toLocalDate(),
-                            rs.getString("email"),
-                            rs.getString("senha"),
-                            rs.getString("endereco"),
-                            rs.getString("telefone"),
-                            rs.getString("tipo")
-                    );
-                    case "administrador" -> new administrador(
-                            rs.getInt("id"),
-                            rs.getString("nome"),
-                            rs.getDate("data_nasc").toLocalDate(),
-                            rs.getString("email"),
-                            rs.getString("senha"),
-                            rs.getString("endereco"),
-                            rs.getString("telefone"),
-                            rs.getString("tipo")
-                    );
-                    default -> null;
-                };
 
-                if (u != null) {
-                    uList.add(u);
-                }
+                System.out.println(
+                        "\n-------Usuário-------\n" +
+                                "id = " + rs.getInt("id") +
+                                "\nnome = " + rs.getString("nome") +
+                                "\ndata de nascimento = " + rs.getDate("data_nasc").toLocalDate() +
+                                "\nemail = " + rs.getString("email") +
+                                "\nsenha = " + rs.getString("senha") +
+                                "\nendereço = " + rs.getString("endereco") +
+                                "\ntelefone = " + rs.getString("telefone") +
+                                "\ntipo = " + rs.getString("tipo") +
+                                "\n--------------------"
+                );
             }
-
         } catch (SQLException e) {
             System.out.println("ERRO! Não foi possível listar a tabela usuário!");
             e.printStackTrace();
         }
         return uList;
     }
+
+    //Desenvolvendo o metodo deletar (usuario)
+    @Override
+    public void delete(int id) {
+        String sql = "DELETE FROM usuario WHERE id = ?";
+
+        try {
+            System.out.println("Tem certeza que deseja excluir este usuário?");
+            System.out.println("[Y/N]");
+            String opcao = scn.nextLine();
+
+            if (Objects.equals(opcao, "Y")) {
+                super.delete(sql, id);
+                System.out.println("Usuário excluído com sucesso!");
+            } else {
+                System.out.println("Voltando...");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("ERRO! Não foi possível deletar o usuário!");
+            e.printStackTrace();
+        }
+    }
+
     //Desenvolveno o metoddo para listar por id (usuario)
     public usuario getById(int id) {
         usuario usuario = null;
@@ -322,30 +319,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         return usuario;
     }
 
-    //metodo deletar (usuario)
-    @Override
-    public void delete(int id) {
-        String sql = "DELETE FROM usuario WHERE id = ?";
-
-        try {
-            System.out.println("Tem certeza que deseja excluir este usuário?");
-            System.out.println("[Y/N]");
-            String opcao = scn.nextLine();
-
-            if (Objects.equals(opcao, "Y")) {
-                super.delete(sql, id);
-                System.out.println("Usuário excluído com sucesso!");
-            } else {
-                System.out.println("Voltando...");
-            }
-
-        } catch (SQLException e) {
-            System.out.println("ERRO! Não foi possível deletar o usuário!");
-            e.printStackTrace();
-        }
-    }
-
-    //metodo para login (usuario)
+    //Desenvolvendo o metodo para login (usuario)
     public usuario login(String email, String senha) {
         usuario usuario = null;
         String sql = "SELECT * FROM usuario WHERE email = ? AND senha = ?";
@@ -402,79 +376,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         return usuario;
     }
 
-    //metodo para retornar o tipo por id
-    public String getTipoById(int idUsuario) {
-        String tipo = null;
-        String sql = "SELECT tipo FROM usuario WHERE id = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            // Define o ID que será buscado
-            ps.setInt(1, idUsuario);
-
-            // Executa a query
-            try (ResultSet rs = ps.executeQuery()) {
-                // Se encontrar o usuário, pega o tipo (idoso, familiar, administrador)
-                if (rs.next()) {
-                    tipo = rs.getString("tipo");
-                }
-            }
-        } catch (SQLException e) {
-            // Caso aconteça algum erro, mostra no console (útil pra debug)
-            System.out.println("ERRO! Não foi possível buscar o tipo do usuário.");
-            e.printStackTrace();
-        }
-
-        // Retorna o tipo encontrado (ou null, se não achar nada)
-        return tipo;
-    }
-
-
-    //metodo para pegar o id de um familiar pelo id de um idoso
-    public int getIdFmById(int id) throws SQLException{
-        String sql = "SELECT id_familiar FROM familiar WHERE id_usuario = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("id_familiar");
-                }
-            }
-        }
-        return -1;
-    }
-
-    //metodo para pegar o usuario pelo id de um idoso
-    public usuario getUsByIds(int id) throws SQLException {
-        usuario u = null;
-        String sql = "SELECT u.* FROM usuario u JOIN idoso i ON u.id = i.id_usuario WHERE i.id_idoso = ?";
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-
-            try(ResultSet rs = ps.executeQuery()) {
-
-                if (rs.next()) {
-                    u = new idoso(
-                            rs.getInt("id"),
-                            rs.getString("nome"),
-                            rs.getDate("data_nasc").toLocalDate(),
-                            rs.getString("email"),
-                            rs.getString("senha"),
-                            rs.getString("endereco"),
-                            rs.getString("telefone"),
-                            rs.getString("tipo")
-                    );
-                }
-            }
-        }catch (SQLException e){
-            System.out.println("ERRO! Não foi possível encontrar o idoso por id");
-            e.printStackTrace();
-        }
-
-        return u;
-    }
-
-    //metodo para validar liogin (senha) pegando uma senha de um usuario
+    //Desenvolvendo o metodo para validar liogin (senha)
     public usuario getBySenha(String senha) {
         usuario usuario = null;
         String sql = "SELECT * FROM usuario WHERE senha = ?";
@@ -524,13 +426,13 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
             }
 
         } catch (SQLException e) {
-            System.out.println("ERRO! Senha incorreta!");
+            System.out.println("ERRO! Não foi possível realizar o login!");
             e.printStackTrace();
         }
         return usuario;
     }
 
-    //metodo para validar login (email) pegando um email de um usuario
+    //Desenvolvendo o metodo para validar login (email)
     public usuario getByEmail(String email) {
         usuario usuario = null;
         String sql = "SELECT * FROM usuario WHERE email = ?";
@@ -586,22 +488,6 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         return usuario;
     }
 
-    //metodo para pegar o id de um idoso atraves de um id de um usuário
-    public int getIdIdosoByUsuario(int idUsuario) throws SQLException {
-        String sql = "SELECT id_idoso FROM idoso WHERE id_usuario = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, idUsuario);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("id_idoso"); // retorna o id do idoso
-                } else {
-                    return -1; // não encontrou
-                }
-            }
-        }
-    }
-
-    //metodo para validar login (email) metodo par apegar um usuario familiar atraves do email
     public familiar getFamiliarByEmail(String email) throws SQLException {
         usuario u = getByEmailAndTipo(email, "familiar");
         if (u instanceof familiar) {
@@ -610,7 +496,6 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         return null;
     }
 
-    //metodo para validar login (email) metodo par apegar um usuario familiar atraves do email
     public idoso getIdosoByEmail(String email) throws SQLException {
         usuario u = getByEmailAndTipo(email, "idoso");
         if (u instanceof idoso) {
@@ -690,7 +575,7 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
                         ps2.setInt(1, usuarioId);
                         try (ResultSet rs2 = ps2.executeQuery()) {
                             if (rs2.next()) {
-
+                                // o id específico normalmente é a primeira coluna (ex: id_familiar ou id_idoso)
                                 int idEspecifico = rs2.getInt(1);
                                 switch (tipo) {
                                     case "idoso" -> {
@@ -715,4 +600,57 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
 
         return usuario;
     }
+
+    // Salva o usuário e retorna o id gerado (útil para associar a outras tabelas)
+    public int saveAndReturnId(usuario u) throws SQLException {
+        String sqlUsuario = "INSERT INTO usuario(nome, data_nasc, email, senha, endereco, telefone, tipo) VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+        // inserção na tabela 'usuario'
+        int idUsuario = super.save(sqlUsuario,
+                u.getNome(),
+                java.sql.Date.valueOf(u.getDataNasc()),
+                u.getE_mail(),
+                u.getSenha(),
+                u.getEndereco(),
+                u.getTelefone(),
+                u.getTipo());
+
+        if (idUsuario == -1) throw new SQLException("Não foi possível inserir usuário");
+
+        // inserir na tabela específica e recuperar o id gerado (id_idoso, id_familiar, ...)
+        String tabela = switch (u.getTipo()) {
+            case "idoso" -> "idoso";
+            case "familiar" -> "familiar";
+            case "administrador" -> "administrador";
+            default -> null;
+        };
+
+        if (tabela == null) throw new IllegalArgumentException("Tipo de usuário inválido: " + u.getTipo());
+
+        String sqlTipo = "INSERT INTO " + tabela + " (id_usuario) VALUES (?);";
+        int generatedId = -1;
+        try (PreparedStatement ps = conn.prepareStatement(sqlTipo, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, idUsuario);
+            ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    generatedId = rs.getInt(1);
+                }
+            }
+        }
+
+        // popular o objeto com o id específico, se possível
+        if (generatedId != -1) {
+            switch (u.getTipo()) {
+                case "idoso" -> { if (u instanceof idoso) ((idoso) u).setId_idoso(generatedId); }
+                case "familiar" -> { if (u instanceof familiar) ((familiar) u).setId_familiar(generatedId); }
+                case "administrador" -> { if (u instanceof administrador) ((administrador) u).setId_administrador(generatedId); }
+            }
+        }
+
+        // retornar preferencialmente o id da tabela específica (para ser usado em vinculacoes),
+        // caso contrário retorna o id do usuário
+        return generatedId != -1 ? generatedId : idUsuario;
+    }
+
 }

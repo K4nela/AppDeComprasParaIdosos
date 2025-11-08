@@ -7,27 +7,27 @@ public abstract class usuario {
     protected int id;
     protected String nome;
     protected LocalDate dataNasc;
-    protected String e_mail;
+    protected String email;
     protected String senha;
     protected String endereco;
     protected String telefone;
     protected String tipo;
 
-    public usuario(int id, String nome, LocalDate dataNasc, String e_mail, String senha, String endereco, String telefone, String tipo) {
+    public usuario(int id, String nome, LocalDate dataNasc, String email, String senha, String endereco, String telefone, String tipo) {
         this.id = id;
         this.nome = nome;
         this.dataNasc = dataNasc;
-        this.e_mail = e_mail;
+        this.email = email;
         this.senha = senha;
         this.endereco = endereco;
         this.telefone = telefone;
         this.tipo = tipo;
     }
 
-    public usuario(String nome, LocalDate dataNasc, String e_mail, String senha, String endereco, String telefone, String tipo) {
+    public usuario(String nome, LocalDate dataNasc, String email, String senha, String endereco, String telefone, String tipo) {
         this.nome = nome;
         this.dataNasc = dataNasc;
-        this.e_mail = e_mail;
+        this.email = email;
         this.senha = senha;
         this.endereco = endereco;
         this.telefone = telefone;
@@ -37,10 +37,10 @@ public abstract class usuario {
     public usuario(){
     }
 
-    public usuario(String nome, LocalDate dataNasc, String e_mail, String endereco, String telefone) {
+    public usuario(String nome, LocalDate dataNasc, String email, String endereco, String telefone) {
         this.nome = nome;
         this.dataNasc = dataNasc;
-        this.e_mail = e_mail;
+        this.email = email;
         this.endereco = endereco;
         this.telefone = telefone;
     }
@@ -80,11 +80,11 @@ public abstract class usuario {
     }
 
     public String getE_mail() {
-        return e_mail;
+        return email;
     }
 
-    public void setE_mail(String e_mail) {
-        this.e_mail = e_mail;
+    public void setE_mail(String email) {
+        this.email = email;
     }
 
     public String getSenha() {
@@ -114,7 +114,7 @@ public abstract class usuario {
     @Override
     public String toString() {
         return String.format("|ID: %d | Tipo: %s | Nome: %s | Data de nascimento: %s | Email: %s | Telefone: %s | Endereço: %s |",
-                id, tipo, nome, dataNasc.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), e_mail, telefone, endereco);
+                id, tipo, nome, dataNasc.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), email, telefone, endereco);
     }
 
 }

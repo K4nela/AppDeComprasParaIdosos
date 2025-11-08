@@ -4,8 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>br.com.teuprojeto</groupId>
-    <artifactId>nome-do-projeto</artifactId>
+    <artifactId>EasyPeasy</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->

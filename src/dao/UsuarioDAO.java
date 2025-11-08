@@ -428,7 +428,6 @@ public class UsuarioDAO extends CrudDAO<usuario> implements CrudInterface<usuari
         return tipo;
     }
 
-
     //metodo para pegar o id de um familiar pelo id de um idoso
     public int getIdFmById(int id) throws SQLException{
         String sql = "SELECT id_familiar FROM familiar WHERE id_usuario = ?";

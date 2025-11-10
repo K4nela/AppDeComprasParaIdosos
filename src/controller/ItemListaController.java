@@ -17,7 +17,7 @@ import static view.Listas.exibirListaDeDesejosById;
 Controla o CRUD de itens dentro de uma lista de desejos.
 Usado por idosos (criar/editar) e familiares (acompanhar status).
 */
-public class ItemListaController {
+public final class ItemListaController {
     static Scanner scn = new Scanner(System.in);
 
     /*

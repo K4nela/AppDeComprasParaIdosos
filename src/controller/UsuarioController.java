@@ -15,10 +15,9 @@ import static view.Menus.*;
 /*
 gerenciar usuários do sistema (função para Administradores, CRUD completo)
  */
-public class UsuarioController {
+public final class UsuarioController {
     static Scanner scn = new Scanner(System.in);
     static int opcao = -1;
-
 
     /*
     função para ver usuários do sistema (função para Administradores)

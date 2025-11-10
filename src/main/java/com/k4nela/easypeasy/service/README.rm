@@ -1,0 +1,2 @@
+Diferente do jdbm, agora no spring boot usaremos as lógicas de negócios. Com permissão, validação, etc.
+Como por exemplo, fazer a parte de impedir dois usuários se cadastrarem com o mesmo email.

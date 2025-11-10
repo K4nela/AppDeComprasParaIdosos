@@ -1,0 +1,7 @@
+Diferente do jdbm, agora no spring boot usaremos o controller apenas para responder requisições HTTP (GET, POST, PUT, DELETE).
+As requisições HTTP vão fazer pedidos de dados via servidor.
+
+> GET - lista dados (Pede dados)
+> POST - Cadastra dados (Envia dados)
+> PUT - Edita dados (Atualiza dados)
+> DELETE - APAGA

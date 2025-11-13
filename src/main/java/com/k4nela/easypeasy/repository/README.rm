@@ -1,0 +1,4 @@
+Diferente do jdbm, agora no spring boot usaremos o repository no lugar da DAO. Apesar de temos um pacote voltado para as
+chamadas SQL, não escrevemos mais as chamadas SQL, já que o Spring gera tudo usando o JPA.
+
+Por exemplo através deles já temos chamadas como: save(), findAll(), deleteById(), findById(), etc.

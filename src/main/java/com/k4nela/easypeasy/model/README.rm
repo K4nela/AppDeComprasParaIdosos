@@ -1,0 +1,5 @@
+Diferente do jdbm, agora no spring boot usaremos o model para chamar a tabela e se conecta direto ao banco, só com anotações.
+
+> Ele cria a tabela automaticamente (se não existir);
+> Gera o SQL pra salvar, atualizar, deletar;
+> Faz o mapeamento direto entre o objeto Java e o registro no banco.

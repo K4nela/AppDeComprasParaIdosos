@@ -1,8 +1,7 @@
 package com.k4nela.easypeasy.controller;
 
 import com.k4nela.easypeasy.repository.LogRepository;
-import com.k4nela.easypeasy.model.Log;
-import com.k4nela.easypeasy.repository.LogRepository;
+import com.k4nela.easypeasy.entity.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

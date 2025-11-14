@@ -1,6 +1,6 @@
 package com.k4nela.easypeasy.repository;
 
-import com.k4nela.easypeasy.model.Idoso;
+import com.k4nela.easypeasy.entity.Idoso;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

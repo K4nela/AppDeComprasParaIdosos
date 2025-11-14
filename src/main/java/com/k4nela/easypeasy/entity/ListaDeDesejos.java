@@ -1,11 +1,18 @@
-package com.k4nela.easypeasy.model;
+package com.k4nela.easypeasy.entity;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.time.LocalDate;
 import java.util.List;
+
+@Data
+@NoArgsConstructor
 
 @Document(collection = "listasDeDesejos")
 public class ListaDeDesejos {
@@ -20,12 +27,4 @@ public class ListaDeDesejos {
 
     @DBRef
     private List<Item> itens;
-
-    public ListaDeDesejos() {}
-
-    public void setId(String id) {
-
-    }
-
-    // Getters e Setters
 }

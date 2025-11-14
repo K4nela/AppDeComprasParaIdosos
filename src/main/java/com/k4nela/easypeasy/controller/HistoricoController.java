@@ -1,6 +1,6 @@
 package com.k4nela.easypeasy.controller;
 
-import com.k4nela.easypeasy.model.Historico;
+import com.k4nela.easypeasy.entity.Historico;
 import com.k4nela.easypeasy.repository.HistoricoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,11 +29,11 @@ public class HistoricoController {
         return historicoRepository.findById(id).orElse(null);
     }
 
-    @PutMapping("/{id}")
-    public Historico atualizar(@PathVariable String id, @RequestBody Historico atualizado) {
-        atualizado.setId(id);
-        return historicoRepository.save(atualizado);
-    }
+//    @PutMapping("/{id}")
+//    public Historico atualizar(@PathVariable String id, @RequestBody Historico atualizado) {
+//        atualizado.setId(id);
+//        return historicoRepository.save(atualizado);
+//    }
 
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable String id) {

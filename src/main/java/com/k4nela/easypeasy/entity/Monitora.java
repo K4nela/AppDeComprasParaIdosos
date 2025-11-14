@@ -1,8 +1,15 @@
-package com.k4nela.easypeasy.model;
+package com.k4nela.easypeasy.entity;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DBRef;
+
+@Data
+@NoArgsConstructor
 
 @Document(collection = "monitora")
 public class Monitora {
@@ -18,46 +25,4 @@ public class Monitora {
 
     private String dataInicio;
     private String observacoes;
-
-    // Getters e Setters
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Idoso getIdoso() {
-        return idoso;
-    }
-
-    public void setIdoso(Idoso idoso) {
-        this.idoso = idoso;
-    }
-
-    public Familiar getFamiliar() {
-        return familiar;
-    }
-
-    public void setFamiliar(Familiar familiar) {
-        this.familiar = familiar;
-    }
-
-    public String getDataInicio() {
-        return dataInicio;
-    }
-
-    public void setDataInicio(String dataInicio) {
-        this.dataInicio = dataInicio;
-    }
-
-    public String getObservacoes() {
-        return observacoes;
-    }
-
-    public void setObservacoes(String observacoes) {
-        this.observacoes = observacoes;
-    }
 }

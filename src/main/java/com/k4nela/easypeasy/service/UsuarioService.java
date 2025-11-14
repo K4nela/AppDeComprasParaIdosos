@@ -1,6 +1,6 @@
 package com.k4nela.easypeasy.service;
 
-import com.k4nela.easypeasy.model.Usuario;
+import com.k4nela.easypeasy.entity.Usuario;
 import com.k4nela.easypeasy.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

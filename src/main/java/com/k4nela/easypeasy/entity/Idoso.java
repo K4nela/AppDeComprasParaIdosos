@@ -1,8 +1,15 @@
-package com.k4nela.easypeasy.model;
+package com.k4nela.easypeasy.entity;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DBRef;
+
+@Data
+@NoArgsConstructor
 
 @Document(collection = "idosos")
 public class Idoso {
@@ -11,12 +18,4 @@ public class Idoso {
 
     @DBRef
     private Usuario usuario;
-
-    public Idoso() {}
-
-    public void setId(String id) {
-
-    }
-
-    // Getters e Setters
 }

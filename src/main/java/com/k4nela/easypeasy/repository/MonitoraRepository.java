@@ -1,6 +1,6 @@
 package com.k4nela.easypeasy.repository;
 
-import com.k4nela.easypeasy.model.Monitora;
+import com.k4nela.easypeasy.entity.Monitora;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

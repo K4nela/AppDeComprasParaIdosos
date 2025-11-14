@@ -1,6 +1,6 @@
 package com.k4nela.easypeasy.controller;
 
-import com.k4nela.easypeasy.model.Usuario;
+import com.k4nela.easypeasy.entity.Usuario;
 import com.k4nela.easypeasy.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
 package com.k4nela.easypeasy.controller;
 
-import com.k4nela.easypeasy.model.Item;
+import com.k4nela.easypeasy.entity.Item;
 import com.k4nela.easypeasy.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,11 +29,10 @@ public class ItemController {
         return itemRepository.findById(id).orElse(null);
     }
 
-    @PutMapping("/{id}")
-    public Item atualizar(@PathVariable String id, @RequestBody Item itemAtualizado) {
-        itemAtualizado.setId(id);
-        return itemRepository.save(itemAtualizado);
-    }
+//    @PutMapping("/{id}")
+//    public Item atualizar(@PathVariable String id, @RequestBody Item itemAtualizado) {
+//        return itemRepository.save(itemAtualizado);
+//    }
 
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable String id) {

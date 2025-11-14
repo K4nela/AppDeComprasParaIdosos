@@ -1,6 +1,6 @@
 package com.k4nela.easypeasy.controller;
 
-import com.k4nela.easypeasy.model.Monitora;
+import com.k4nela.easypeasy.entity.Monitora;
 import com.k4nela.easypeasy.repository.MonitoraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
 package com.k4nela.easypeasy.controller;
 
-import com.k4nela.easypeasy.model.ListaDeDesejos;
+import com.k4nela.easypeasy.entity.ListaDeDesejos;
 import com.k4nela.easypeasy.repository.ListaDeDesejosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,11 +29,11 @@ public class ListaDeDesejosController {
         return listaRepository.findById(id).orElse(null);
     }
 
-    @PutMapping("/{id}")
-    public ListaDeDesejos atualizar(@PathVariable String id, @RequestBody ListaDeDesejos listaAtualizada) {
-        listaAtualizada.setId(id);
-        return listaRepository.save(listaAtualizada);
-    }
+//    @PutMapping("/{id}")
+//    public ListaDeDesejos atualizar(@PathVariable String id, @RequestBody ListaDeDesejos listaAtualizada) {
+//        listaAtualizada.setId(id);
+//        return listaRepository.save(listaAtualizada);
+//    }
 
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable String id) {

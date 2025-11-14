@@ -1,8 +1,13 @@
-package com.k4nela.easypeasy.model;
+package com.k4nela.easypeasy.entity;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DBRef;
+
+@Data
+@NoArgsConstructor
 
 @Document(collection = "administradores")
 public class Administrador {
@@ -10,12 +15,5 @@ public class Administrador {
     private String idAdministrador;
 
     @DBRef
-    private Usuario usuario;
-
-    public Administrador() {}
-
-    public void setId(String id) {
-    }
-
-    // Getters e Setters
+    private com.k4nela.easypeasy.entity.Usuario usuario;
 }

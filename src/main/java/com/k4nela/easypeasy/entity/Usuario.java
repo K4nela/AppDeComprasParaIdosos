@@ -1,23 +1,26 @@
 package com.k4nela.easypeasy.entity;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @NoArgsConstructor
 
-@Document(collection = "usuarios")
+@Entity
+@Table(name = "usuario")
 public class Usuario {
 
     @Id
     private String id;
+
     private String nome;
     private String email;
     private String senha;
-    private String dataNasc;
     private String endereco;
     private String telefone;
     private String tipo;
+
+    @Column(name = "data_nasc")
+    private String dataNasc;
 }

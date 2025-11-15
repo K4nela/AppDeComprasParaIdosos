@@ -1,19 +1,21 @@
 package com.k4nela.easypeasy.entity;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
 @Data
 @NoArgsConstructor
 
-@Document(collection = "administradores")
+@Entity
+@Table(name = "administrador")
 public class Administrador {
-    @Id
-    private String idAdministrador;
 
-    @DBRef
-    private com.k4nela.easypeasy.entity.Usuario usuario;
+    @Id
+    @Column(name = "id_administrador")
+    private String id;
+
+    @OneToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 }

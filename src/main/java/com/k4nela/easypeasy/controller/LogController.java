@@ -1,29 +1,33 @@
 package com.k4nela.easypeasy.controller;
 
-import com.k4nela.easypeasy.repository.LogRepository;
 import com.k4nela.easypeasy.entity.Log;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.k4nela.easypeasy.service.LogService;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/logs")
+@RequestMapping("/log")
 public class LogController {
 
-    @Autowired
-   public LogRepository logRepository;
+    private final LogService service;
 
-    // 📥 Cria um novo log
-    @PostMapping
-    public Log criarLog(@RequestBody Log log) {
-        return logRepository.save(log);
-
+    public LogController(LogService service) {
+        this.service = service;
     }
 
-    // 📤 Lista todos os logs
-    @GetMapping
-    public List<Log> listarlogs() {
-        return logRepository.findAll();
+    @PostMapping
+    public Log criarLog(@RequestBody Log req) {
+        return service.registrar(
+                req.getMensagem(),
+                req.getNivel(),
+                req.getOrigem(),
+                req.getDetalhe()
+        );
+    }
 
+    @GetMapping
+    public List<Log> listarLogs() {
+        return service.listarTodos();
     }
 }

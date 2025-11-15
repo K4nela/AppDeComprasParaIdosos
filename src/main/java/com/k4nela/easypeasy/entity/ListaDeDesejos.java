@@ -1,12 +1,9 @@
 package com.k4nela.easypeasy.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,17 +11,27 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 
-@Document(collection = "listasDeDesejos")
+@Entity
+@Table(name = "listadedesejos")
 public class ListaDeDesejos {
+
     @Id
-    private String idLista;
+    @Column(name = "id_lista")
+    private int id;
+
+    @Column(name = "nome_lista")
     private String nomeLista;
     private String descricao;
+
+    @Column (name = "data_criacao")
     private LocalDate dataCriacao;
 
-    @DBRef
+    @ManyToOne
+    @JoinColumn(name = "id_idoso")
     private Idoso idoso;
 
-    @DBRef
+    // ListaDeDesejos.java
+    @OneToMany(mappedBy = "listaDeDesejos") // tem que bater com o atributo de Item
+    @JsonManagedReference
     private List<Item> itens;
 }

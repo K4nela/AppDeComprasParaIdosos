@@ -1,28 +1,25 @@
 package com.k4nela.easypeasy.entity;
 
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+
 
 @Data
 @NoArgsConstructor
 
-@Document(collection = "monitora")
+@Entity
+@Table(name = "monitora")
 public class Monitora {
 
     @Id
-    private String id;
+    @Column(name = "id_monitora")
+    private int id;
 
-    @DBRef
+    @ManyToOne
     private Idoso idoso;  // referência ao idoso monitorado
 
-    @DBRef
+    @ManyToOne
     private Familiar familiar;  // referência ao familiar que monitora
 
-    private String dataInicio;
-    private String observacoes;
 }

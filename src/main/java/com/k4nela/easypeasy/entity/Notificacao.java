@@ -10,14 +10,13 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 
-@Document(collection = "log")
-public class Log {
-
+@Document(collection = "notificacoes")
+public class Notificacao {
     @Id
     private String id;
+    private String titulo;
     private String mensagem;
-    private String nivel;
-    private String origem;
-    private String detalhe;
+    private boolean lida;
     private LocalDateTime data;
 }
+

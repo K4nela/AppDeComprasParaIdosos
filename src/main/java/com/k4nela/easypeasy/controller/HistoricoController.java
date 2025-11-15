@@ -1,42 +1,47 @@
 package com.k4nela.easypeasy.controller;
 
 import com.k4nela.easypeasy.entity.Historico;
-import com.k4nela.easypeasy.repository.HistoricoRepository;
+import com.k4nela.easypeasy.service.HistoricoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/historico")
 public class HistoricoController {
 
     @Autowired
-    private HistoricoRepository historicoRepository;
+    private HistoricoService historicoService;
 
     @GetMapping
     public List<Historico> listar() {
-        return historicoRepository.findAll();
+        return historicoService.listar();
     }
 
     @PostMapping
     public Historico criar(@RequestBody Historico historico) {
-        return historicoRepository.save(historico);
+        return historicoService.criar(historico);
     }
 
     @GetMapping("/{id}")
     public Historico buscarPorId(@PathVariable String id) {
-        return historicoRepository.findById(id).orElse(null);
+        return historicoService.buscarPorId(id);
     }
 
-//    @PutMapping("/{id}")
-//    public Historico atualizar(@PathVariable String id, @RequestBody Historico atualizado) {
-//        atualizado.setId(id);
-//        return historicoRepository.save(atualizado);
-//    }
+    @PutMapping("/{id}")
+    public Historico atualizar(@PathVariable String id, @RequestBody Historico atualizado) {
+        return historicoService.atualizar(id, atualizado);
+    }
+
+    @PatchMapping("/{id}")
+    public Historico atualizarParcial(@PathVariable int id, @RequestBody Map<String, Object> campos) {
+        return historicoService.atualizarParcial(id, campos);
+    }
 
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable String id) {
-        historicoRepository.deleteById(id);
+        historicoService.deletar(id);
     }
 }

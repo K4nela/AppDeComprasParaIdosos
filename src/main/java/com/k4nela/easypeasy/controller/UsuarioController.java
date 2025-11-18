@@ -39,7 +39,7 @@ public class UsuarioController {
 
     // Busca usuário por ID
     @GetMapping("/{id}")
-    public Optional<Usuario> buscarPorId(@PathVariable String id) {
+    public Usuario buscarPorId(@PathVariable String id) {
         return usuarioService.buscarPorId(id);
     }
 
@@ -51,30 +51,7 @@ public class UsuarioController {
 
     @PatchMapping("/{id}")
     public Usuario atualizarInformacao(@PathVariable String id, @RequestBody Map<String, Object> campos){
-        Usuario u = usuarioRepository.findById(id).orElseThrow( () ->
-                new RuntimeException("Usuario não encontrado")
-                );
-
-        if(campos.containsKey("nome")){
-            u.setNome((String) campos.get("nome"));
-        }
-        if(campos.containsKey("dataNasc")){
-            u.setDataNasc((String) campos.get("dataNasc"));
-        }
-        if(campos.containsKey("email")){
-            u.setEmail((String) campos.get("email"));
-        }
-        if(campos.containsKey("senha")){
-            u.setSenha((String) campos.get("senha"));
-        }
-        if(campos.containsKey("endereco")){
-            u.setEndereco((String) campos.get("endereco"));
-        }
-        if(campos.containsKey("telefone")){
-            u.setTelefone((String) campos.get("telefone"));
-        }
-
-        return usuarioRepository.save(u);
+        return usuarioService.atualizarInformacao(id, campos);
     }
 
     //  Excluir usuário

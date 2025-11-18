@@ -18,4 +18,6 @@ public interface MonitoraRepository extends JpaRepository<Monitora, String> {
 //    Optional<Monitora> findByFamiliarId(String familiarId);
 
     List<Monitora> findByFamiliarId(String familiarId);
+
+    boolean existsByFamiliarIdAndIdosoId(String familiarId, String idosoId);
 }

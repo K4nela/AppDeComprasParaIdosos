@@ -1,11 +1,15 @@
 package com.k4nela.easypeasy.service;
 
+import com.k4nela.easypeasy.controller.UsuarioController;
 import com.k4nela.easypeasy.entity.Administrador;
+import com.k4nela.easypeasy.entity.Usuario;
 import com.k4nela.easypeasy.repository.AdministradorRepository;
+import com.k4nela.easypeasy.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AdministradorService {
@@ -18,6 +22,10 @@ public class AdministradorService {
 
     @Autowired
     private NotificacaoService notificacaoService;
+
+    @Autowired
+    private UsuarioService usuarioService;
+    private UsuarioRepository usuarioRepository;
 
     // LISTAR
     public List<Administrador> listar() {
@@ -41,6 +49,10 @@ public class AdministradorService {
         return adm;
     }
 
+    public Usuario buscarUsuarioPorId(String id){
+        return usuarioService.buscarPorId(id);
+    }
+
     // ATUALIZAR
     public Administrador atualizar(String id, Administrador admAtualizado) {
         admAtualizado.setId(id);
@@ -58,5 +70,26 @@ public class AdministradorService {
             logService.registrar("Administrador deletado", "WARN", "AdministradorService", "ID " + id);
             notificacaoService.enviar("Administrador removido", "Administrador '" + adm.getUsuario().getNome() + "' removido do sistema");
         }
+    }
+
+    public List<Usuario> listarTodosUsuarios() {
+        return usuarioService.listarUsuarios();
+    }
+
+    public Usuario atualizarUsuario(String id, Usuario dados) {
+        logService.registrar("Admin atualizou usuário", "WARN", "AdministradorService", "ID usuário: " + id);
+        return usuarioService.atualizarUsuario(id, dados);
+    }
+
+    public Usuario atualizarParcial(String id, Map<String, Object> campos){
+        return usuarioService.atualizarInformacao(id, campos);
+    }
+
+    public void deletarUsuario(String id) {
+        Usuario usuario = buscarUsuarioPorId(id);
+
+        logService.registrar("Admin deletou usuário", "ERROR", "AdministradorService", "ID usuário: " + id);
+        notificacaoService.enviar("Conta removida", "O usuário " + usuario.getNome() + " foi removido do sistema.");
+        usuarioService.deletarUsuario(id);
     }
 }

@@ -1,11 +1,13 @@
 package com.k4nela.easypeasy.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@ToString(exclude = {"idoso", "familiar", "administrador", "listasDeDesejos"}) // ajusta conforme a entidade
+
 
 @Entity
 @Table(name = "administrador")

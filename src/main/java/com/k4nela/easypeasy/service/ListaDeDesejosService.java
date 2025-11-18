@@ -1,13 +1,21 @@
 package com.k4nela.easypeasy.service;
 
+import com.k4nela.easypeasy.entity.Item;
 import com.k4nela.easypeasy.entity.ListaDeDesejos;
+import com.k4nela.easypeasy.repository.ItemRepository;
 import com.k4nela.easypeasy.repository.ListaDeDesejosRepository;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
+@Data
 
 @Service
 public class ListaDeDesejosService {
@@ -20,6 +28,8 @@ public class ListaDeDesejosService {
 
     @Autowired
     private NotificacaoService notificacaoService;
+
+    private ItemRepository itemRepository;
 
     public List<ListaDeDesejos> listar() {
         List<ListaDeDesejos> listas = listaRepository.findAll();
@@ -37,7 +47,7 @@ public class ListaDeDesejosService {
     public ListaDeDesejos criar(ListaDeDesejos lista) {
         // Gera a data de criação se não vier no JSON
         if (lista.getDataCriacao() == null) {
-            lista.setDataCriacao(LocalDate.now());
+            lista.setDataCriacao(LocalDateTime.now());
         }
 
         ListaDeDesejos salva = listaRepository.save(lista);
@@ -102,7 +112,7 @@ public class ListaDeDesejosService {
             lista.setDescricao((String) campos.get("descricao"));
         }
         if (campos.containsKey("dataCriacao")) {
-            lista.setDataCriacao(LocalDate.parse((String) campos.get("dataCriacao")));
+            lista.setDataCriacao(LocalDateTime.parse((String) campos.get("dataCriacao")));
         }
 
         ListaDeDesejos salva = listaRepository.save(lista);
@@ -137,6 +147,39 @@ public class ListaDeDesejosService {
                 "Lista removida",
                 "A lista '" + lista.getNomeLista() + "' foi excluída."
         );
+    }
+
+    public Item criarItemNaLista(String id, Item item){
+        ListaDeDesejos lista = listaRepository.findById(id).orElseThrow(() -> new RuntimeException("Lista de desejos não encontrada"));
+
+        item.setListaDeDesejos(lista);
+
+        Item salvo = itemRepository.save(item);
+
+        lista.getItens().add(salvo);
+        listaRepository.save(lista);
+
+
+        // log
+        logService.registrar(
+                "Item criado na lista",
+                "INFO",
+                "ListaDeDesejosService",
+                "Item " + salvo.getNomeItem() + " criado na lista ID " + lista.getId()
+        );
+
+        // notificação
+        notificacaoService.enviar(
+                "Novo item criado!",
+                "O item '" + salvo.getNomeItem() + "' foi adicionado à lista '" + lista.getNomeLista() + "'."
+        );
+
+        return salvo;
+    }
+
+    public List<Item> listarItens(String listaId){
+        ListaDeDesejos lista = buscarPorId(listaId);
+        return lista.getItens();
     }
 }
 

@@ -1,27 +1,26 @@
 package com.k4nela.easypeasy.controller;
 
-import com.k4nela.easypeasy.entity.Administrador;
-import com.k4nela.easypeasy.entity.Idoso;
-import com.k4nela.easypeasy.entity.Item;
-import com.k4nela.easypeasy.entity.ListaDeDesejos;
+import com.k4nela.easypeasy.entity.*;
 import com.k4nela.easypeasy.repository.ListaDeDesejosRepository;
 import com.k4nela.easypeasy.service.AdministradorService;
 import com.k4nela.easypeasy.service.IdosoService;
+import com.k4nela.easypeasy.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/administradores")
 public class AdministradorController {
 
     @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
     private AdministradorService administradorService;
-    @Autowired
-    private IdosoService idosoService;
-    @Autowired
-    private ListaDeDesejosRepository listaDeDesejosRepository;
 
     @GetMapping
     public List<Administrador> listar() {
@@ -48,20 +47,30 @@ public class AdministradorController {
         administradorService.deletar(id);
     }
 
-    @PostMapping("/{id}/listas")
-    public ListaDeDesejos criarListaDeDesejos(@PathVariable String id, @RequestBody ListaDeDesejos lista, @RequestBody List<Item> itens) {
-        // busca o idoso
-        Idoso idoso = idosoService.buscarPorId(id);
-
-        // chama o service que cria a lista e salva os itens
-        return idosoService.criarListaDeDesejos(idoso, lista);
+    @GetMapping("/usuarios")
+    public ResponseEntity<List<Usuario>> listarTodosOsUsuarios(){
+        return ResponseEntity.ok(administradorService.listarTodosUsuarios());
     }
 
-    @PostMapping("/listas/{listaId}/itens")
-    public Item criarItem(@PathVariable int listaId, @RequestBody Item item) {
-        ListaDeDesejos lista = listaDeDesejosRepository.findById(String.valueOf(listaId))
-                .orElseThrow(() -> new RuntimeException("Lista não encontrada!"));
-        return idosoService.criarItem(lista, item);
+    @GetMapping("/usuarios/{usuarioId}")
+    public Usuario listarUsuarioPorId(@PathVariable String usuarioId){
+        return administradorService.buscarUsuarioPorId(usuarioId);
     }
 
+    @PutMapping("/usuarios/{id}")
+    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable String id,@RequestBody Usuario dadosAtualizados) {
+        Usuario atualizado = administradorService.atualizarUsuario(id, dadosAtualizados);
+        return ResponseEntity.ok(atualizado);
+    }
+
+    @PatchMapping("/usuarios/{id}")
+    public Usuario atualizarParcialUsuario(@PathVariable String id, @RequestBody Map<String, Object> campos) {
+        return administradorService.atualizarParcial(id, campos);
+    }
+
+    @DeleteMapping("/usuarios/{id}")
+    public ResponseEntity<Void> deletarUsuario(@PathVariable String id) {
+        administradorService.deletarUsuario(id);
+        return ResponseEntity.noContent().build();
+    }
 }

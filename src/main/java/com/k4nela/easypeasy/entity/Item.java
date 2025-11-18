@@ -1,9 +1,12 @@
 package com.k4nela.easypeasy.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @NoArgsConstructor
@@ -26,10 +29,9 @@ public class Item {
     private String nomeLoja;
     private String link;
 
-
-    // Item.java
     @ManyToOne
-    @JoinColumn(name = "id_lista")
+    @JoinColumn(name = "id_lista", nullable = false)
+    @JsonIgnoreProperties("itens")
     @JsonBackReference
-    private ListaDeDesejos listaDeDesejos; // o nome precisa bater com mappedBy
+    private ListaDeDesejos listaDeDesejos;
 }

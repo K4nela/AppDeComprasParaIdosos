@@ -26,12 +26,12 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public Item buscarPorId(@PathVariable String id) {
+    public Item buscarPorId(@PathVariable int id) {
         return itemService.buscarPorId(id);
     }
 
     @PutMapping("/{id}")
-    public Item atualizar(@PathVariable String id, @RequestBody Item itemAtualizado) {
+    public Item atualizar(@PathVariable int id, @RequestBody Item itemAtualizado) {
         return itemService.atualizar(id, itemAtualizado);
     }
 
@@ -41,7 +41,7 @@ public class ItemController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable String id) {
+    public void deletar(@PathVariable int id) {
         itemService.deletar(id);
     }
 }

@@ -1,11 +1,15 @@
 package com.k4nela.easypeasy.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@ToString(exclude = {"idoso", "familiar", "administrador", "listasDeDesejos"}) // ajusta conforme a entidade
+
 
 @Entity
 @Table(name = "familiar")

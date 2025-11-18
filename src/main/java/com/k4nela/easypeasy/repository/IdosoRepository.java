@@ -9,5 +9,4 @@ import java.util.List;
 
 @Repository
 public interface IdosoRepository extends JpaRepository<Idoso, String> {
-    List<Monitora> findByFamiliarId(String familiarId);
 }

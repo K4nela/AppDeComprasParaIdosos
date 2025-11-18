@@ -1,8 +1,12 @@
 package com.k4nela.easypeasy.controller;
 
+import com.k4nela.easypeasy.entity.Item;
 import com.k4nela.easypeasy.entity.ListaDeDesejos;
+import com.k4nela.easypeasy.repository.ListaDeDesejosRepository;
+import com.k4nela.easypeasy.service.FamiliarService;
 import com.k4nela.easypeasy.service.ListaDeDesejosService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,7 +17,16 @@ import java.util.Map;
 public class ListaDeDesejosController {
 
     @Autowired
+    private FamiliarService familiarService;
+
+    @Autowired
     private ListaDeDesejosService listaService;
+
+    @Autowired
+    private ListaDeDesejosRepository listaDeDesejosRepository;
+
+    @Autowired
+    private AdministradorController listaDeDesejosServices;
 
     @GetMapping
     public List<ListaDeDesejos> listar() {
@@ -43,6 +56,26 @@ public class ListaDeDesejosController {
     @DeleteMapping("/{id}")
     public void deletar(@PathVariable String id) {
         listaService.deletar(id);
+    }
+
+    @PostMapping("/{idLista}/itens")
+    public Item criarItemNaLista(@PathVariable String idLista, @RequestBody Item item){
+        return listaService.criarItemNaLista(idLista, item);
+    }
+
+    @GetMapping("/{idosoId}/listas/{listaId}/itens")
+    public List<Item> listarItens(@PathVariable String listaId){
+        return listaService.listarItens(listaId);
+    }
+
+    // Listar todas as listas de um idoso específico
+    @GetMapping("/{familiarId}/idosos/{idosoId}/listas")
+    public ResponseEntity<List<ListaDeDesejos>> listarListasDoIdoso(
+            @PathVariable String familiarId,
+            @PathVariable String idosoId) {
+
+        List<ListaDeDesejos> listas = familiarService.listarListasDeUmIdoso(familiarId, idosoId);
+        return ResponseEntity.ok(listas);
     }
 }
 

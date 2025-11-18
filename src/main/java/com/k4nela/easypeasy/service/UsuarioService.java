@@ -4,8 +4,12 @@ import com.k4nela.easypeasy.entity.Usuario;
 import com.k4nela.easypeasy.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -30,8 +34,9 @@ public class UsuarioService {
         logService.registrar(
                 "Usuario criado!",
                 "INFO",
-                "UsuarioController",
-                "ID " + usuario.getId());
+                "UsuarioService",
+                "ID " + usuario.getId()
+        );
 
         notificacaoService.enviar(
           "Bem Vindo!",
@@ -43,44 +48,96 @@ public class UsuarioService {
 
     //  Retorna todos os usuários cadastrados
     public List<Usuario> listarUsuarios() {
+        logService.registrar(
+                "Listagem de usuários",
+                "INFO",
+                "UsuarioService",
+                "Usuários listados"
+        );
+
         return usuarioRepository.findAll();
     }
 
     //  Busca um usuário pelo ID
-    public Optional<Usuario> buscarPorId(String id) {
-        return usuarioRepository.findById(id);
+    public Usuario buscarPorId(String id) {
+        logService.registrar(
+                "Busca de usuário por ID",
+                "INFO",
+                "UsuarioService",
+                "ID " + id
+        );
+        return usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
     //  Atualiza os dados de um usuário existente
-    public Usuario atualizarUsuario(String id, Usuario usuarioAtualizado) {
-        Optional<Usuario> usuarioExistente = usuarioRepository.findById(id);
+    public Usuario atualizarUsuario(String id, Usuario dadosAtualizados) {
 
-        if (usuarioExistente.isEmpty()) {
-            throw new RuntimeException("Usuário não encontrado!");
+        // Busca o usuário existente (já lança exceção se não existir)
+        Usuario usuario = buscarPorId(id);
+
+        // Atualiza apenas os campos permitidos
+        usuario.setNome(dadosAtualizados.getNome());
+        usuario.setEmail(dadosAtualizados.getEmail());
+        usuario.setTelefone(dadosAtualizados.getTelefone());
+        usuario.setEndereco(dadosAtualizados.getEndereco());
+        usuario.setTipo(dadosAtualizados.getTipo());
+        usuario.setDataNasc(dadosAtualizados.getDataNasc());
+
+        // REGRA DE OURO: NUNCA sobrescreve a senha com nulo ou vazio
+        // Só atualiza a senha se vier algo preenchida no JSON
+        if (dadosAtualizados.getSenha() != null && !dadosAtualizados.getSenha().trim().isEmpty()) {
+            usuario.setSenha(dadosAtualizados.getSenha()); // depois você pode criptografar aqui
         }
-
-        Usuario usuario = usuarioExistente.get();
-        usuario.setNome(usuarioAtualizado.getNome());
-        usuario.setEmail(usuarioAtualizado.getEmail());
-        usuario.setSenha(usuarioAtualizado.getSenha());
-        usuario.setTelefone(usuarioAtualizado.getTelefone());
-        usuario.setEndereco(usuarioAtualizado.getEndereco());
-        usuario.setTipo(usuarioAtualizado.getTipo());
-        usuario.setDataNasc(usuarioAtualizado.getDataNasc());
+        // Se não vier senha → mantém a antiga (seguro!)
 
         logService.registrar(
-                "Usuario atualizado!",
+                "Usuário atualizado",
                 "INFO",
-                "UsuarioController",
-                "ID" + id
+                "UsuarioService",
+                "ID: " + id + " | Nome: " + usuario.getNome()
         );
 
         notificacaoService.enviar(
-                "Usuario Atualizado!",
-                usuarioAtualizado.getNome() + " atualizado com sucésso!"
+                "Seus dados foram atualizados",
+                "Olá " + usuario.getNome() + ", suas informações foram alteradas com sucesso!"
         );
 
         return usuarioRepository.save(usuario);
+    }
+
+    public Usuario atualizarInformacao(@PathVariable String id, @RequestBody Map<String, Object> campos){
+        Usuario u = usuarioRepository.findById(id).orElseThrow( () ->
+                new RuntimeException("Usuario não encontrado")
+        );
+
+        if(campos.containsKey("nome")){
+            u.setNome((String) campos.get("nome"));
+        }
+        if(campos.containsKey("dataNasc")){
+            u.setDataNasc(LocalDate.parse((String) campos.get("dataNasc")));
+        }
+        if(campos.containsKey("email")){
+            u.setEmail((String) campos.get("email"));
+        }
+        if(campos.containsKey("senha")){
+            u.setSenha((String) campos.get("senha"));
+        }
+        if(campos.containsKey("endereco")){
+            u.setEndereco((String) campos.get("endereco"));
+        }
+        if(campos.containsKey("telefone")){
+            u.setTelefone((String) campos.get("telefone"));
+        }
+
+        logService.registrar(
+                "Atualização parcial de usuário",
+                "INFO",
+                "UsuarioService",
+                "ID " + id + " | Campos alterados: " + campos.keySet()
+        );
+
+
+        return usuarioRepository.save(u);
     }
 
     //  Remove um usuário pelo ID
@@ -97,9 +154,10 @@ public class UsuarioService {
         );
 
         notificacaoService.enviar(
-          "Usuario Excluído!",
-          "Usuário " + usuarioRepository.getById(id) + " excluído com sucésso!"
+                "Usuário removido",
+                "O usuário foi excluído do sistema."
         );
+
 
         usuarioRepository.deleteById(id);
     }

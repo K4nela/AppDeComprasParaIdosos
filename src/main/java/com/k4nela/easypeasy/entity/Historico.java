@@ -1,10 +1,13 @@
 package com.k4nela.easypeasy.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -17,8 +20,10 @@ public class Historico {
     @Column(name = "id_historico")
     private int id;
 
+    @CreationTimestamp
     @Column(name = "data_historico", insertable = false, updatable = false)
-    private LocalDate dataHistorico;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private LocalDateTime dataHistorico;
 
     private String status; // PENDENTE, EM_ANDAMENTO, CONCLUIDO, CANCELADO
 

@@ -1,11 +1,17 @@
 package com.k4nela.easypeasy.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+import java.time.LocalDate;
+
+@Getter
+@Setter
 @NoArgsConstructor
+@ToString(exclude = {"idoso", "familiar", "administrador"}) // ajusta conforme a entidade
 
 @Entity
 @Table(name = "usuario")
@@ -22,5 +28,9 @@ public class Usuario {
     private String tipo;
 
     @Column(name = "data_nasc")
-    private String dataNasc;
+    private LocalDate dataNasc;
+
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Idoso idoso;
 }

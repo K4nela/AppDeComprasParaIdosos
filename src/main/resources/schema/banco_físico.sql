@@ -133,9 +133,9 @@ CREATE TABLE listadedesejos (
     id_lista INT AUTO_INCREMENT PRIMARY KEY,
     nome_lista VARCHAR(100) NOT NULL DEFAULT 'LISTA',
     descricao VARCHAR(100) DEFAULT 'LISTA DE COMPRAS',
-    data_criacao DATE,
+    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP,
     id_idoso VARCHAR(10),
-    CONSTRAINT fk_lista_idoso FOREIGN KEY (id_idoso) REFERENCES idoso(id_idoso)
+    CONSTRAINT fk_lista_idoso FOREIGN KEY (id_idoso) REFERENCES idoso(id_idoso) ON DELETE CASCADE
 );
 
 -- =====================
@@ -150,8 +150,7 @@ CREATE TABLE item (
     quantidade INT,
     nome_loja VARCHAR(100),
     link VARCHAR(255),
-    CONSTRAINT fk_item_lista FOREIGN KEY (id_lista) REFERENCES listadedesejos(id_lista)
-        ON DELETE CASCADE
+    CONSTRAINT fk_item_lista FOREIGN KEY (id_lista) REFERENCES listadedesejos(id_lista) ON DELETE CASCADE
 );
 
 -- =====================
@@ -160,12 +159,11 @@ CREATE TABLE item (
 DROP TABLE IF EXISTS historico;
 CREATE TABLE historico (
     id_historico INT AUTO_INCREMENT PRIMARY KEY,
-    data_historico DATE NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+    data_historico DATETIME DEFAULT CURRENT_TIMESTAMP,
     id_item INT,
     status ENUM('PENDENTE', 'EM_ANDAMENTO', 'CONCLUIDO', 'CANCELADO'),
-    CONSTRAINT fk_historico_item FOREIGN KEY (id_item) REFERENCES item(id_item) ON DELETE RESTRICT
+    CONSTRAINT fk_historico_item FOREIGN KEY (id_item) REFERENCES item(id_item) ON DELETE CASCADE
 );
-
 
 
 -- Trigger para inserir item no histórico automaticamente
@@ -189,7 +187,7 @@ CREATE TABLE monitora (
     id_familiar VARCHAR(10) NOT NULL,
     id_idoso VARCHAR(10) NOT NULL,
     CONSTRAINT fk_monitora_familiar FOREIGN KEY (id_familiar) REFERENCES familiar(id_familiar),
-    CONSTRAINT fk_monitora_idoso FOREIGN KEY (id_idoso) REFERENCES idoso(id_idoso)
+    CONSTRAINT fk_monitora_idoso FOREIGN KEY (id_idoso) REFERENCES idoso(id_idoso) ON DELETE CASCADE
 );
 
 -- =====================

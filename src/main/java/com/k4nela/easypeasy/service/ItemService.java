@@ -51,7 +51,7 @@ public class ItemService {
         return salvo;
     }
 
-    public Item buscarPorId(String id) {
+    public Item buscarPorId(int id) {
         Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Item não encontrado"));
 
@@ -65,7 +65,7 @@ public class ItemService {
         return item;
     }
 
-    public Item atualizar(String id, Item itemAtualizado) {
+    public Item atualizar(int id, Item itemAtualizado) {
         Item existente = buscarPorId(id);
 
         itemAtualizado.setId(existente.getId());
@@ -87,7 +87,7 @@ public class ItemService {
     }
 
     public Item atualizarParcial(int id, Map<String, Object> campos) {
-        Item item = buscarPorId(String.valueOf(id));
+        Item item = buscarPorId(id);
 
         if (campos.containsKey("nomeItem")) {
             item.setNomeItem((String) campos.get("nomeItem"));
@@ -122,7 +122,7 @@ public class ItemService {
         return salvo;
     }
 
-    public void deletar(String id) {
+    public void deletar(int id) {
         Item item = buscarPorId(id);
         itemRepository.delete(item);
 

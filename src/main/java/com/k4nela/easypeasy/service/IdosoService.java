@@ -15,10 +15,10 @@ import java.util.List;
 public class IdosoService {
 
     @Autowired
-    private static IdosoRepository idosoRepository;
+    private IdosoRepository idosoRepository;
 
     @Autowired
-    private static LogService logService;
+    private LogService logService;
 
     @Autowired
     private NotificacaoService notificacaoService;
@@ -26,11 +26,15 @@ public class IdosoService {
     @Autowired
     private ListaDeDesejosRepository listaRepository;
 
+
+    @Autowired
+    private ListaDeDesejosService listaService;
+
     @Autowired
     private ItemRepository itemRepository;
 
 
-    public static List<Idoso> listar() {
+    public List<Idoso> listar() {
         List<Idoso> lista = idosoRepository.findAll();
 
         logService.registrar(
@@ -131,24 +135,40 @@ public class IdosoService {
         return salva;
     }
 
-    public Item criarItem(ListaDeDesejos lista, Item item) {
+    public Item adicionarItemNaLista(String idLista, Item item) {
+        ListaDeDesejos lista = listaRepository.findById(idLista)
+                .orElseThrow(() -> new RuntimeException("Lista não encontrada"));
+
         item.setListaDeDesejos(lista);
-        Item salvo = itemRepository.save(item);
-
-        logService.registrar(
-                "Item criado",
-                "INFO",
-                "IdosoService",
-                "Item ID " + salvo.getId() + " adicionado à lista ID " + lista.getId()
-        );
-
-        notificacaoService.enviar(
-                "Novo item adicionado",
-                "Um novo item '" + salvo.getNomeItem() + "' foi adicionado à lista " + lista.getNomeLista()
-        );
-
-        return salvo;
+        return itemRepository.save(item);
     }
 
+    public List<Item> listarItensDaListaDoIdoso(String idosoId, int listaId) {
+        Idoso idoso = idosoRepository.findById(idosoId)
+                .orElseThrow(() -> new RuntimeException("Idoso não encontrado"));
+
+        ListaDeDesejos lista = listaRepository.findByIdAndIdoso(listaId, idoso)
+                .orElseThrow(() -> new RuntimeException("Lista não encontrada ou não pertence ao idoso"));
+
+        return lista.getItens();
+    }
+
+    public List<ListaDeDesejos> listarListaDeDesejosById(String idosoId) {
+        return listaRepository.findByIdosoId(idosoId);
+    }
+
+    public ListaDeDesejos buscarListaDoIdosoPorId(String idosoId, int listaId) {
+        // Primeiro verifica se o idoso existe
+        Idoso idoso = idosoRepository.findById(idosoId)
+                .orElseThrow(() -> new RuntimeException("Idoso não encontrado"));
+
+        // Busca a lista específica que pertence a esse idoso
+        return listaRepository.findByIdAndIdoso(listaId, idoso)
+                .orElseThrow(() -> new RuntimeException("Lista de desejos não encontrada ou não pertence a esse idoso"));
+    }
+
+    public Item adicionarItem(ListaDeDesejos lista, Item item) {
+        return listaService.criarItemNaLista(String.valueOf(lista.getId()), item);
+    }
 }
 

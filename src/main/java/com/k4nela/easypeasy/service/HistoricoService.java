@@ -21,6 +21,7 @@ public class HistoricoService {
     @Autowired
     private NotificacaoService notificacaoService;
 
+    // LISTAR HISTÓRICOS
     public List<Historico> listar() {
         List<Historico> lista = historicoRepository.findAll();
 
@@ -31,9 +32,15 @@ public class HistoricoService {
                 "Total retornado: " + lista.size()
         );
 
+        notificacaoService.enviar(
+                "Históricos listados",
+                "Foram encontrados " + lista.size() + " históricos no sistema."
+        );
+
         return lista;
     }
 
+    // CRIAR HISTÓRICO
     public Historico criar(Historico historico) {
         Historico salvo = historicoRepository.save(historico);
 
@@ -52,6 +59,7 @@ public class HistoricoService {
         return salvo;
     }
 
+    // BUSCAR HISTÓRICO POR ID
     public Historico buscarPorId(String id) {
         Historico hist = historicoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Histórico não encontrado: " + id));
@@ -66,6 +74,7 @@ public class HistoricoService {
         return hist;
     }
 
+    // ATUALIZAR HISTÓRICO
     public Historico atualizar(String id, Historico atualizado) {
         Historico existente = buscarPorId(id);
 
@@ -87,6 +96,7 @@ public class HistoricoService {
         return salvo;
     }
 
+    // ATUALIZAR PARCIALMENTE
     public Historico atualizarParcial(int id, Map<String, Object> campos) {
         Historico hist = historicoRepository.findById(String.valueOf(id))
                 .orElseThrow(() -> new RuntimeException("Histórico não encontrado"));
@@ -112,6 +122,7 @@ public class HistoricoService {
         return salvo;
     }
 
+    // DELETAR HISTÓRICO
     public void deletar(String id) {
         Historico historico = buscarPorId(id);
 
@@ -130,6 +141,7 @@ public class HistoricoService {
         );
     }
 
+    // ATUALIZAR STATUS PELO FAMILIAR
     public Historico atualizarStatusHistorico(int historicoId, String novoStatus, Familiar familiar) {
         Historico hist = historicoRepository.findById(String.valueOf(historicoId))
                 .orElseThrow(() -> new RuntimeException("Histórico não encontrado"));
@@ -153,5 +165,4 @@ public class HistoricoService {
 
         return salvo;
     }
-
 }

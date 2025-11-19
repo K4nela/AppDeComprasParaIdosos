@@ -1,6 +1,5 @@
 package com.k4nela.easypeasy.service;
 
-
 import com.k4nela.easypeasy.entity.Familiar;
 import com.k4nela.easypeasy.entity.Idoso;
 import com.k4nela.easypeasy.entity.Monitora;
@@ -14,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Data
-
 @Service
 public class MonitoraService {
 
@@ -28,11 +26,10 @@ public class MonitoraService {
     private FamiliarRepository repFm;
     @Autowired
     private LogService logService;
-    private NotificacaoRepository notificacaoRepository;
     @Autowired
     private NotificacaoService notificacaoService;
 
-    //método para criar um vínculo entre idoso e familiar
+    // Criar vínculo entre idoso e familiar
     public Monitora criarMonitora(Idoso id, Familiar fa){
         Monitora m = new Monitora();
         m.setFamiliar(fa);
@@ -42,7 +39,7 @@ public class MonitoraService {
         Optional<Monitora> monitoraFamiliarExistente = rep.findById(m.getFamiliar().getId());
 
         if(monitoraFamiliarExistente.isPresent() && monitoraIdosoExistente.isPresent()){
-            throw new RuntimeException("Os usuários " + m.getIdoso().getUsuario().getNome() + " e " + m.getFamiliar().getUsuario().getNome() + " ja esstão associados");
+            throw new RuntimeException("Os usuários " + m.getIdoso().getUsuario().getNome() + " e " + m.getFamiliar().getUsuario().getNome() + " já estão associados");
         }
 
         logService.registrar(
@@ -53,26 +50,61 @@ public class MonitoraService {
         );
 
         notificacaoService.enviar(
-                "Vínculo criado com sucésso!",
-                "Vínculo entre " + m.getIdoso().getUsuario().getNome() + " e " + m.getFamiliar().getUsuario().getNome() + " criado com sucésso!"
+                "Vínculo criado com sucesso!",
+                "Vínculo entre " + m.getIdoso().getUsuario().getNome() + " e " + m.getFamiliar().getUsuario().getNome() + " criado com sucesso!"
         );
 
         return rep.save(m);
     }
 
-    //método para listar vínculos
+    // Listar todos os vínculos
     public List<Monitora> listarMonitora(){
-        return rep.findAll();
+        List<Monitora> lista = rep.findAll();
+
+        logService.registrar(
+                "Listagem de vínculos",
+                "INFO",
+                "MonitoraService",
+                "Total retornado: " + lista.size()
+        );
+
+        notificacaoService.enviar(
+                "Listagem de vínculos",
+                "Foram retornados " + lista.size() + " vínculos"
+        );
+
+        return lista;
     }
 
-    //método para listar vínculos por id
+    // Listar vínculo por ID
     public Monitora listarMonitoraPorId(String id){
-        return rep.findById(id).orElseThrow(() -> new RuntimeException("Vínculo não encontrado!"));
+        Monitora m = rep.findById(id).orElseThrow(() -> new RuntimeException("Vínculo não encontrado!"));
+
+        logService.registrar(
+                "Consulta de vínculo",
+                "INFO",
+                "MonitoraService",
+                "ID " + id
+        );
+
+        notificacaoService.enviar(
+                "Consulta de vínculo",
+                "Vínculo ID " + id + " consultado com sucesso"
+        );
+
+        return m;
     }
 
-    //metodo para deletar vínculo apenas se o idoso tiver mais de um vínculo
+    // Deletar vínculo
     public void deletarMonitora(@NotNull String id){
-    Monitora m = rep.findById(id).orElseThrow(() -> new RuntimeException("Vínculo não encontrado!"));
+        Monitora m = rep.findById(id).orElseThrow(() -> new RuntimeException("Vínculo não encontrado!"));
+
+        long total = rep.countByFamiliarId(id);
+        if(total == 1){
+            throw new RuntimeException("Este idoso possui apenas um vínculo!");
+        }
+
+        rep.deleteById(id);
 
         logService.registrar(
                 "Vínculo deletado!",
@@ -82,16 +114,8 @@ public class MonitoraService {
         );
 
         notificacaoService.enviar(
-                "Deletando vínculo!",
-                "Vínculo entre usuários " + m.getIdoso().getUsuario().getNome() + " e " + m.getFamiliar().getUsuario().getNome() + " deletado"
+                "Vínculo deletado!",
+                "Vínculo entre usuários " + m.getIdoso().getUsuario().getNome() + " e " + m.getFamiliar().getUsuario().getNome() + " deletado com sucesso!"
         );
-
-        long total = rep.countByFamiliarId(id);
-
-        if(total == 1){
-            throw new RuntimeException("Este idoso possui apenas um vínculo!");
-        }
-
-        rep.deleteById(id);
     }
 }

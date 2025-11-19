@@ -26,14 +26,13 @@ public class IdosoService {
     @Autowired
     private ListaDeDesejosRepository listaRepository;
 
-
     @Autowired
     private ListaDeDesejosService listaService;
 
     @Autowired
     private ItemRepository itemRepository;
 
-
+    // LISTAR IDOSOS
     public List<Idoso> listar() {
         List<Idoso> lista = idosoRepository.findAll();
 
@@ -44,9 +43,15 @@ public class IdosoService {
                 "Total retornado: " + lista.size()
         );
 
+        notificacaoService.enviar(
+                "Listagem de idosos",
+                "Foram encontrados " + lista.size() + " idosos cadastrados."
+        );
+
         return lista;
     }
 
+    // CRIAR IDOSO
     public Idoso criar(Idoso idoso) {
         Idoso criado = idosoRepository.save(idoso);
 
@@ -64,6 +69,7 @@ public class IdosoService {
         return criado;
     }
 
+    // BUSCAR POR ID
     public Idoso buscarPorId(String id) {
         Idoso i = idosoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Idoso não encontrado: " + id));
@@ -75,9 +81,15 @@ public class IdosoService {
                 "ID " + id
         );
 
+        notificacaoService.enviar(
+                "Consulta de idoso",
+                "Os dados do idoso " + i.getUsuario().getNome() + " foram consultados."
+        );
+
         return i;
     }
 
+    // ATUALIZAR IDOSO
     public Idoso atualizar(String id, Idoso atualizado) {
         Idoso existente = buscarPorId(id);
 
@@ -99,6 +111,7 @@ public class IdosoService {
         return atualizadoFinal;
     }
 
+    // DELETAR IDOSO
     public void deletar(String id) {
         Idoso i = buscarPorId(id);
         idosoRepository.delete(i);
@@ -116,6 +129,7 @@ public class IdosoService {
         );
     }
 
+    // CRIAR LISTA DE DESEJOS PARA IDOSO
     public ListaDeDesejos criarListaDeDesejos(Idoso idoso, ListaDeDesejos lista) {
         lista.setIdoso(idoso);
         ListaDeDesejos salva = listaRepository.save(lista);
@@ -135,14 +149,30 @@ public class IdosoService {
         return salva;
     }
 
+    // ADICIONAR ITEM NA LISTA
     public Item adicionarItemNaLista(String idLista, Item item) {
         ListaDeDesejos lista = listaRepository.findById(idLista)
                 .orElseThrow(() -> new RuntimeException("Lista não encontrada"));
 
         item.setListaDeDesejos(lista);
-        return itemRepository.save(item);
+        Item salvo = itemRepository.save(item);
+
+        logService.registrar(
+                "Item adicionado à lista",
+                "INFO",
+                "IdosoService",
+                "Item " + salvo.getNomeItem() + " adicionado à lista " + lista.getNomeLista()
+        );
+
+        notificacaoService.enviar(
+                "Novo item na lista",
+                "O item '" + salvo.getNomeItem() + "' foi adicionado à lista '" + lista.getNomeLista() + "'."
+        );
+
+        return salvo;
     }
 
+    // LISTAR ITENS DA LISTA DO IDOSO
     public List<Item> listarItensDaListaDoIdoso(String idosoId, int listaId) {
         Idoso idoso = idosoRepository.findById(idosoId)
                 .orElseThrow(() -> new RuntimeException("Idoso não encontrado"));
@@ -153,22 +183,22 @@ public class IdosoService {
         return lista.getItens();
     }
 
+    // LISTAR LISTAS DE DESEJOS DO IDOSO
     public List<ListaDeDesejos> listarListaDeDesejosById(String idosoId) {
         return listaRepository.findByIdosoId(idosoId);
     }
 
+    // BUSCAR LISTA ESPECÍFICA DO IDOSO
     public ListaDeDesejos buscarListaDoIdosoPorId(String idosoId, int listaId) {
-        // Primeiro verifica se o idoso existe
         Idoso idoso = idosoRepository.findById(idosoId)
                 .orElseThrow(() -> new RuntimeException("Idoso não encontrado"));
 
-        // Busca a lista específica que pertence a esse idoso
         return listaRepository.findByIdAndIdoso(listaId, idoso)
                 .orElseThrow(() -> new RuntimeException("Lista de desejos não encontrada ou não pertence a esse idoso"));
     }
 
+    // ADICIONAR ITEM UTILIZANDO A LISTA DESEJOS SERVICE
     public Item adicionarItem(ListaDeDesejos lista, Item item) {
         return listaService.criarItemNaLista(String.valueOf(lista.getId()), item);
     }
 }
-
